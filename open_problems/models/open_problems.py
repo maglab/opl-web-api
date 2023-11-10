@@ -10,7 +10,7 @@ class OpenProblem(models.Model):
     description = models.TextField(blank=True, null=True)
     contact = models.ForeignKey(
         Contact, null=True, on_delete=models.SET_NULL, blank=True
-    )
+    )  # Non authenticated
 
     class Meta:
         abstract = True
@@ -58,8 +58,6 @@ class OpenProblems(OpenProblem):
 
     def __str__(self):
         return f"{self.problem_id}: {self.title}"
-
-
 
 
 class SubmittedProblems(OpenProblem):

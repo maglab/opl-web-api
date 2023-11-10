@@ -28,9 +28,6 @@ cwd_path = Path.cwd()
 
 SECRET_KEY = environ.get("SECRET_KEY")
 
-cwd_path = Path.cwd()
-
-SECRET_KEY = environ.get("SECRET_KEY")
 DEBUG = debug_mode
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -44,6 +41,8 @@ INSTALLED_APPS = [
     "posts_comments",
     "annotations",
     "corsheaders",
+    'rest_framework_simplejwt.token_blacklist',
+    'oauth2_provider'
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -54,6 +53,8 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "OPL.middleware.AzureADTokenMiddleware"
+
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -64,8 +65,16 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:8000"
 ]
 
-REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 ROOT_URLCONF = "OPL.urls"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -114,14 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = "/static/"
-STATIC_ROOT = str(cwd_path.joinpath("staticfiles"))
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Set 'SECURE_PROXY_SSL_HEADER' to tell Django that the connection is HTTPS even if it's forwarded by a proxy.
 # http_protocol = configuration['settings']['httpProtocol']
@@ -143,3 +144,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1",
 ]
+
+## AZURE IDS
+AZURE_TENANT_ID = environ.get("AZURE_TENANT_ID")
+AZURE_CLIENT_ID = environ.get("AZURE_CLIENT_ID")
