@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+BUILD_VERSION = environ.get("BUILD_VERSION")
+
 match (environ.get("WEB_API_URLS")):
     case str(value):
         web_api_urls = value.split("|")
@@ -33,6 +35,7 @@ cwd_path = Path.cwd()
 SECRET_KEY = environ.get("SECRET_KEY")
 DEBUG = debug_mode
 INSTALLED_APPS = [
+    "drf_yasg",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -61,7 +64,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://dev.longevityknowledge.app",
     "https://longevityknowledge.app",
     "http://127.0.0.1",
-    "https://localhost:8000"
+    "https://localhost:8000",
 ]
 
 REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
@@ -88,14 +91,14 @@ WSGI_APPLICATION = "OPL.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": environ.get("POSTGRES_DB"),
-        "USER": environ.get("POSTGRES_USER"),
-        "PASSWORD": environ.get("POSTGRES_PASSWORD"),
-        "HOST": environ.get("POSTGRES_HOST"),
-        "PORT": environ.get("POSTGRES_PORT"),
+        "NAME": environ.get("DB_NAME"),
+        "USER": environ.get("DB_USER"),
+        "PASSWORD": environ.get("DB_PASSWORD"),
+        "HOST": environ.get("DB_HOST"),
+        "PORT": environ.get("DB_PORT"),
     }
 }
-STATIC_URL = "static/"
+STATIC_URL = "api/static/"
 STATIC_ROOT = str(cwd_path.joinpath("staticfiles"))
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -116,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = "/static/"
+STATIC_URL = "/api/static/"
 STATIC_ROOT = str(cwd_path.joinpath("staticfiles"))
 
 # Default primary key field type
@@ -143,3 +146,5 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1",
 ]
+
+ALLOWED_HOSTS = ["*"]
