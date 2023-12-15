@@ -1,6 +1,9 @@
+from django.http import JsonResponse
+from requests import post
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from requests import post
+
+from utils.token_required import token_login_required
 
 
 @api_view(["POST"])
@@ -16,5 +19,15 @@ def verify_token(request):
         return Response(content)
 
 
-def parse_submitted_references(data):
-    """Parse submitted references from JSON"""
+@api_view(["GET"])
+@token_login_required
+def test_view(request):
+    # If the middleware is working correctly, request.user should be set to the authenticated user
+    user = request.user
+    return JsonResponse(
+        {
+            "username": user.username,
+            "email": user.email,
+            "is_authenticated": user.is_authenticated,
+        }
+    )

@@ -40,12 +40,9 @@ def get_queryset_annotated(
     """
     queryset = queryset.annotate(**annotate_by)
     # Annotate first, filter then order queryset before returning.
-    try:
+    if filters:
         for filter_dictionary in filters:
-            queryset.filter(**filter_dictionary)
-    except TypeError:
-        pass  # Name error for the condition that there are no filters
-    finally:
-        # Finally we orderby at the end
-        queryset = queryset.order_by(id_string)
+            queryset = queryset.filter(**filter_dictionary)
+    queryset = queryset.order_by(id_string)
+
     return queryset
