@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "posts_comments",
     "annotations",
     "corsheaders",
-    'rest_framework_simplejwt.token_blacklist',
     'oauth2_provider'
 ]
 MIDDLEWARE = [
