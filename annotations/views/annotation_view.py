@@ -1,7 +1,17 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
-from rest_framework.mixins import ListModelMixin
 from rest_framework import status
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ReadOnlyModelViewSet
+
+from annotations.models.compounds import CompoundProblems
+from annotations.models.genes import GeneProblem
+from annotations.models.species import SpeciesProblem
+from annotations.models.subjects import SubjectProblem
+from annotations.serializers.compound_serializer import CompoundProblemSerializer
+from annotations.serializers.gene_serializer import GeneProblemlSerializer
+from annotations.serializers.species_serializer import SpeciesProblemSerializer
+from annotations.serializers.subject_serializer import SubjectProblemSerializer
 from utils.exceptions import EmptyQuerySetError
 
 
@@ -82,3 +92,26 @@ class AnnotationProblemViewSet(ReadOnlyModelViewSet):
         else:
             serializer = self.serializer_class(filtered_results, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class MultiAnnotationView(APIView):
+    """
+    A view for retrieving all annotations tied to an open problem.
+    """
+
+    models_serializers = {
+        "gene": (GeneProblem, GeneProblemlSerializer),
+        "subject": (SubjectProblem, SubjectProblemSerializer),
+        "compound": (CompoundProblems, CompoundProblemSerializer),
+        "species": (SpeciesProblem, SpeciesProblemSerializer),
+    }
+
+    def get(self, request, problem_id: int):
+        data = {}
+        for key, value in self.models_serializers.items():
+            annotation_name = key
+            intermediary_model, serializer = value
+            queryset = intermediary_model.objects.filter(open_problem=problem_id)
+            print(queryset)
+            data[annotation_name] = serializer(queryset, many=True).data
+        return Response(data, status=status.HTTP_200_OK)

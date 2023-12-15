@@ -1,6 +1,15 @@
 from django.urls import path, include
 from rest_framework import routers
 
+from annotations.models.compounds import CompoundProblems
+from annotations.models.genes import GeneProblem
+from annotations.models.species import SpeciesProblem
+from annotations.models.subjects import SubjectProblem
+from annotations.serializers.compound_serializer import CompoundsSerializer
+from annotations.serializers.gene_serializer import GeneSerializer
+from annotations.serializers.species_serializer import SpeciesSerializer
+from annotations.serializers.subject_serializer import SubjectSerializer
+from annotations.views.annotation_view import MultiAnnotationView
 from annotations.views.compounds_view import CompoundViewSet, CompoundProblemViewSet
 from annotations.views.gene_view import GeneViewSet, GeneProblemViewSet
 from annotations.views.species_view import SpeciesViewSet, SpeciesProblemViewSet
@@ -23,8 +32,6 @@ for route, viewset in viewsets.items():
     router.register(route, viewset, basename=route)
 
 # Create a list of prefixes for the viewsets for urls to be dynamically generated
-
-
 viewsets_patterns = [
     (GeneProblemViewSet, "gene"),
     (SubjectProblemViewSet, "subject"),
@@ -32,14 +39,27 @@ viewsets_patterns = [
     (CompoundProblemViewSet, "compound"),
 ]
 
+model_serializer_data = {
+    "gene": (GeneProblem, GeneSerializer),
+    "subject": (SubjectProblem, SubjectSerializer),
+    "compound": (CompoundProblems, CompoundsSerializer),
+    "species": (SpeciesProblem, SpeciesSerializer),
+}
+
 
 # Base url api/annotations/
 urlpatterns = [
     path("", include(router.urls)),
+    path(
+        "all/<int:problem_id>",
+        MultiAnnotationView.as_view(),
+    ),
 ]
 
 
 # Add to the urlpatterns list
+# Example: {base_url}/api/annotations/{prefix/}filter/by-problem:1
+# Example 2: {base_url}/api/annotations/{prefix}}filter/by-annotation:1
 for viewset, prefix in viewsets_patterns:
     urlpatterns += [
         path(
