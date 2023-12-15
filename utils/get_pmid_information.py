@@ -35,7 +35,10 @@ def get_pmid_information(pmid):
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-
+        author_list = root.find(".//AuthorList")
+        primary_author_last_name = author_list[0].find(".//LastName").text
+        primary_author_initial = author_list[0].find(".//Initials").text
+        author = f"{primary_author_last_name}, {primary_author_initial}"
         title = root.find(".//ArticleTitle").text
         year = root.find(".//PubDate/Year").text
         journal = root.find(".//Title").text
@@ -56,3 +59,7 @@ def get_pmid_information(pmid):
     else:
         print("value error")
         raise ValueError("Failed API Call to Entrez")
+
+
+if __name__ == "__main__":
+    get_pmid_information(36599349)

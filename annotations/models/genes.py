@@ -5,7 +5,7 @@ from .species import Species
 
 
 class Gene(models.Model):
-    gene_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     gene_name = models.CharField(max_length=50, unique=True)
     gene_symbol = models.CharField(max_length=10, unique=True)
     species = models.ForeignKey(
@@ -21,10 +21,10 @@ class Gene(models.Model):
 
 
 class GeneProblem(AnnotationsProblems):
-    gene_id = models.ForeignKey(Gene, on_delete=models.CASCADE)
+    gene = models.ForeignKey(Gene, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.gene_id}: {self.open_problem_id} "
+        return f"{self.gene}: {self.open_problem_id} "
 
     class Meta:
         db_table_comment = "Relation table for each gene and open problem"

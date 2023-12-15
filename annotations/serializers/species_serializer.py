@@ -1,17 +1,17 @@
-from annotations.models.genes import Gene, GeneProblem
+from annotations.models.species import Species
 from open_problems.serializers.OpenProblems import OpenProblemsSerializer
 from utils.base_serializer import BaseSerializer
 
 
-class GeneSerializer(BaseSerializer):
+class SpeciesSerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
-        model = Gene
+        model = Species
         fields = "__all__"
 
 
-class GeneProblemlSerializer(BaseSerializer):
-    gene_id = GeneSerializer()
+class SpeciesProblemSerializer(BaseSerializer):
+    species = SpeciesSerializer()
     open_problem = OpenProblemsSerializer()
 
     class Meta(BaseSerializer.Meta):
-        model = GeneProblem
+        model = "__all__"

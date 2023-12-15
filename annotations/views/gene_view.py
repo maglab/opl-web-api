@@ -1,20 +1,20 @@
-from rest_framework.decorators import api_view
-
 from annotations.models.genes import Gene, GeneProblem
 from annotations.serializers.gene_serializer import (
     GeneProblemlSerializer,
     GeneSerializer,
 )
-
-from .get_annotations import get_annotation, get_annotation_details
-
-
-# Get genes for one open problem
-@api_view(["GET"])
-def get_genes(request, id):
-    return get_annotation(id, GeneProblem, GeneProblemlSerializer)
+from .annotation_view import AnnotationViewSet, AnnotationProblemViewSet
 
 
-@api_view(["GET"])
-def get_gene(request, id):
-    return get_annotation_details(id, Gene, GeneSerializer)
+# Class view using inherited view set
+class GeneViewSet(AnnotationViewSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(
+            Gene,
+            GeneSerializer,
+        )
+
+
+class GeneProblemViewSet(AnnotationProblemViewSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(GeneProblem, GeneProblemlSerializer, "gene_id")
