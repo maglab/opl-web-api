@@ -3,7 +3,7 @@ config_dev.py
 config_prod.py
 OPL/config.json
 config.env
-.env
+OPL/.env
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -128,7 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+OPL/.env
 .venv
 env/
 ../venv/
