@@ -1,10 +1,13 @@
 from os import environ
+from os.path import join, dirname
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+env_path = join(dirname(__file__), ".env")
+load_dotenv(env_path)
+
 
 BUILD_VERSION = environ.get("BUILD_VERSION") or ""
 
@@ -99,7 +102,7 @@ WSGI_APPLICATION = "OPL.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": environ.get("DB_NAME"),
+        "NAME": environ.get("DB_DB"),
         "USER": environ.get("DB_USER"),
         "PASSWORD": environ.get("DB_PASSWORD"),
         "HOST": environ.get("DB_HOST"),
@@ -125,14 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = "/api/static/"
-STATIC_ROOT = str(cwd_path.joinpath("staticfiles"))
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Set 'SECURE_PROXY_SSL_HEADER' to tell Django that the connection is HTTPS even if it's forwarded by a proxy.
 # http_protocol = configuration['settings']['httpProtocol']
