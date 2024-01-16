@@ -10,9 +10,7 @@ from open_problems.models.open_problems import (
     SubmittedProblems,
 )
 from open_problems.models.references import Journal, Reference
-from utils.validations import (
-    validate_contact
-)
+from utils.validations import validate_contact
 
 
 class SubmittedProblemsAdmin(admin.ModelAdmin):
@@ -43,7 +41,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                     "doi": doi,
                     "full_citation": citation,
                     "journal_id": journal,
-                }
+                },
             )
 
             if not created:
@@ -53,8 +51,6 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 reference.save()
 
             references_list.append(reference)
-
-
 
         return references_list
 
@@ -74,17 +70,19 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 "first_name": submitted_problem.first_name,
                 "last_name": submitted_problem.last_name,
                 "email": submitted_problem.email,
-                "organisation": submitted_problem.organisation
+                "organisation": submitted_problem.organisation,
             }
 
             # First check if there is an organisation
-            if data["organisation"]:
-                organisation, created = Organisation.objects.get_or_create(info_title=data["organisation"])
-                if created:
-                    organisation.save()
-                    data["organisation"] = organisation
-                else:
-                    data["organisation"] = organisation
+            if data["organisation"] and not isinstance(
+                data["organisation"], Organisation
+            ):
+                organisation, created = Organisation.objects.get_or_create(
+                    info_title=data["organisation"]
+                )
+                data["organisation"] = organisation
+            elif not data["organisation"]:
+                data["organisation"] = None
 
             # Check if at least one of the contact details is present
             if data["first_name"] or data["last_name"] or data["email"]:
@@ -108,7 +106,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
             else:
                 open_problem.contact = None
 
-            #Save the problem
+            # Save the problem
             open_problem.save()
 
             # Check for references and save accordingly. If there are no references save the problem.
