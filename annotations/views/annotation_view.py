@@ -112,6 +112,7 @@ class MultiAnnotationView(APIView):
             annotation_name = key
             intermediary_model, serializer = value
             queryset = intermediary_model.objects.filter(open_problem=problem_id)
-            print(queryset)
-            data[annotation_name] = serializer(queryset, many=True).data
+            data[annotation_name] = serializer(
+                queryset, many=True, context={"request": request}
+            ).data
         return Response(data, status=status.HTTP_200_OK)
