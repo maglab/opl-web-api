@@ -1,19 +1,15 @@
-from typing import Type
-
 from django.db.models import Q
 
 from open_problems.models.contacts_users import Organisation, Contact
-from open_problems.models.open_problems import SubmittedProblems, OpenProblems
 
 
-def find_user(
-    data: dict, open_problem_object: Type[SubmittedProblems | OpenProblems]
-) -> object:
-    organisation = Organisation.objects.get_or_create(info_title=data["organisation"])
+def find_user(data: dict) -> object:
+    organisation, created = Organisation.objects.get_or_create(
+        info_title=data["organisation"]
+    )
     contact_query = Q(
         first_name=data["first_name"], last_name=data["last_name"], email=data["email"]
     )
-    contact = Contact.objects.filter(contact_query).first()
     # Try to find an existing Contact
     contact = Contact.objects.filter(contact_query).first()
 

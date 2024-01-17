@@ -77,9 +77,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 or contact_data["email"]
             ):
 
-                contact = find_user(
-                    data=contact_data, open_problem_object=submitted_problem
-                )
+                contact = find_user(data=contact_data)
                 open_problem.contact = contact
 
             # Set the contact to none if no contact details are provided
