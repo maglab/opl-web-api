@@ -73,19 +73,11 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 "organisation": submitted_problem.organisation,
             }
 
-            # First check if there is an organisation
-            if data["organisation"] and not isinstance(
-                data["organisation"], Organisation
-            ):
-                organisation, created = Organisation.objects.get_or_create(
-                    info_title=data["organisation"]
-                )
-                data["organisation"] = organisation
-            elif not data["organisation"]:
-                data["organisation"] = None
-
+            organisation = Organisation.objects.get_or_create(
+                info_title=data["organisation"].lower()
+            )
             # Check if at least one of the contact details is present
-            if data["first_name"] or data["last_name"] or data["email"]:
+            if data["first_name"] and data["last_name"] or data["email"]:
                 contact_validation = validate_contact(data)
                 exists, contact = contact_validation
 
@@ -96,7 +88,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                         first_name=data["first_name"],
                         last_name=data["last_name"],
                         email=data["email"],
-                        organisation=data["organisation"],
+                        organisation=organisation,
                     )
                     contact.save()
                     open_problem.contact = contact
