@@ -3,14 +3,13 @@ import json
 from django.contrib import admin
 from django.contrib import messages
 
-from open_problems.models.contacts_users import Contact, Organisation
 from open_problems.models.open_problems import (
     OpenProblems,
     ProblemReference,
     SubmittedProblems,
 )
 from open_problems.models.references import Journal, Reference
-from utils.validations import validate_contact
+from utils.find_user import find_user
 
 
 class SubmittedProblemsAdmin(admin.ModelAdmin):
@@ -66,34 +65,23 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
             )
 
             # Check the contact details
-            data = {
-                "first_name": submitted_problem.first_name,
-                "last_name": submitted_problem.last_name,
+            contact_data = {
+                "first_name": submitted_problem.first_name.capitalize(),
+                "last_name": submitted_problem.last_name.capitalize(),
                 "email": submitted_problem.email,
-                "organisation": submitted_problem.organisation,
+                "organisation": submitted_problem.organisation.capitalize(),
             }
+            if (
+                contact_data["first_name"]
+                and contact_data["last_name"]
+                or contact_data["email"]
+            ):
 
-            organisation = Organisation.objects.get_or_create(
-                info_title=data["organisation"].lower()
-            )
-            # Check if at least one of the contact details is present
-            if data["first_name"] and data["last_name"] or data["email"]:
-                contact_validation = validate_contact(data)
-                exists, contact = contact_validation
+                contact = find_user(
+                    data=contact_data, open_problem_object=submitted_problem
+                )
+                open_problem.contact = contact
 
-                # Check if the organisation exists in the database
-
-                if not exists:
-                    contact = Contact(
-                        first_name=data["first_name"],
-                        last_name=data["last_name"],
-                        email=data["email"],
-                        organisation=organisation,
-                    )
-                    contact.save()
-                    open_problem.contact = contact
-                else:
-                    open_problem.contact = contact
             # Set the contact to none if no contact details are provided
             else:
                 open_problem.contact = None
@@ -101,8 +89,8 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
             # Save the problem
             open_problem.save()
 
-            # Check for references and save accordingly. If there are no references save the problem.
-            # If there are references, save the problem and save the problem with the references using ProblemReference model
+            # Check for references and save accordingly. If there are no references save the problem. If there are
+            # references, save the problem and save the problem with the references using ProblemReference model
             references = submitted_problem.references
             if references:
                 references_list = self.save_references(references)
