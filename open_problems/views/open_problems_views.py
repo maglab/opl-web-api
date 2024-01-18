@@ -9,6 +9,7 @@ from open_problems.models.open_problems import OpenProblems
 from open_problems.serializers.OpenProblems import (
     OpenProblemsSerializer,
 )
+from ..utils.Pagination import Pagination
 from ..utils.clean_query_params import clean_query_params
 from ..utils.queryset_helpers import (
     get_queryset_ordered,
@@ -21,6 +22,7 @@ class RetrieveProblems(ListAPIView):
     For retrieving all open problems and sort them depending on url and query parameters.
     """
 
+    pagination_class = Pagination
     serializer_class = OpenProblemsSerializer
 
     @staticmethod
@@ -76,6 +78,8 @@ class RetrieveProblems(ListAPIView):
         Returns:
             QuerySet
         """
+        # Instead we parse a string for annotation types
+
         if len(ids) == 0:
             return queryset
         else:
@@ -90,7 +94,7 @@ class RetrieveProblems(ListAPIView):
             Queryset
         """
         queryset = OpenProblems.objects.all()
-        query_params = clean_query_params(self.request.query_params)
+        query_params = clean_query_params(self.request.query_params, Pagination)
 
         # Remove sorting and store separately as we want to sort at the end and to remove it from the annotation
         # filtering loop below.

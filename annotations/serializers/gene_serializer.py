@@ -10,7 +10,7 @@ class GeneSerializer(BaseSerializer):
 
 
 class GeneProblemlSerializer(BaseSerializer):
-    gene_id = GeneSerializer()
+    gene = GeneSerializer()
     open_problem = OpenProblemsSerializer()
 
     class Meta(BaseSerializer.Meta):
