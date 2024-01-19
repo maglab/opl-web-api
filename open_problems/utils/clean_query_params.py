@@ -17,8 +17,8 @@ def clean_query_params(query_params: Request, pagination_class: Pagination) -> d
     cleaned_param_dict: dict = {}
     for key in query_params.keys():
         if (
-            key in vars(pagination_class).values()
-        ):  # Check for whether the query parameter is to do with pagination
+            key in vars(pagination_class).values() or key == "search"
+        ):  # Check for whether the query parameter is to do with pagination or a search field
             continue
         cleaned_key = key.strip("[]")
         array = query_params.getlist(key)
