@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import QuerySet
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
@@ -9,6 +10,7 @@ from open_problems.models.open_problems import OpenProblems
 from open_problems.serializers.OpenProblems import (
     OpenProblemsSerializer,
 )
+from ..filters.open_problems import OpenProblemsFilter
 from ..utils.Pagination import Pagination
 from ..utils.clean_query_params import clean_query_params
 from ..utils.queryset_helpers import (
@@ -22,6 +24,12 @@ class RetrieveProblems(ListAPIView):
     For retrieving all open problems and sort them depending on url and query parameters.
     """
 
+    search_fields = [
+        "title",
+        "description",
+    ]
+    filterset_class = OpenProblemsFilter
+    filter_backends = [SearchFilter]
     pagination_class = Pagination
     serializer_class = OpenProblemsSerializer
 
