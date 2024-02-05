@@ -4,7 +4,7 @@ from .annotations import AnnotationsProblems
 
 
 class Species(models.Model):
-    species_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     genus = models.CharField(max_length=50, null=True)
     species = models.CharField(max_length=50, null=True)
 

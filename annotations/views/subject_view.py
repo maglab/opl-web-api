@@ -1,10 +1,11 @@
 from rest_framework.views import APIView
-from .annotation_view import AnnotationViewSet, AnnotationProblemViewSet
+
 from annotations.models.subjects import Subject, SubjectProblem
 from annotations.serializers.subject_serializer import (
     SubjectProblemSerializer,
     SubjectSerializer,
 )
+from .annotation_view import AnnotationViewSet, AnnotationProblemViewSet
 
 
 class SubjectViewSet(AnnotationViewSet):

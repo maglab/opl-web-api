@@ -1,6 +1,6 @@
 from rest_framework.request import Request
 
-from ..utils.Pagination import Pagination
+from utils.Pagination import Pagination
 
 
 def clean_query_params(query_params: Request, pagination_class: Pagination) -> dict:

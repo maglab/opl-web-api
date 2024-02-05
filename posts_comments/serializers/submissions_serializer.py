@@ -10,7 +10,8 @@ from posts_comments.models.Post import (
 class PostSerializer(serializers.ModelSerializer):
     open_problem_title = serializers.ReadOnlyField(
         source="open_problem.title"
-    )  # Get the title of the open problem
+    )  # Get the title of the open problem. For now this is the only information we need. Do not need to add
+    # serializer class to the open problem FK.
 
     class Meta:
         model = Post

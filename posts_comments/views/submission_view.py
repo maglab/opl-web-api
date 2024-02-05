@@ -7,6 +7,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 
 from open_problems.models.open_problems import OpenProblems, Reference
+from utils.Pagination import Pagination
 from utils.create_reference import create_reference, format_reference_data
 from ..models.Post import Post, PostReferences
 from ..serializers.submissions_serializer import (
@@ -18,11 +19,10 @@ from ..serializers.submissions_serializer import (
 # base url  /api/posts
 
 # Create your views here.
-# Getting the user submitted posts for a single open problem
-
-
 class ListPosts(ListCreateAPIView):
+    # List all posts or all posts for given open problem id.
     serializer_class = PostSerializer
+    pagination_class = Pagination
 
     def get_queryset(self):
         open_problem_id = self.kwargs.get("id")  # Extract id from url
@@ -33,6 +33,7 @@ class ListPosts(ListCreateAPIView):
 
 
 class PostDetail(RetrieveUpdateDestroyAPIView):
+    # Retrieve, Update and Destroy single post
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -94,7 +95,6 @@ class SubmitPost(CreateAPIView):
                     reference_data = format_reference_data(
                         reference_dict=reference_dictionary
                     )
-                    print(reference_data)
 
                     reference = Reference.objects.create(
                         **reference_data,
@@ -138,6 +138,7 @@ def get_references(request, id):
 
 @api_view(["GET"])  # Retrieve the number of posts for a given open problem
 def get_posts_counts(request, id):
+    # This might be redundant because the pagination class returns the counts
     submissions_for_open_problem = Post.objects.filter(
         open_problem=id, is_active=True
     ).count()

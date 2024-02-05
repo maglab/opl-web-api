@@ -1,9 +1,9 @@
 from annotations.models.compounds import Compounds, CompoundProblems
-from .annotation_view import AnnotationViewSet, AnnotationProblemViewSet
 from annotations.serializers.compound_serializer import (
     CompoundsSerializer,
     CompoundProblemSerializer,
 )
+from .annotation_view import AnnotationViewSet, AnnotationProblemViewSet
 
 
 class CompoundViewSet(AnnotationViewSet):

@@ -12,7 +12,7 @@ class Compounds(models.Model):
         db_table_comment = "Table for all compounds"
 
     def __str__(self):
-        return f"{self.compound_id: {self.compound_name}}"
+        return f"{self.id: {self.compound_name}}"
 
 
 class CompoundProblems(AnnotationsProblems):

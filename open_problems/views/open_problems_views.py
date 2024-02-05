@@ -10,8 +10,8 @@ from open_problems.models.open_problems import OpenProblems
 from open_problems.serializers.OpenProblems import (
     OpenProblemsSerializer,
 )
+from utils.Pagination import Pagination
 from ..filters.open_problems import OpenProblemsFilter
-from ..utils.Pagination import Pagination
 from ..utils.clean_query_params import clean_query_params
 from ..utils.queryset_helpers import (
     get_queryset_ordered,
