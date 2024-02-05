@@ -4,7 +4,6 @@ from ..models.open_problems import OpenProblems
 
 
 class OpenProblemsFilter(FilterSet):
-
     title = CharFilter(lookup_expr="icontains")
     description = CharFilter(lookup_expr="icontains")
     geneproblem__name = CharFilter(

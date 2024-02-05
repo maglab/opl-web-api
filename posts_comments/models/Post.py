@@ -5,16 +5,8 @@ from open_problems.models.open_problems import OpenProblems
 from open_problems.models.references import Reference
 
 
-class SubmissionManager(models.Manager):
-    def return_active(self):
-        self.filter(is_active=True)
-
-    def return_inactive(self):
-        self.filter(is_active=False)
-
-
-class Submission(models.Model):
-    submission_id = models.AutoField(primary_key=True)
+class Post(models.Model):
+    id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     full_text = models.TextField(null=True)
     open_problem = models.ForeignKey(OpenProblems, on_delete=models.CASCADE)
@@ -28,27 +20,29 @@ class Submission(models.Model):
     is_active = models.BooleanField(
         default=False
     )  # When submission is reviewed we set this to true to display on the web page.
-
     # Are contacts required to submit ??
 
+    # objects line here since it isn't automatically set for some reason
+    objects = models.Manager()
+
     def __str__(self) -> str:
-        return f"{self.submission_id}: {self.full_text}"
+        return f"{self.id}: {self.full_text}"
 
 
 # Models for references
-class SubmissionReferences(models.Model):  # Model for reviewed references
-    submission_id = models.ForeignKey(Submission, on_delete=models.CASCADE)
+class PostReferences(models.Model):  # Model for reviewed references
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     reference_id = models.ForeignKey(Reference, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "User submissions and Linked References"
+        verbose_name = "User Post and Linked References"
 
 
 class SubmittedReferences(models.Model):  # Model for submitted references
     """References that are submitted from a user with their solution submission"""
 
     reference_id = models.AutoField(primary_key=True)
-    submission_id = models.ForeignKey(Submission, on_delete=models.CASCADE, null=True)
+    submission_id = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     type = models.CharField(max_length=15)
     ref = models.TextField(blank=True, null=True)
 

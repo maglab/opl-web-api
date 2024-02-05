@@ -1,41 +1,46 @@
 from rest_framework import serializers
 
-from posts_comments.models.submissions import (
-    Submission,
-    SubmissionReferences,
+from posts_comments.models.Post import (
+    Post,
+    PostReferences,
     SubmittedReferences,
 )
 
 
-class SubmissionSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
+    open_problem_title = serializers.ReadOnlyField(
+        source="open_problem.title"
+    )  # Get the title of the open problem
+
     class Meta:
-        model = Submission
+        model = Post
         fields = [
-            "submission_id",
+            "id",
             "created_at",
             "full_text",
             "contact",
             "submitted_references",
             "open_problem",
+            "open_problem_title",
             "first_name",
             "last_name",
             "affiliation",
         ]
 
 
-class SubmissionReferencesSerializer(serializers.ModelSerializer):
+class PostReferencesSerializer(serializers.ModelSerializer):
     references = serializers.SerializerMethodField()
 
     class Meta:
-        model = SubmissionReferences
-        fields = ["submission_id", "reference_id", "references"]
+        model = PostReferences
+        fields = ["post_id", "reference_id", "references"]
 
     def get_references(self, obj):
         reference = obj.reference_id
         return {
-            "id": reference.ref_id,
-            "full_citation": reference.full_citation,
-        }  # For now we only need this information
+            "id": reference.id,
+            "full_citation": reference.citation,
+        }
 
 
 class SubmittedReferencesSerializer(serializers.ModelSerializer):

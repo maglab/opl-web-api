@@ -10,9 +10,7 @@ from open_problems.models.open_problems import (
     SubmittedProblems,
 )
 from open_problems.models.references import Journal, Reference
-from utils.validations import (
-    validate_contact
-)
+from utils.validations import validate_contact
 
 
 class SubmittedProblemsAdmin(admin.ModelAdmin):
@@ -37,13 +35,13 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 journal.save()
 
             reference, created = Reference.objects.get_or_create(
-                ref_title=title,
+                title=title,
                 publish_date=year,
                 defaults={
                     "doi": doi,
                     "full_citation": citation,
                     "journal_id": journal,
-                }
+                },
             )
 
             if not created:
@@ -53,8 +51,6 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 reference.save()
 
             references_list.append(reference)
-
-
 
         return references_list
 
@@ -74,12 +70,14 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 "first_name": submitted_problem.first_name,
                 "last_name": submitted_problem.last_name,
                 "email": submitted_problem.email,
-                "organisation": submitted_problem.organisation
+                "organisation": submitted_problem.organisation,
             }
 
             # First check if there is an organisation
             if data["organisation"]:
-                organisation, created = Organisation.objects.get_or_create(info_title=data["organisation"])
+                organisation, created = Organisation.objects.get_or_create(
+                    info_title=data["organisation"]
+                )
                 if created:
                     organisation.save()
                     data["organisation"] = organisation
@@ -108,7 +106,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
             else:
                 open_problem.contact = None
 
-            #Save the problem
+            # Save the problem
             open_problem.save()
 
             # Check for references and save accordingly. If there are no references save the problem.

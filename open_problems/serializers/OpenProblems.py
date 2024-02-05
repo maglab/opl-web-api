@@ -6,7 +6,7 @@ from utils.recursive_serializer import RecursiveSerializer
 
 class OpenProblemsSerializer(serializers.ModelSerializer):
     children = RecursiveSerializer(many=True, read_only=True)
-    submission_count = serializers.SerializerMethodField()
+    post_count = serializers.SerializerMethodField()
 
     class Meta:
         model = OpenProblems
@@ -17,10 +17,10 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
             "contact",
             "parent_problem",
             "descendants_count",
-            "submission_count",
+            "post_count",
             "children",
         ]
 
     @staticmethod
-    def get_submission_count(obj):
-        return obj.submission_set.count()
+    def get_post_count(obj):
+        return obj.post_set.count()

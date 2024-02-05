@@ -1,6 +1,7 @@
 from django.contrib import admin
+
 from open_problems.models.references import Journal, Reference
-from posts_comments.models.submissions import SubmissionReferences
+from posts_comments.models.Post import PostReferences
 from utils.create_reference import create_reference
 from utils.validations import validate_journal, validate_submitted_reference
 
@@ -46,7 +47,7 @@ def apply_references(modeladmin, request, queryset):
                     doi=doi,
                 )
                 reference_object.save()
-                SubmissionReferences(
+                PostReferences(
                     reference_id=reference_object, submission_id=reference.submission_id
                 ).save()
 

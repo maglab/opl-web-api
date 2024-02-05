@@ -6,11 +6,11 @@ from posts_comments.views.comment_view import (
     post_comment,
 )
 from posts_comments.views.submission_view import (
-    get_post,
-    get_posts,
     get_posts_counts,
     get_references,
-    submit_post,
+    ListPosts,
+    PostDetail,
+    SubmitPost,
 )
 from posts_comments.views.verify_references_view import (
     verify_reference,
@@ -19,10 +19,11 @@ from posts_comments.views.verify_references_view import (
 
 # url /api/posts/
 urlpatterns = [
-    path("<int:id>/", get_posts),
+    path("all", ListPosts.as_view()),
+    path("<int:id>/", ListPosts.as_view(), name="list-submissions-by-open-problem"),
     path("<int:id>/counts", get_posts_counts),
-    path("<int:id>/submit", submit_post),
-    path("get/<int:id>", get_post),
+    path("<int:id>/submit", SubmitPost.as_view()),
+    path("get/<int:id>", PostDetail.as_view()),
     path("get/<int:id>/comments", get_comments),
     path("get/<int:post_id>/<int:comment_id>", get_single_comment),
     path("post/<int:post_id>/comment/submit", post_comment),

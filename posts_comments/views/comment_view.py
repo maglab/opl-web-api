@@ -2,15 +2,15 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from posts_comments.models.Post import Post
 from posts_comments.models.comments import Comment
-from posts_comments.models.submissions import Submission
 from posts_comments.serializers.comments_serializer import CommentsSerializer
 
 
 # Get comment for a particular post submission, only root comments, only active comments.
 @api_view(["GET"])
 def get_comments(request, id):
-    submission = Submission.objects.get(submission_id=id)  # Check if submission exists.
+    submission = Post.objects.get(submission_id=id)  # Check if submission exists.
     if submission:
         comments = Comment.objects.filter(submission_id=id, parent=None, is_active=True)
         serializer = CommentsSerializer(comments, many=True)
@@ -38,8 +38,8 @@ def get_single_comment(request, id):
 @api_view(["POST"])
 def post_comment(request, post_id):
     try:
-        submission = Submission.objects.get(submission_id=post_id)
-    except Submission.DoesNotExist:
+        submission = Post.objects.get(submission_id=post_id)
+    except Post.DoesNotExist:
         return Response(
             {"error": "Submission not found."}, status=status.HTTP_404_NOT_FOUND
         )

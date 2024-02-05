@@ -1,4 +1,5 @@
 import json
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +11,8 @@ from utils.create_reference import create_reference
 
 
 class SubmitOpenProblem(APIView):
-    def convert_references(self, request):
+    @staticmethod
+    def convert_references(request):
         references = request.data.get("references")
         references_json = json.loads(references)
 

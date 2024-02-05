@@ -39,11 +39,11 @@ class RefType(models.Model):
 
 
 class Reference(models.Model):
-    ref_id = models.AutoField(primary_key=True)
-    ref_title = models.CharField(
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(
         max_length=150
     )  # max_length changed from 100 to 150 by Hamid
-    full_citation = models.TextField()
+    citation = models.TextField()
     doi = models.CharField(max_length=100, null=True, blank=True)
     relevance = models.PositiveSmallIntegerField(null=True, blank=True)
     publish_date = models.CharField(max_length=4)
@@ -58,7 +58,7 @@ class Reference(models.Model):
 
     class Meta:
         db_table = "References"
-        db_table_comment = "Cotains all reference information"
+        db_table_comment = "Contains all reference information"
 
     def __str__(self) -> str:
-        return f"{self.ref_id}: {self.ref_title}"
+        return f"{self.id}: {self.title}"

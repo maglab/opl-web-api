@@ -52,11 +52,11 @@ class RetrieveProblems(ListAPIView):
         elif sorting == "answered":
             return get_queryset_annotated(
                 queryset=queryset,
-                annotate_by={"submission_count": models.Count("submission")},
-                id_string="-submission_count",
+                annotate_by={"post_count": models.Count("post")},
+                id_string="-post_count",
                 filters=[
-                    {"submission__is_active": True},
-                    {"submission_count__gte": 1},
+                    {"post__is_active": True},
+                    {"post_count__gte": 1},
                 ],
             )
         elif (
@@ -68,8 +68,8 @@ class RetrieveProblems(ListAPIView):
         elif sorting == "submissions":
             return get_queryset_annotated(
                 queryset,
-                annotate_by={"submission_count": models.Count("submission")},
-                id_string="-submission_count",
+                annotate_by={"post_count": models.Count("post")},
+                id_string="-post_count",
             )
 
     @staticmethod

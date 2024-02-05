@@ -3,8 +3,8 @@ from django.contrib import admin
 from .custom_admin.submission_admin import SubmissionAdmin
 from .custom_admin.submission_references_admin import SubmissionReferenceAdmin
 from .custom_admin.submitted_references_admin import SubmittedReferencesAdmin
+from .models.Post import Post, PostReferences, SubmittedReferences
 from .models.comments import Comment
-from .models.submissions import Submission, SubmissionReferences, SubmittedReferences
 
 
 # Register your models here.
@@ -13,6 +13,6 @@ class CommentSubmissionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment)
-admin.site.register(Submission, SubmissionAdmin)
+admin.site.register(Post, SubmissionAdmin)
 admin.site.register(SubmittedReferences, SubmittedReferencesAdmin)
-admin.site.register(SubmissionReferences, SubmissionReferenceAdmin)
+admin.site.register(PostReferences, SubmissionReferenceAdmin)

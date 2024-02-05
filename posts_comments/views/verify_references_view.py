@@ -10,9 +10,8 @@ from utils.get_pmid_information import get_pmid_information
 
 @api_view(["POST"])
 def verify_reference(request):
-    json_request = json.loads(request.body)
-    reference_type = json_request["type"]
-    value = json_request["value"]
+    reference_type = request.data["type"]
+    value = request.data["value"]
 
     if reference_type == "DOI":
         doi_information = doi_crossref_search(value)
