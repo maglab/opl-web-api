@@ -38,13 +38,19 @@ def verify_references(request):
             reference_type = reference["type"]
             value = reference["value"]
             if reference_type == "DOI":
-                doi_information = doi_crossref_search(value)
-                if not doi_information:
+                try:
+                    doi_information = doi_crossref_search(value)
+                    if not doi_information:
+                        unverified_references.append(
+                            {"type": "DOI", "value": value, "error": "Not found"}
+                        )
+                    else:
+                        verified_references.append(doi_information)
+                except AttributeError:
                     unverified_references.append(
                         {"type": "DOI", "value": value, "error": "Not found"}
                     )
-                else:
-                    verified_references.append(doi_information)
+
             elif reference_type == "PMID":
                 try:
                     pmid_information = get_pmid_information(value)
