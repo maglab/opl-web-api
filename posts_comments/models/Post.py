@@ -2,7 +2,7 @@ from django.db import models
 
 from open_problems.models.contacts_users import Contact
 from open_problems.models.open_problems import OpenProblem
-from open_problems.models.references import Reference
+from references.models import Reference
 
 
 class Post(models.Model):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "open_problems",
     "posts_comments",
     "annotations",
+    "references",
     "corsheaders",
     'oauth2_provider'
 ]

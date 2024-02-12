@@ -2,10 +2,8 @@ from utils.base_serializer import BaseSerializer
 from ..models.open_problems import (
     Contact,
     OpenProblem,
-    ProblemReference,
     SubmittedOpenProblem,
 )
-from ..models.references import Reference
 
 
 # Serializer for parent node of open problem
@@ -27,15 +25,15 @@ class SubmittedProblemSerializer(BaseSerializer):
         model = SubmittedOpenProblem
 
 
-# Serializer to return a reference to be nested in serializer below
-class ReferenceSerializer(BaseSerializer):
-    class Meta:
-        model = Reference
-
-
-# For all references for a particular open problem
-class FilterReferenceSerializer(BaseSerializer):
-    reference = ReferenceSerializer(source="reference_id")
-
-    class Meta:
-        model = ProblemReference
+# # Serializer to return a reference to be nested in serializer below
+# class ReferenceSerializer(BaseSerializer):
+#     class Meta:
+#         model = Reference
+#
+#
+# # For all references for a particular open problem
+# class FilterReferenceSerializer(BaseSerializer):
+#     reference = ReferenceSerializer(source="reference_id")
+#
+#     class Meta:
+#         model = ProblemReference

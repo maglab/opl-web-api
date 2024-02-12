@@ -6,7 +6,8 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 
-from open_problems.models.open_problems import OpenProblem, Reference
+from open_problems.models.open_problems import OpenProblem
+from references.models import Reference
 from utils.Pagination import Pagination
 from utils.create_reference import create_reference, format_reference_data
 from ..models.Post import Post, PostReferences

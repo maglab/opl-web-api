@@ -1,12 +1,13 @@
-from ..models.open_problems import ProblemReference
-from ..serializers.serializers import FilterReferenceSerializer
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+
+from ..models import ProblemReference
+from ..serializers.serializers import FilterReferenceSerializer
 
 
 # Get references for an open problem
-@api_view(['GET'])
+@api_view(["GET"])
 def get_references(request, id):
     references = ProblemReference.objects.filter(problem_id=id)
     serializer = FilterReferenceSerializer(references, many=True)

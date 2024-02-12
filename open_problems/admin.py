@@ -11,11 +11,11 @@ from open_problems.models.open_problems import (
     Contact,
     OpenProblem,
     ProblemReference,
-    Reference,
     RelatedProblem,
     SubmittedOpenProblem,
 )
 from open_problems.models.references import Journal, RefType
+from references.models import Reference
 
 # Registering models to admin without class created.
 
