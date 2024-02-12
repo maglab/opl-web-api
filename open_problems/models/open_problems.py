@@ -26,6 +26,7 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
+    references = models.ManyToManyField(Reference, blank=True)
     objects = models.Manager()
 
     def get_descendants(self):
