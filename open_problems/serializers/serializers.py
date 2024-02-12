@@ -3,7 +3,6 @@ from utils.base_serializer import BaseSerializer
 from ..models.open_problems import (
     Contact,
     OpenProblem,
-    ProblemReference,
     SubmittedOpenProblem,
 )
 
@@ -31,11 +30,3 @@ class SubmittedProblemSerializer(BaseSerializer):
 class ReferenceSerializer(BaseSerializer):
     class Meta:
         model = Reference
-
-
-# For all references for a particular open problem
-class FilterReferenceSerializer(BaseSerializer):
-    reference = ReferenceSerializer(source="reference_id")
-
-    class Meta:
-        model = ProblemReference
