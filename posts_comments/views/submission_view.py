@@ -6,7 +6,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 
-from open_problems.models.open_problems import OpenProblems, Reference
+from open_problems.models.open_problems import OpenProblem, Reference
 from utils.Pagination import Pagination
 from utils.create_reference import create_reference, format_reference_data
 from ..models.Post import Post, PostReferences
@@ -105,8 +105,8 @@ class SubmitPost(CreateAPIView):
     def create(self, request, *args, **kwargs):
         open_problem_id = self.kwargs.get("id")
         try:
-            open_problem = OpenProblems.objects.get(problem_id=open_problem_id)
-        except OpenProblems.DoesNotExist:
+            open_problem = OpenProblem.objects.get(problem_id=open_problem_id)
+        except OpenProblem.DoesNotExist:
             return Response(
                 {"detail": "Open problem not found."}, status=status.HTTP_404_NOT_FOUND
             )

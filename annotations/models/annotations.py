@@ -1,6 +1,6 @@
 from django.db import models
 
-from open_problems.models.open_problems import OpenProblems
+from open_problems.models.open_problems import OpenProblem
 
 
 # Abstract table that will link a problem to all annotations
@@ -14,7 +14,7 @@ class Annotation(models.Model):
 
 class AnnotationsProblems(models.Model):
     annotation_id = models.AutoField(primary_key=True)
-    open_problem = models.ForeignKey(OpenProblems, on_delete=models.DO_NOTHING)
+    open_problem = models.ForeignKey(OpenProblem, on_delete=models.DO_NOTHING)
 
     class Meta:
         abstract = True

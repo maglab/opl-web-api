@@ -1,7 +1,7 @@
 from django.db import models
 
 from open_problems.models.contacts_users import Contact
-from open_problems.models.open_problems import OpenProblems
+from open_problems.models.open_problems import OpenProblem
 from open_problems.models.references import Reference
 
 
@@ -9,7 +9,7 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     full_text = models.TextField(null=True)
-    open_problem = models.ForeignKey(OpenProblems, on_delete=models.CASCADE)
+    open_problem = models.ForeignKey(OpenProblem, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     affiliation = models.CharField(max_length=50, null=True, blank=True)

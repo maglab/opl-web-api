@@ -2,11 +2,11 @@ from django.db import models
 from django.db.models import QuerySet
 from rest_framework import status
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
-from open_problems.models.open_problems import OpenProblems
+from open_problems.models.open_problems import OpenProblem
 from open_problems.serializers.OpenProblems import (
     OpenProblemsSerializer,
 )
@@ -101,7 +101,7 @@ class RetrieveProblems(ListAPIView):
         Returns:
             Queryset
         """
-        queryset = OpenProblems.objects.all()
+        queryset = OpenProblem.objects.all()
         query_params = clean_query_params(self.request.query_params, Pagination)
 
         # Remove sorting and store separately as we want to sort at the end and to remove it from the annotation
@@ -129,7 +129,7 @@ class RetrieveSingleProblem(RetrieveAPIView):
     """
 
     serializer_class: Serializer = OpenProblemsSerializer
-    queryset = OpenProblems
+    queryset = OpenProblem
 
     def get(self, request, *args, **kwargs):
         """
@@ -138,3 +138,7 @@ class RetrieveSingleProblem(RetrieveAPIView):
         object_id = self.kwargs.get("id")
         queryset = self.queryset.objects.get(problem_id=object_id)
         return Response(self.serializer_class(queryset).data, status=status.HTTP_200_OK)
+
+
+class CreateOpenProblem(CreateAPIView):
+    ...

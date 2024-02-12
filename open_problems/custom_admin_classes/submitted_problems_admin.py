@@ -5,16 +5,16 @@ from django.contrib import messages
 
 from open_problems.models.contacts_users import Contact, Organisation
 from open_problems.models.open_problems import (
-    OpenProblems,
+    OpenProblem,
     ProblemReference,
-    SubmittedProblems,
+    SubmittedOpenProblem,
 )
 from open_problems.models.references import Journal, Reference
 from utils.validations import validate_contact
 
 
 class SubmittedProblemsAdmin(admin.ModelAdmin):
-    display = [field.name for field in SubmittedProblems._meta.get_fields()] + []
+    display = [field.name for field in SubmittedOpenProblem._meta.get_fields()] + []
     actions = ["move_to_open_problems"]
 
     def save_references(self, references):
@@ -59,7 +59,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
     )
     def move_to_open_problems(self, request, queryset):
         for submitted_problem in queryset:
-            open_problem = OpenProblems.objects.create(
+            open_problem = OpenProblem.objects.create(
                 title=submitted_problem.title,
                 description=submitted_problem.description,
                 parent_problem=submitted_problem.parent_problem,

@@ -1,13 +1,12 @@
 import json
 
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from open_problems.serializers.serializers import (
-    SubmittedProblemSerializer,
-)
 from utils.create_reference import create_reference
+from ..serializers.serializers import SubmittedProblemSerializer
 
 
 class SubmitOpenProblem(APIView):
@@ -38,3 +37,7 @@ class SubmitOpenProblem(APIView):
         if problem_serializer.is_valid(raise_exception=True):
             problem_serializer.save()
             return Response(problem_serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SubmittedOpenProblemView(ListCreateAPIView):
+    queryset = ...

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from open_problems.models.open_problems import OpenProblems
+from open_problems.models.open_problems import OpenProblem
 from utils.recursive_serializer import RecursiveSerializer
 
 
@@ -9,7 +9,7 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
     post_count = serializers.SerializerMethodField()
 
     class Meta:
-        model = OpenProblems
+        model = OpenProblem
         fields = [
             "problem_id",
             "title",

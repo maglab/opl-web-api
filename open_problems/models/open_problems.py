@@ -4,7 +4,7 @@ from .contacts_users import Contact
 from .references import Reference
 
 
-class OpenProblem(models.Model):
+class OpenProblemAbstract(models.Model):
     problem_id = models.AutoField(primary_key=True, serialize=True, default=None)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -16,7 +16,7 @@ class OpenProblem(models.Model):
         abstract = True
 
 
-class OpenProblems(OpenProblem):
+class OpenProblem(OpenProblemAbstract):
     parent_problem = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
@@ -30,7 +30,7 @@ class OpenProblems(OpenProblem):
 
     def get_descendants(self):
         count = 0
-        children = OpenProblems.objects.filter(parent_problem=self)
+        children = OpenProblem.objects.filter(parent_problem=self)
 
         for child in children:
             count += 1  # Count the immediate child
@@ -39,7 +39,7 @@ class OpenProblems(OpenProblem):
         return count
 
     def get_ordered_children_descending(self):
-        children = OpenProblems.objects.filter(parent_problem=self).order_by(
+        children = OpenProblem.objects.filter(parent_problem=self).order_by(
             "-descendants_count"
         )
         return children
@@ -52,7 +52,7 @@ class OpenProblems(OpenProblem):
             instance.save()
 
     class Meta:
-        db_table = "OpenProblems"
+        db_table = "open_problem"
         db_table_comment = "These are the current open problems that we have accepted from the submitted questions"
         verbose_name = "Open Problem"
 
@@ -60,9 +60,9 @@ class OpenProblems(OpenProblem):
         return f"{self.problem_id}: {self.title}"
 
 
-class SubmittedProblems(OpenProblem):
+class SubmittedOpenProblem(OpenProblemAbstract):
     parent_problem = models.ForeignKey(
-        OpenProblems, null=True, blank=True, on_delete=models.SET_NULL
+        OpenProblem, null=True, blank=True, on_delete=models.SET_NULL
     )
     species = models.CharField(max_length=50, null=True, blank=True)
     references = models.TextField(blank=True)
@@ -76,7 +76,7 @@ class SubmittedProblems(OpenProblem):
         return f"{self.title} : {self.email}"
 
     class Meta:
-        db_table = "SubmittedProblems"
+        db_table = "submitted_open_problem"
         db_table_comment = (
             "These are the submitted questions from users that will undergo review"
         )
@@ -89,20 +89,19 @@ class ProblemRelation(models.Model):
     QR_description = models.TextField(blank=True)
 
     class Meta:
-        db_table = "ProblemRelation"
         db_table_comment = "This contains information about how a question/submitted question is related to a question"
 
 
 class RelatedProblem(models.Model):
     id = models.AutoField(primary_key=True)
     parent_id = models.ForeignKey(
-        OpenProblems,
+        OpenProblem,
         on_delete=models.SET_NULL,
         null=True,
         related_name="parent_relation",
     )
     child_id = models.ForeignKey(
-        OpenProblems,
+        OpenProblem,
         on_delete=models.SET_NULL,
         null=True,
         related_name="child_relation",
@@ -113,7 +112,7 @@ class RelatedProblem(models.Model):
     )
 
     class Meta:
-        db_table = "Related-problems"
+        db_table = "related_problem"
         db_table_comment = "This contains the parent-child relationships between questions. Hierarchical data."
 
     def __str__(self) -> str:
@@ -121,14 +120,14 @@ class RelatedProblem(models.Model):
 
 
 class ProblemReference(models.Model):
-    problem_id = models.ForeignKey(OpenProblems, on_delete=models.SET_NULL, null=True)
+    problem_id = models.ForeignKey(OpenProblem, on_delete=models.SET_NULL, null=True)
     reference_id = models.ForeignKey(Reference, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return f"{self.problem_id} : {self.reference_id.ref_title}"
 
     class Meta:
-        db_table = "ProblemReferences"
+        db_table = "open_problem_reference"
         db_table_comment = (
             "Table containing which references are tied to which questions"
         )
