@@ -1,4 +1,4 @@
-from open_problems.models.references import Journal
+from references.models import Journal
 from .get_doi_information import doi_crossref_search
 from .get_pmid_information import (
     PMIDRequestException,
