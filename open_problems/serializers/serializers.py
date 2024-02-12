@@ -1,3 +1,4 @@
+from references.models import Reference
 from utils.base_serializer import BaseSerializer
 from ..models.open_problems import (
     Contact,
@@ -5,7 +6,6 @@ from ..models.open_problems import (
     ProblemReference,
     SubmittedOpenProblem,
 )
-from ..models.references import Reference
 
 
 # Serializer for parent node of open problem

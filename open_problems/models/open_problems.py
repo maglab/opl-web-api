@@ -1,7 +1,7 @@
 from django.db import models
 
+from references.models import Reference
 from .contacts_users import Contact
-from .references import Reference
 
 
 class OpenProblemAbstract(models.Model):

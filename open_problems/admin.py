@@ -11,7 +11,6 @@ from open_problems.models.open_problems import (
     Contact,
     OpenProblem,
     ProblemReference,
-    Reference,
     RelatedProblem,
     SubmittedOpenProblem,
 )
@@ -22,7 +21,6 @@ from open_problems.models.references import Journal, RefType
 admin.site.register(OpenProblem, OPAdmin)
 admin.site.register(SubmittedOpenProblem, SubmittedProblemsAdmin)
 admin.site.register(RelatedProblem)
-admin.site.register(Reference)
 admin.site.register(Journal)
 admin.site.register(RefType)
 admin.site.register(Contact)
