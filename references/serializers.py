@@ -1,10 +1,9 @@
-from utils.base_serializer import BaseSerializer
+from rest_framework.serializers import ModelSerializer
+
 from .models import Reference
 
 
-class ReferenceSerializer(BaseSerializer):
+class ReferenceSerializer(ModelSerializer):
     class Meta:
         model = Reference
-
-
-###### -- For open problems -- ####
+        fields = "__all__"
