@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views.open_problems_views import RetrieveProblems, RetrieveSingleProblem
-from .views.references_views import get_references
+from .views.references_views import ListReferencesView
 from .views.submitted_problems_views import SubmitOpenProblem
 from .views.utils import test_view
 from .views.utils import verify_token
@@ -17,6 +17,6 @@ urlpatterns = [
     # Verify token for recaptcha
     path("verify-token", verify_token),
     # Get references for a problem
-    path("<int:id>/references", get_references),
+    path("<int:pk>/references", ListReferencesView.as_view()),
     path("test-auth", test_view),
 ]
