@@ -5,7 +5,6 @@ from .open_problems import (
     ProblemRelation,
     RelatedProblem,
 )
-from .references import Author, Journal, Reference, RefType
 
 __all__ = [
     "Contact",
@@ -18,8 +17,4 @@ __all__ = [
     "ProblemRelation",
     "RelatedProblem",
     "SubmittedProblem",
-    "Author",
-    "Journal",
-    "Reference",
-    "RefType",
 ]
