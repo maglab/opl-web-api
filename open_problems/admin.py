@@ -14,14 +14,11 @@ from open_problems.models.open_problems import (
     RelatedProblem,
     SubmittedOpenProblem,
 )
-from open_problems.models.references import Journal, RefType
 
 # Registering models to admin without class created.
 
 admin.site.register(OpenProblem, OPAdmin)
 admin.site.register(SubmittedOpenProblem, SubmittedProblemsAdmin)
 admin.site.register(RelatedProblem)
-admin.site.register(Journal)
-admin.site.register(RefType)
 admin.site.register(Contact)
 admin.site.register(ProblemReference, OpenProblemsReferencesAdmin)
