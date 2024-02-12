@@ -11,6 +11,7 @@ class OpenProblemAbstract(models.Model):
     contact = models.ForeignKey(
         Contact, null=True, on_delete=models.SET_NULL, blank=True
     )  # Non authenticated
+    references = models.ManyToManyField(Reference, blank=True)
 
     class Meta:
         abstract = True
@@ -26,7 +27,6 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
-    references = models.ManyToManyField(Reference, blank=True)
     objects = models.Manager()
 
     def get_descendants(self):
@@ -66,8 +66,10 @@ class SubmittedOpenProblem(OpenProblemAbstract):
         OpenProblem, null=True, blank=True, on_delete=models.SET_NULL
     )
     species = models.CharField(max_length=50, null=True, blank=True)
-    references = models.TextField(blank=True)
-    first_name = models.CharField(max_length=50, blank=True)
+    references = models.ManyToManyField(Reference, blank=True)
+    first_name = models.CharField(
+        max_length=50, blank=True
+    )  # We don't automatically create the contact for now
     last_name = models.CharField(max_length=50, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)
     job_field = models.CharField(max_length=100, blank=True)
