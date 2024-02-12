@@ -9,7 +9,7 @@ from open_problems.models.open_problems import (
     ProblemReference,
     SubmittedOpenProblem,
 )
-from references.models import Journal, Reference
+from open_problems.models.references import Journal, Reference
 from utils.validations import validate_contact
 
 
