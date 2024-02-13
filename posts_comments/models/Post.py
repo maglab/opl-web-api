@@ -17,11 +17,7 @@ class Post(models.Model):
         Contact, on_delete=models.DO_NOTHING, blank=True, null=True
     )
     submitted_references = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(
-        default=False
-    )  # When submission is reviewed we set this to true to display on the web page.
-    # Are contacts required to submit ??
-
+    is_active = models.BooleanField(default=False)
     # objects line here since it isn't automatically set for some reason
     objects = models.Manager()
 
