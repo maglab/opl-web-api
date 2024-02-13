@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from open_problems.models.contacts_users import Contact
 from open_problems.models.open_problems import OpenProblem
-from open_problems.serializers.serializers import OpenProblemsSerializer
+from open_problems.serializers1 import OpenProblemsSerializer
 
 
 class OPSerializerTest(TestCase):
