@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
 from open_problems.models.open_problems import OpenProblem
-from open_problems.serializers.OpenProblems import (
+from open_problems.serializers import (
     OpenProblemsSerializer,
 )
 from utils.Pagination import Pagination
