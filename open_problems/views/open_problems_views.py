@@ -12,8 +12,8 @@ from open_problems.serializers import (
 )
 from utils.Pagination import Pagination
 from ..filters.open_problems import OpenProblemsFilter
-from ..utils.clean_query_params import clean_query_params
-from ..utils.queryset_helpers import (
+from ..service.clean_query_params import clean_query_params
+from ..service.queryset_helpers import (
     get_queryset_ordered,
     get_queryset_annotated,
 )
