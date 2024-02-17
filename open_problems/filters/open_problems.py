@@ -1,6 +1,6 @@
 from django_filters import FilterSet, CharFilter
 
-from ..models.open_problems import OpenProblems
+from ..models.open_problems import OpenProblem
 
 
 class OpenProblemsFilter(FilterSet):
@@ -14,5 +14,5 @@ class OpenProblemsFilter(FilterSet):
     )
 
     class Meta:
-        model = OpenProblems
+        model = OpenProblem
         fields = ["title", "description", "geneproblem__name", "subjectproblem__title"]

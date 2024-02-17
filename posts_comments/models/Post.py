@@ -1,15 +1,15 @@
 from django.db import models
 
 from open_problems.models.contacts_users import Contact
-from open_problems.models.open_problems import OpenProblems
-from open_problems.models.references import Reference
+from open_problems.models.open_problems import OpenProblem
+from references.models import Reference
 
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     full_text = models.TextField(null=True)
-    open_problem = models.ForeignKey(OpenProblems, on_delete=models.CASCADE)
+    open_problem = models.ForeignKey(OpenProblem, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     affiliation = models.CharField(max_length=50, null=True, blank=True)
@@ -17,11 +17,7 @@ class Post(models.Model):
         Contact, on_delete=models.DO_NOTHING, blank=True, null=True
     )
     submitted_references = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(
-        default=False
-    )  # When submission is reviewed we set this to true to display on the web page.
-    # Are contacts required to submit ??
-
+    is_active = models.BooleanField(default=False)
     # objects line here since it isn't automatically set for some reason
     objects = models.Manager()
 
