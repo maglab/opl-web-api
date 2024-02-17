@@ -1,9 +1,9 @@
+from core.service import get_or_create_instance
 from references.models import Author, Journal
 from references.service import (
     PMIDRequestException,
     PmidConverter,
     DoiConverter,
-    create_reference_instance,
 )
 from ..models.contacts_users import Contact, Organisation, JobField
 
@@ -22,6 +22,7 @@ def create_contact(data: dict):
     first_name = data["first_name"]
     last_name = data["last_name"]
     email = data["email"]
+    print(organisation)
 
     if first_name and last_name or email:
         organisation_instance, created = (
@@ -32,13 +33,14 @@ def create_contact(data: dict):
         job_field_instance, created = (
             JobField.objects.get_or_create(info_title=job_field) if job_field else None
         )
-        contact_instance, created = Contact(
+        contact_instance, created = Contact.objects.get_or_create(
             first_name=first_name,
             last_name=last_name,
             email=email,
             job_field=job_field_instance,
             organisation=organisation_instance,
         )
+
         return contact_instance
     else:
         return None
@@ -69,8 +71,10 @@ def pmid_doi_conversion(reference_identifiers: list) -> tuple:
                     identifier=value, author=Author, journal=Journal
                 )
             reference_information = conversion.retrieve_reference()
-            reference_instance = create_reference_instance(reference_information)
-            converted_references.append(reference_instance)
+            reference_instance = get_or_create_instance(
+                parameters=reference_information
+            )
+            converted_references.append(reference_instance.pk)
         except (PMIDRequestException, ValueError):
             unconverted_references.append(identifier)
 
