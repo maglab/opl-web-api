@@ -1,4 +1,7 @@
+from django.db import transaction
+from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.response import Response
 
 from open_problems.models.open_problems import SubmittedOpenProblem
 from open_problems.serializers import SubmittedOpenProblemSerializer
@@ -9,20 +12,25 @@ class SubmitOpenProblemView(ListCreateAPIView):
     queryset = SubmittedOpenProblem.objects.all()
     serializer_class = SubmittedOpenProblemSerializer
 
-    @staticmethod
-    def _extract_data(data: dict):
-        return {
-            "title": data["title"],
-            "description": data["description"],
-            "references": data["references"],
-            "first_name": data["firstName"],
-            "last_name": data["lastName"],
-            "organisation": data["organisation"],
-            "email": data["email"],
-        }
-
     def create(self, request, *args, **kwargs):
-        contact_instance = create_contact(request.data)
-        reference_instances = pmid_doi_conversion(
-            reference_identifiers=request.data["references"]
-        )
+        try:
+            with transaction.atomic():
+                # Create necessary instances
+                print(request.data)
+                contact_instance = create_contact(data=request.data)
+                converted_references, unconverted_references = pmid_doi_conversion(
+                    reference_identifiers=request.data["references"]
+                )
+                request.data["references"] = converted_references
+                request.data["contact"] = (
+                    contact_instance.pk if contact_instance else None
+                )
+                serializer = self.serializer_class(data=request.data)
+                if serializer.is_valid():
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(
+                {"error": f"An error occurred while processing the request. {e}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
