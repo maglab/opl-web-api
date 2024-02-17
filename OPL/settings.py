@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     "open_problems",
     "posts_comments",
     "annotations",
-    "references",
-    "core",
     "corsheaders",
     'oauth2_provider'
 ]
@@ -78,10 +76,6 @@ REST_FRAMEWORK = {
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
 }
 
 ROOT_URLCONF = "OPL.urls"

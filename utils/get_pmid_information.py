@@ -19,6 +19,7 @@ def get_pmid_citation(pmid):
         return PMIDRequestException("An error occurred during the request:" + str(e))
     else:
         response_json = response.json()
+        print(response_json)
         apa_citation = response_json["apa"]["format"]
         return apa_citation
 
@@ -71,4 +72,4 @@ def get_pmid_information(pmid):
 
 
 if __name__ == "__main__":
-    get_pmid_information(36599349)
+    get_pmid_citation(36599349)

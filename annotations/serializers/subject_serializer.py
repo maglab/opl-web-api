@@ -1,5 +1,5 @@
 from annotations.models.subjects import Subject, SubjectProblem
-from open_problems.serializers import OpenProblemsSerializer
+from open_problems.serializers.OpenProblems import OpenProblemsSerializer
 from utils.base_serializer import BaseSerializer
 
 

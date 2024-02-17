@@ -1,4 +1,4 @@
-from references.models import Journal
+from open_problems.models.references import Journal
 from .get_doi_information import doi_crossref_search
 from .get_pmid_information import (
     PMIDRequestException,
@@ -27,15 +27,17 @@ def create_reference(ref_type, value):
     elif ref_type == "PMID":
         # Get the reference information from pubmed api first and the retrieve the citation from the api.
         # Create single dictionary to use
+        pmid_information, pmid_reference = None, None
+
         try:
             pmid_information = get_pmid_information(value)
-        except ValueError as e:
-            return e
+        except ValueError:
+            pass
 
         try:
             pmid_reference = get_pmid_citation(value)
         except PMIDRequestException:
-            return PMIDRequestException
+            pass
 
         if pmid_reference is not None and pmid_information is not None:
             return {
@@ -49,7 +51,7 @@ def create_reference(ref_type, value):
     return None
 
 
-def create_journal_instance(reference_dict: dict) -> dict:
+def format_reference_data(reference_dict: dict) -> dict:
     """
     Format reference_dict reference instance using dictionary of reference information. Needed only because journal is a foreign key
     and submitted journal data is a string.
@@ -64,7 +66,3 @@ def create_journal_instance(reference_dict: dict) -> dict:
     )
     reference_dict["journal_id"] = journal_instance
     return {key: value for key, value in reference_dict.items() if key != "journal"}
-
-
-def create_author_instances(reference_dict):
-    ...

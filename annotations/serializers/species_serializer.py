@@ -1,5 +1,5 @@
 from annotations.models.species import Species, SpeciesProblem
-from open_problems.serializers import OpenProblemsSerializer
+from open_problems.serializers.OpenProblems import OpenProblemsSerializer
 from utils.base_serializer import BaseSerializer
 
 

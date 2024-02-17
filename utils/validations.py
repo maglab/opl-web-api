@@ -1,7 +1,7 @@
 from typing import Union
 
 from open_problems.models.contacts_users import Contact, Organisation
-from references.models import Journal, Reference
+from open_problems.models.references import Journal, Reference
 
 
 def validate_submitted_reference(title: str, year: str) -> bool:
@@ -45,11 +45,12 @@ def validate_contact(data: dict):
 
     # Add conditions to the filter query based on provided input values
     if "first_name" in data:
-        filter_query["first_name__iexact"] = data["first_name"]
+        filter_query['first_name__iexact'] = data["first_name"]
     if "last_name" in data:
-        filter_query["last_name__iexact"] = data["last_name"]
+        filter_query['last_name__iexact'] = data["last_name"]
     if "email" in data:
-        filter_query["email__iexact"] = data["email"]
+        filter_query['email__iexact'] = data["email"]
+
 
     try:
         # Use the filter method to search for a contact based on the filter query
@@ -68,3 +69,5 @@ def validate_organisation(organisation: str):
     Check whether the organisation is present in the database or not.
     """
     return Organisation.objects.filter(info_title=organisation).exists()
+
+

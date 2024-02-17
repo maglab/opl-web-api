@@ -28,7 +28,6 @@ def format_harvard(data):
         "volume": volume,
         "citation": citation,
         "doi": doi,
-        "authors": author_list,
     }
 
 

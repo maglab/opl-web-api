@@ -1,17 +1,16 @@
-from rest_framework.generics import ListAPIView
+from ..models.open_problems import ProblemReference
+from ..serializers.serializers import FilterReferenceSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
-from references.serializers import ReferenceSerializer
-from ..models.open_problems import OpenProblem
 
-
-class ListReferencesView(ListAPIView):
-    """
-    List view to list all references for an open problem.
-    """
-
-    serializer_class = ReferenceSerializer
-
-    def get_queryset(self):
-        pk = self.kwargs["pk"]
-        open_problem = OpenProblem.objects.get(pk=pk)
-        return open_problem.references.all()
+# Get references for an open problem
+@api_view(['GET'])
+def get_references(request, id):
+    references = ProblemReference.objects.filter(problem_id=id)
+    serializer = FilterReferenceSerializer(references, many=True)
+    if not references:
+        return Response(data=serializer.data, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
