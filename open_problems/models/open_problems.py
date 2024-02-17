@@ -67,9 +67,7 @@ class SubmittedOpenProblem(OpenProblemAbstract):
     )
     species = models.CharField(max_length=50, null=True, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
-    first_name = models.CharField(
-        max_length=50, blank=True
-    )  # We don't automatically create the contact for now
+    first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)
     job_field = models.CharField(max_length=100, blank=True)
