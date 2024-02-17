@@ -39,34 +39,6 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
 
 
-# @api_view(["POST"])
-# def submit_post(request, id):  # Submit post for an open problem.
-#     if request.method == "POST":
-#         serializer = PostSerializer(data=request.data)
-#         open_problem = OpenProblems.objects.filter(problem_id=id).exists()
-#
-#         if serializer.is_valid(raise_exception=True) & open_problem:
-#             serializer.save()
-#             # After saving parse the submitted serializer
-#             reference_data = request.data["submitted_references"]
-#             if reference_data:
-#                 submission_id = serializer["submission_id"].value
-#                 reference_list = parse_submitted_references(
-#                     reference_data, submission_id
-#                 )
-#                 submitted_references_serializer = SubmittedReferencesSerializer(
-#                     data=reference_list, many=True
-#                 )
-#                 if submitted_references_serializer.is_valid():
-#                     submitted_references_serializer.save()
-#                 else:
-#                     print(submitted_references_serializer.errors)
-#
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
 class SubmitPost(CreateAPIView):
     serializer_class = PostSerializer
 
