@@ -6,17 +6,17 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
-from open_problems.models.open_problems import OpenProblems
-from open_problems.serializers.OpenProblems import (
+from core.service.queryset_helpers import (
+    get_queryset_ordered,
+    get_queryset_annotated,
+)
+from open_problems.models.open_problems import OpenProblem
+from open_problems.serializers import (
     OpenProblemsSerializer,
 )
 from utils.Pagination import Pagination
 from ..filters.open_problems import OpenProblemsFilter
-from ..utils.clean_query_params import clean_query_params
-from ..utils.queryset_helpers import (
-    get_queryset_ordered,
-    get_queryset_annotated,
-)
+from ..service.clean_query_params import clean_query_params
 
 
 class RetrieveProblems(ListAPIView):
@@ -101,7 +101,7 @@ class RetrieveProblems(ListAPIView):
         Returns:
             Queryset
         """
-        queryset = OpenProblems.objects.all()
+        queryset = OpenProblem.objects.all()
         query_params = clean_query_params(self.request.query_params, Pagination)
 
         # Remove sorting and store separately as we want to sort at the end and to remove it from the annotation
@@ -129,7 +129,7 @@ class RetrieveSingleProblem(RetrieveAPIView):
     """
 
     serializer_class: Serializer = OpenProblemsSerializer
-    queryset = OpenProblems
+    queryset = OpenProblem
 
     def get(self, request, *args, **kwargs):
         """
