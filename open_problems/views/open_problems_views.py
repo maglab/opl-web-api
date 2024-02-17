@@ -2,10 +2,14 @@ from django.db import models
 from django.db.models import QuerySet
 from rest_framework import status
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
+from core.service.queryset_helpers import (
+    get_queryset_ordered,
+    get_queryset_annotated,
+)
 from open_problems.models.open_problems import OpenProblem
 from open_problems.serializers import (
     OpenProblemsSerializer,
@@ -13,10 +17,6 @@ from open_problems.serializers import (
 from utils.Pagination import Pagination
 from ..filters.open_problems import OpenProblemsFilter
 from ..service.clean_query_params import clean_query_params
-from ..service.queryset_helpers import (
-    get_queryset_ordered,
-    get_queryset_annotated,
-)
 
 
 class RetrieveProblems(ListAPIView):
@@ -138,7 +138,3 @@ class RetrieveSingleProblem(RetrieveAPIView):
         object_id = self.kwargs.get("id")
         queryset = self.queryset.objects.get(problem_id=object_id)
         return Response(self.serializer_class(queryset).data, status=status.HTTP_200_OK)
-
-
-class CreateOpenProblem(CreateAPIView):
-    ...
