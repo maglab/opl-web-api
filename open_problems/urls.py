@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views.feedback import ReportView
 from .views.open_problems_views import (
     open_problems_answered,
     open_problems_descendants_descending,
@@ -31,4 +32,5 @@ urlpatterns = [
     path("verify-token", verify_token),
     # Get references for a problem
     path("<int:id>/references", get_references),
+    path("report", ReportView.as_view()),
 ]

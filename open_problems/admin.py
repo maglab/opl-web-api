@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from open_problems.custom_admin_classes.open_problems_admin import OPAdmin
-from open_problems.custom_admin_classes.submitted_problems_admin import (
-    SubmittedProblemsAdmin,
+from open_problems.custom_admin_classes.open_problems import OPAdmin
+from open_problems.custom_admin_classes.open_problems_references import (
+    OpenProblemsReferencesAdmin,
 )
-from open_problems.custom_admin_classes.open_problems_references_admin import OpenProblemsReferencesAdmin
+from open_problems.custom_admin_classes.submitted_problems import SubmittedProblemsAdmin
+from open_problems.models.feedback import Report
 from open_problems.models.open_problems import (
     Contact,
     OpenProblems,
@@ -14,6 +15,7 @@ from open_problems.models.open_problems import (
     SubmittedProblems,
 )
 from open_problems.models.references import Journal, RefType
+from .custom_admin_classes.feedback import ReportAdmin
 
 # Registering models to admin without class created.
 
@@ -25,3 +27,4 @@ admin.site.register(Journal)
 admin.site.register(RefType)
 admin.site.register(Contact)
 admin.site.register(ProblemReference, OpenProblemsReferencesAdmin)
+admin.site.register(Report, ReportAdmin)

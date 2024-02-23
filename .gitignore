@@ -2,6 +2,7 @@
 config_dev.py 
 config_prod.py
 OPL/config.json
+config.env
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,11 +1,7 @@
-import json
-
 from rest_framework import serializers
 
-from utils.get_doi_information import doi_crossref_search
-from utils.get_pmid_information import get_pmid_citation
 from utils.recursive_serializer import RecursiveSerializer
-
+from ..models.feedback import Report
 from ..models.open_problems import (
     Contact,
     OpenProblems,
@@ -61,10 +57,8 @@ class SubmittedProblemSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            "organisation"
+            "organisation",
         ]
-
-
 
 
 # Serializer to return a reference to be nested in serializer below
@@ -81,3 +75,18 @@ class FilterReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProblemReference
         fields = ["reference"]
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    # Duplicate must be selected if the reason is duplicate
+    def validate_duplicate(self, value):
+        reason = self.initial_data.get("reason")
+        if reason == "duplicate" and value is None:
+            raise serializers.ValidationError(
+                "This field is required when reason is 'duplicate'."
+            )
+        return value
+
+    class Meta:
+        model = Report
+        fields = "__all__"
