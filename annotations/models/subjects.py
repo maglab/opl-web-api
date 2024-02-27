@@ -45,14 +45,9 @@ class SubjectProblem(AnnotationsProblems):
 class SubjectReference(models.Model):
     # Field name made lowercase. The composite primary key (Ref_id, Theory_id) found, that is not supported.
     # The first column is selected.
-    ref = models.OneToOneField(
-        Reference, models.DO_NOTHING, db_column="reference_id", primary_key=True
-    )
+    ref = models.OneToOneField(Reference, models.DO_NOTHING, primary_key=True)
     # Field name made lowercase.
-    subject = models.ForeignKey(
-        Subject, models.DO_NOTHING, db_column="subject_id", null=True
-    )
+    subject = models.ForeignKey(Subject, models.DO_NOTHING, null=True)
 
     class Meta:
         db_table = "subject_reference"
-        unique_together = ("ref", "subject")
