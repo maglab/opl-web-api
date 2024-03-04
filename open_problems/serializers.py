@@ -9,7 +9,14 @@ from utils.base_serializer import BaseSerializer
 from utils.recursive_serializer import RecursiveSerializer
 
 
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = "__all__"
+
+
 class OpenProblemsSerializer(serializers.ModelSerializer):
+    contact = ContactSerializer()
     children = RecursiveSerializer(many=True, read_only=True)
     post_count = serializers.SerializerMethodField()
 
@@ -35,11 +42,6 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
 class ParentSerializer(BaseSerializer):
     class Meta:
         model = OpenProblem
-
-
-class ContactSerializer(BaseSerializer):
-    class Meta:
-        model = Contact
 
 
 # Serializer for user submitted open problems
