@@ -9,7 +9,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 questions/__pycache__/
-
+*.json
 # C extensions
 *.so
 
