@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                     "reference_id",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="references.reference",
+                        to="open_problems.reference",
                     ),
                 ),
                 (
