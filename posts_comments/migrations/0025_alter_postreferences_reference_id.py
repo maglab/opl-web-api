@@ -5,13 +5,10 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        (
-            "references",
-            "0003_alter_author_author_name_alter_journal_journal_name_and_more",
-        ),
         ("posts_comments", "0024_rename_submission_id_postreferences_post_id"),
+        ("open_problems", "0001_initial"),
+        ("references", "0003_alter_author_author_name_alter_journal_journal_name_and_more")
     ]
 
     operations = [
