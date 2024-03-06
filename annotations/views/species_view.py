@@ -1,5 +1,5 @@
 from annotations.models.species import Species, SpeciesProblem
-from annotations.serializers.species_serializer import (
+from annotations.serializers import (
     SpeciesSerializer,
     SpeciesProblemSerializer,
 )

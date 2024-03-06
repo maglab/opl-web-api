@@ -1,5 +1,5 @@
-from annotations.models.compounds import Compounds, CompoundProblems
-from annotations.serializers.compound_serializer import (
+from annotations.models import Compound, CompoundProblem
+from annotations.serializers import (
     CompoundsSerializer,
     CompoundProblemSerializer,
 )
@@ -10,7 +10,7 @@ class CompoundViewSet(AnnotationViewSet):
     """Viewset for species model"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(Compounds, CompoundsSerializer, *args, **kwargs)
+        super().__init__(Compound, CompoundsSerializer, *args, **kwargs)
 
 
 class CompoundProblemViewSet(AnnotationProblemViewSet):
@@ -18,7 +18,7 @@ class CompoundProblemViewSet(AnnotationProblemViewSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(
-            CompoundProblems,
+            CompoundProblem,
             CompoundProblemSerializer,
             annotation_foreign_key="compound",
         )

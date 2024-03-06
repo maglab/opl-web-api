@@ -1,5 +1,5 @@
 from annotations.models.genes import Gene, GeneProblem
-from annotations.serializers.gene_serializer import (
+from annotations.serializers import (
     GeneProblemlSerializer,
     GeneSerializer,
 )

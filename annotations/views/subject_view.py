@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 
 from annotations.models.subjects import Subject, SubjectProblem
-from annotations.serializers.subject_serializer import (
+from annotations.serializers import (
     SubjectProblemSerializer,
     SubjectSerializer,
 )
