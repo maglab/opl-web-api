@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 on_delete=django.db.models.deletion.DO_NOTHING,
                 primary_key=True,
                 serialize=False,
-                to="references.reference",
+                to="open_problems.reference",
             ),
         ),
         migrations.AlterField(
