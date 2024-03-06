@@ -1,6 +1,5 @@
 from django.db import models
-
-from references.models import Reference
+from .references import Reference
 from .contacts_users import Contact
 
 
@@ -118,6 +117,7 @@ class RelatedProblem(models.Model):
 
     def __str__(self) -> str:
         return f"{self.id}: {self.parent_id.title} && {self.child_id.title}"
+
 
 class ProblemReference(models.Model):
     problem_id = models.ForeignKey(OpenProblem, on_delete=models.SET_NULL, null=True)

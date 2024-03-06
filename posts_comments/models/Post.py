@@ -1,9 +1,8 @@
 from django.db import models
 
-from open_problems.models.contacts_users import Contact
-from open_problems.models.open_problems import OpenProblem
-from references.models import Reference
-
+from open_problems.models import Contact
+from open_problems.models import OpenProblem
+from open_problems.models import Reference
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
