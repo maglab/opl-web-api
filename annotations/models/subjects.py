@@ -6,12 +6,12 @@ from .annotations import AnnotationsProblems
 
 # Theory models to attach for a particular open problem.
 class Subject(models.Model):
-    id = models.AutoField(db_column="", primary_key=True)  # Field name made lowercase.
+    id = models.AutoField( primary_key=True)  # Field name made lowercase.
     title = models.CharField(
-        db_column="title", max_length=40, blank=True, null=True
+         max_length=40, blank=True, null=True
     )  # Field name made lowercase.
     description = models.TextField(
-        db_column="description", blank=True, null=True
+         blank=True, null=True
     )  # Field name made lowercase.
     parent = models.ForeignKey(
         "self",
@@ -23,7 +23,6 @@ class Subject(models.Model):
 
     # end of edit by Hamid
     class Meta:
-        db_table = "Subject"
         db_table_comment = (
             "A subject annotation describing the topic of the open problem"
         )

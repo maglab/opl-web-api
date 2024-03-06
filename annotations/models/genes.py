@@ -16,7 +16,6 @@ class Gene(models.Model):
         return f"{self.gene_symbol}: {self.gene_name}"
 
     class Meta:
-        db_table = "Genes"
         db_table_comment = "Table for all genes"
 
 
