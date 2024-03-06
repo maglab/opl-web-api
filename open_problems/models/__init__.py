@@ -5,8 +5,7 @@ from .open_problems import (
     SubmittedOpenProblem,
     ProblemReference,
     ProblemRelation,
-    RelatedProblem,
-)
+    RelatedProblem)
 from .references import Reference, Journal, Author
 
 __all__ = [
