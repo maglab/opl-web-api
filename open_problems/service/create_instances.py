@@ -1,5 +1,5 @@
 from core.service import get_or_create_instance
-from references.models import Author, Journal
+from open_problems.models import Author, Journal
 from references.service import (
     PMIDRequestException,
     PmidConverter,
