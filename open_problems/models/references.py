@@ -41,7 +41,7 @@ class Reference(models.Model):
     citation = models.TextField()
     doi = models.CharField(max_length=100, null=True, blank=True)
     relevance = models.PositiveSmallIntegerField(null=True, blank=True)
-    publish_date = models.CharField(max_length=4)
+    year = models.CharField(max_length=4)
     isbn = models.IntegerField(max_length=15, null=True, blank=True)
     journal_id = models.ForeignKey(
         Journal, on_delete=models.SET_NULL, null=True, blank=True
