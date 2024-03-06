@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from open_problems.models.references import Journal, Reference
 from posts_comments.models.Post import PostReferences
+from open_problems.models import Journal, Reference
 from utils.create_reference import create_reference
 from utils.validations import validate_journal, validate_submitted_reference
 
@@ -40,15 +40,15 @@ def apply_references(modeladmin, request, queryset):
                     journal_instance = new_journal
 
                 reference_object = Reference(
-                    ref_title=title,
-                    publish_date=year,
-                    full_citation=citation,
+                    title=title,
+                    year=year,
+                    citation=citation,
                     journal_id=journal_instance,
                     doi=doi,
                 )
                 reference_object.save()
                 PostReferences(
-                    reference_id=reference_object, submission_id=reference.submission_id
+                    reference_id=reference_object, post_id=reference.submission_id
                 ).save()
 
             successful_conversions += 1  # Increment successful conversion count

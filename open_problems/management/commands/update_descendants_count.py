@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
-from open_problems.models.open_problems import OpenProblems
+
+from open_problems.models.open_problems import OpenProblem
 
 
 class Command(BaseCommand):
-    help = 'Update the descendants count for all OpenProblems'
+    help = "Update the descendants count for all OpenProblems"
 
     def handle(self, *args, **options):
-        OpenProblems.update_descendants_count()
-        self.stdout.write(self.style.SUCCESS('Successfully updated descendants count'))
+        OpenProblem.update_descendants_count()
+        self.stdout.write(self.style.SUCCESS("Successfully updated descendants count"))

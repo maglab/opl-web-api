@@ -1,9 +1,13 @@
+from typing import Type
+
 from rest_framework.request import Request
 
 from utils.Pagination import Pagination
 
 
-def clean_query_params(query_params: Request, pagination_class: Pagination) -> dict:
+def clean_query_params(
+    query_params: Request, pagination_class: Type["Pagination"]
+) -> dict:
     """
     Returns cleaned query params from the client. Django will append '[]' when object attributes containing arrays are
     serialized. These are removed and the multiple entries of ids are concatenated together into one array.

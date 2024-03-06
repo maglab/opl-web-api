@@ -8,16 +8,12 @@ class Author(models.Model):
     def __str__(self) -> str:
         return f"{self.author_id}: {self.author_name}"
 
-    class Meta:
-        db_table = "Authors"
-
 
 class Journal(models.Model):
     journal_id = models.AutoField(primary_key=True)
     journal_name = models.CharField(max_length=100)
 
     class Meta:
-        db_table = "Journal"
         db_table_comment = "Contains the ids and names of article journals"
 
     def __str__(self) -> str:
@@ -30,7 +26,6 @@ class RefType(models.Model):
     class_description = models.TextField()
 
     class Meta:
-        db_table = "Reference-type"
         db_table_comment = "A cyclic table that contains all types of references, \
                 the self-joini relation is to indicate whether one reference type is a subcategory of another."
 
@@ -46,7 +41,7 @@ class Reference(models.Model):
     citation = models.TextField()
     doi = models.CharField(max_length=100, null=True, blank=True)
     relevance = models.PositiveSmallIntegerField(null=True, blank=True)
-    publish_date = models.CharField(max_length=4)
+    year = models.CharField(max_length=4)
     isbn = models.IntegerField(max_length=15, null=True, blank=True)
     journal_id = models.ForeignKey(
         Journal, on_delete=models.SET_NULL, null=True, blank=True
@@ -57,7 +52,6 @@ class Reference(models.Model):
     )  # If given source is a Link
 
     class Meta:
-        db_table = "References"
         db_table_comment = "Contains all reference information"
 
     def __str__(self) -> str:

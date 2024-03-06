@@ -3,7 +3,7 @@ from django.db import models
 
 class JobInformation(models.Model):
     info_id = models.AutoField(primary_key=True)
-    info_title = models.CharField(max_length=50)
+    info_title = models.CharField(max_length=50, unique=True)
 
     class Meta:
         abstract = True
@@ -22,7 +22,7 @@ class JobField(JobInformation):
 class Contact(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
+    email = models.EmailField(max_length=100)
     job_field = models.ForeignKey(
         JobField, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -31,7 +31,6 @@ class Contact(models.Model):
     )
 
     class Meta:
-        db_table = "Contact"
         db_table_comment = "This table contains the contact details of the person who submitted the question"
 
     def __str__(self):

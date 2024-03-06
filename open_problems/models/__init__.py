@@ -1,27 +1,26 @@
 from .contacts_users import Contact, JobField, JobInformation, Organisation
 from .open_problems import (
     OpenProblem,
-    OpenProblems,
+    OpenProblemAbstract,
+    SubmittedOpenProblem,
     ProblemReference,
     ProblemRelation,
     RelatedProblem,
-    SubmittedProblems,
 )
-from .references import Author, Journal, Reference, RefType
+from .references import Reference, Journal, Author
 
 __all__ = [
     "Contact",
     "JobField",
     "JobInformation",
     "Organisation",
+    "OpenProblemAbstract",
     "OpenProblem",
-    "OpenProblems",
     "ProblemReference",
     "ProblemRelation",
     "RelatedProblem",
-    "SubmittedProblems",
-    "Author",
-    "Journal",
+    "SubmittedOpenProblem",
     "Reference",
-    "RefType",
+    "Journal",
+    "Author"
 ]

@@ -6,9 +6,10 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 
-from open_problems.models.open_problems import OpenProblems, Reference
+from open_problems.models.open_problems import OpenProblem
+from open_problems.models import Reference
 from utils.Pagination import Pagination
-from utils.create_reference import create_reference, format_reference_data
+from utils.create_reference import create_reference, create_journal_instance
 from ..models.Post import Post, PostReferences
 from ..serializers.submissions_serializer import (
     PostReferencesSerializer,
@@ -38,34 +39,6 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
 
 
-# @api_view(["POST"])
-# def submit_post(request, id):  # Submit post for an open problem.
-#     if request.method == "POST":
-#         serializer = PostSerializer(data=request.data)
-#         open_problem = OpenProblems.objects.filter(problem_id=id).exists()
-#
-#         if serializer.is_valid(raise_exception=True) & open_problem:
-#             serializer.save()
-#             # After saving parse the submitted serializer
-#             reference_data = request.data["submitted_references"]
-#             if reference_data:
-#                 submission_id = serializer["submission_id"].value
-#                 reference_list = parse_submitted_references(
-#                     reference_data, submission_id
-#                 )
-#                 submitted_references_serializer = SubmittedReferencesSerializer(
-#                     data=reference_list, many=True
-#                 )
-#                 if submitted_references_serializer.is_valid():
-#                     submitted_references_serializer.save()
-#                 else:
-#                     print(submitted_references_serializer.errors)
-#
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
 class SubmitPost(CreateAPIView):
     serializer_class = PostSerializer
 
@@ -92,7 +65,7 @@ class SubmitPost(CreateAPIView):
                 if reference_exists:
                     reference = reference_exists
                 else:
-                    reference_data = format_reference_data(
+                    reference_data = create_journal_instance(
                         reference_dict=reference_dictionary
                     )
 
@@ -105,8 +78,8 @@ class SubmitPost(CreateAPIView):
     def create(self, request, *args, **kwargs):
         open_problem_id = self.kwargs.get("id")
         try:
-            open_problem = OpenProblems.objects.get(problem_id=open_problem_id)
-        except OpenProblems.DoesNotExist:
+            open_problem = OpenProblem.objects.get(problem_id=open_problem_id)
+        except OpenProblem.DoesNotExist:
             return Response(
                 {"detail": "Open problem not found."}, status=status.HTTP_404_NOT_FOUND
             )
