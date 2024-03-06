@@ -16,7 +16,6 @@ class SubmitOpenProblemView(ListCreateAPIView):
         try:
             with transaction.atomic():
                 # Create necessary instances
-                print(request.data)
                 contact_instance = create_contact(data=request.data)
                 converted_references, unconverted_references = pmid_doi_conversion(
                     reference_identifiers=request.data["references"]
@@ -27,6 +26,7 @@ class SubmitOpenProblemView(ListCreateAPIView):
                 )
                 serializer = self.serializer_class(data=request.data)
                 if serializer.is_valid():
+                    serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
