@@ -1,7 +1,5 @@
 from typing import Union
-
-from open_problems.models.contacts_users import Contact, Organisation
-from references.models import Journal, Reference
+from open_problems.models import Journal, Reference, Contact, Organisation
 
 
 def validate_submitted_reference(title: str, year: str) -> bool:
@@ -15,7 +13,7 @@ def validate_submitted_reference(title: str, year: str) -> bool:
     Returns:
         bool: True if a matching reference exists, False otherwise.
     """
-    return Reference.objects.filter(ref_title=title, publish_date=year).exists()
+    return Reference.objects.filter(title=title, year=year).exists()
 
 
 def validate_journal(journal_name: str) -> Union[object, bool]:
