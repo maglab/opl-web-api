@@ -1,10 +1,13 @@
 from .contacts_users import Contact, JobField, JobInformation, Organisation
 from .open_problems import (
+    OpenProblem,
     OpenProblemAbstract,
+    SubmittedOpenProblem,
     ProblemReference,
     ProblemRelation,
     RelatedProblem,
 )
+from .references import Reference, Journal
 
 __all__ = [
     "Contact",
@@ -12,9 +15,11 @@ __all__ = [
     "JobInformation",
     "Organisation",
     "OpenProblemAbstract",
-    "OpenProblems",
+    "OpenProblem",
     "ProblemReference",
     "ProblemRelation",
     "RelatedProblem",
-    "SubmittedProblem",
+    "SubmittedOpenProblem",
+    "Reference",
+    "Journal"
 ]

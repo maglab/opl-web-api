@@ -1,6 +1,6 @@
 from django.db import models
 
-from references.models import Reference
+from open_problems.models.references import Reference
 from .annotations import AnnotationsProblems
 
 
