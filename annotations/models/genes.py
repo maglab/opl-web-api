@@ -1,5 +1,4 @@
 from django.db import models
-
 from .annotations import AnnotationsProblems
 from .species import Species
 
