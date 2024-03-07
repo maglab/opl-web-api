@@ -11,11 +11,10 @@ class CompoundsSerializer(ModelSerializer):
 
 class CompoundProblemSerializer(ModelSerializer):
     compound = CompoundsSerializer()
-    open_problem = OpenProblemsSerializer()
 
     class Meta:
         model = CompoundProblem
-        fields = "__all__"
+        fields = ["compound"]
 
 
 class GeneSerializer(ModelSerializer):
@@ -26,10 +25,10 @@ class GeneSerializer(ModelSerializer):
 
 class GeneProblemlSerializer(ModelSerializer):
     gene = GeneSerializer()
-    open_problem = OpenProblemsSerializer()
 
     class Meta:
         model = GeneProblem
+        fields = ["gene"]
 
 
 class SpeciesSerializer(ModelSerializer):
@@ -40,22 +39,20 @@ class SpeciesSerializer(ModelSerializer):
 
 class SpeciesProblemSerializer(ModelSerializer):
     species = SpeciesSerializer()
-    open_problem = OpenProblemsSerializer()
-
     class Meta:
         model = SpeciesProblem
-        fields = "__all__"
+        fields = ["species"]
 
 
 class SubjectSerializer(ModelSerializer):
     class Meta:
         model = Subject
-        fields = ["title", "description", "id", "parent"]
+        fields = "__all__"
 
 
 class SubjectProblemSerializer(ModelSerializer):
     subject = SubjectSerializer()
-    open_problem = OpenProblemsSerializer()
 
     class Meta:
         model = SubjectProblem
+        fields = ["subject"]
