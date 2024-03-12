@@ -13,9 +13,9 @@ class ListComments:
 # Get comment for a particular post submission, only root comments, only active comments.
 @api_view(["GET"])
 def get_comments(request, id):
-    submission = Post.objects.get(submission_id=id)  # Check if submission exists.
+    submission = Post.objects.get(id=id)  # Check if submission exists.
     if submission:
-        comments = Comment.objects.filter(submission_id=id, parent=None, is_active=True)
+        comments = Comment.objects.filter(id=id, parent=None, is_active=True)
         serializer = CommentsSerializer(comments, many=True)
         if comments:
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
