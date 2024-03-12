@@ -4,6 +4,7 @@ from open_problems.models import Contact
 from open_problems.models import OpenProblem
 from open_problems.models import Reference
 
+
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -28,6 +29,7 @@ class Post(models.Model):
 class PostReferences(models.Model):  # Model for reviewed references
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     reference_id = models.ForeignKey(Reference, on_delete=models.CASCADE)
+
     class Meta:
         verbose_name = "User Post and Linked References"
 

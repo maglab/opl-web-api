@@ -5,7 +5,7 @@ from posts_comments.views.comment_view import (
     get_single_comment,
     post_comment,
 )
-from posts_comments.views.submission_view import (
+from posts_comments.views.posts_view import (
     get_posts_counts,
     get_references,
     ListPosts,

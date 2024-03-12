@@ -1,6 +1,14 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Compound, CompoundProblem, Gene, GeneProblem, Species, SpeciesProblem, Subject, SubjectProblem
-from open_problems.serializers import OpenProblemsSerializer
+
+
+class AnnotationProblemSerializer(ModelSerializer):
+    related_field = None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        related_instance = data.pop(self.related_field)
+        return related_instance
 
 
 class CompoundsSerializer(ModelSerializer):
@@ -9,8 +17,9 @@ class CompoundsSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class CompoundProblemSerializer(ModelSerializer):
+class CompoundProblemSerializer(AnnotationProblemSerializer):
     compound = CompoundsSerializer()
+    related_field = "compound"
 
     class Meta:
         model = CompoundProblem
@@ -23,8 +32,9 @@ class GeneSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class GeneProblemlSerializer(ModelSerializer):
+class GeneProblemlSerializer(AnnotationProblemSerializer):
     gene = GeneSerializer()
+    related_field = "gene"
 
     class Meta:
         model = GeneProblem
@@ -37,8 +47,10 @@ class SpeciesSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class SpeciesProblemSerializer(ModelSerializer):
+class SpeciesProblemSerializer(AnnotationProblemSerializer):
     species = SpeciesSerializer()
+    related_field = "species"
+
     class Meta:
         model = SpeciesProblem
         fields = ["species"]
@@ -50,8 +62,9 @@ class SubjectSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class SubjectProblemSerializer(ModelSerializer):
+class SubjectProblemSerializer(AnnotationProblemSerializer):
     subject = SubjectSerializer()
+    related_field = "subject"
 
     class Meta:
         model = SubjectProblem

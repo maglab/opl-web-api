@@ -7,6 +7,9 @@ from posts_comments.models.comments import Comment
 from posts_comments.serializers.comments_serializer import CommentsSerializer
 
 
+class ListComments:
+    ...
+
 # Get comment for a particular post submission, only root comments, only active comments.
 @api_view(["GET"])
 def get_comments(request, id):
