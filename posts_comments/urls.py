@@ -6,7 +6,6 @@ from posts_comments.views.comment_view import (
     post_comment,
 )
 from posts_comments.views.posts_view import (
-    get_posts_counts,
     get_references,
     ListPosts,
     PostDetail,
@@ -21,7 +20,6 @@ from posts_comments.views.verify_references_view import (
 urlpatterns = [
     path("all", ListPosts.as_view()),
     path("<int:id>/", ListPosts.as_view(), name="list-submissions-by-open-problem"),
-    path("<int:id>/counts", get_posts_counts),
     path("<int:id>/submit", SubmitPost.as_view()),
     path("get/<int:id>", PostDetail.as_view()),
     path("get/<int:id>/comments", get_comments),

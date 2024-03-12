@@ -109,10 +109,3 @@ def get_references(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["GET"])  # Retrieve the number of posts for a given open problem
-def get_posts_counts(request, id):
-    # This might be redundant because the pagination class returns the counts
-    submissions_for_open_problem = Post.objects.filter(
-        open_problem=id, is_active=True
-    ).count()
-    return Response({"post_counts": submissions_for_open_problem})
