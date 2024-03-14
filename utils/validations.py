@@ -1,5 +1,6 @@
 from typing import Union
-from open_problems.models import Journal, Reference, Contact, Organisation
+from open_problems.models import Contact, Organisation
+from references.models import Reference, Journal
 
 
 def validate_submitted_reference(title: str, year: str) -> bool:

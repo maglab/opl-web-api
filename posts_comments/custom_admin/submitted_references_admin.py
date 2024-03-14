@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from posts_comments.models.Post import PostReferences
-from open_problems.models import Journal, Reference
+from references.models import Journal, Reference
 from utils.create_reference import create_reference
 from utils.validations import validate_journal, validate_submitted_reference
 

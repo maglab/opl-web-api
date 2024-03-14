@@ -8,54 +8,73 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Author',
+            name="Author",
             fields=[
-                ('author_id', models.AutoField(primary_key=True, serialize=False)),
-                ('author_name', models.CharField(max_length=50, unique=True)),
+                ("author_id", models.AutoField(primary_key=True, serialize=False)),
+                ("author_name", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Journal',
+            name="Journal",
             fields=[
-                ('journal_id', models.AutoField(primary_key=True, serialize=False)),
-                ('journal_name', models.CharField(max_length=100, unique=True)),
+                ("journal_id", models.AutoField(primary_key=True, serialize=False)),
+                ("journal_name", models.CharField(max_length=100, unique=True)),
             ],
             options={
-                'db_table_comment': 'Contains the ids and names of article journals',
+                "db_table_comment": "Contains the ids and names of article journals",
             },
         ),
         migrations.CreateModel(
-            name='RefType',
+            name="RefType",
             fields=[
-                ('rtype_id', models.AutoField(primary_key=True, serialize=False)),
-                ('rtype_class', models.CharField(max_length=50)),
-                ('class_description', models.TextField()),
+                ("rtype_id", models.AutoField(primary_key=True, serialize=False)),
+                ("rtype_class", models.CharField(max_length=50)),
+                ("class_description", models.TextField()),
             ],
             options={
-                'db_table_comment': 'A cyclic table that contains all types of references,                 the self-joini relation is to indicate whether one reference type is a subcategory of another.',
+                "db_table_comment": "A cyclic table that contains all types of references,                 "
+                "the self-joini relation is to indicate whether one reference type is a "
+                "subcategory of another.",
             },
         ),
         migrations.CreateModel(
-            name='Reference',
+            name="Reference",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=150, unique=True)),
-                ('citation', models.TextField(max_length=500)),
-                ('doi', models.CharField(blank=True, max_length=100, null=True, unique=True)),
-                ('relevance', models.PositiveSmallIntegerField(blank=True, null=True)),
-                ('year', models.CharField(max_length=4)),
-                ('isbn', models.IntegerField(blank=True, max_length=15, null=True)),
-                ('link', models.CharField(blank=True, max_length=200, null=True)),
-                ('authors', models.ManyToManyField(blank=True, null=True, to='references.author')),
-                ('journal_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='references.journal')),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("title", models.CharField(max_length=150, unique=True)),
+                ("citation", models.TextField(max_length=500)),
+                (
+                    "doi",
+                    models.CharField(
+                        blank=True, max_length=100, null=True, unique=True
+                    ),
+                ),
+                ("relevance", models.PositiveSmallIntegerField(blank=True, null=True)),
+                ("year", models.CharField(max_length=4)),
+                ("isbn", models.IntegerField(blank=True, max_length=15, null=True)),
+                ("link", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "authors",
+                    models.ManyToManyField(
+                        blank=True, null=True, to="references.author"
+                    ),
+                ),
+                (
+                    "journal_id",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="references.journal",
+                    ),
+                ),
             ],
             options={
-                'db_table_comment': 'Contains all reference information',
+                "db_table_comment": "Contains all reference information",
             },
         ),
     ]

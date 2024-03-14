@@ -13,7 +13,6 @@ from open_problems.models import (
     ProblemReference,
     RelatedProblem,
     SubmittedOpenProblem,
-    Reference
 )
 
 # Registering models to admin without class created.
@@ -23,4 +22,3 @@ admin.site.register(SubmittedOpenProblem, SubmittedProblemsAdmin)
 admin.site.register(RelatedProblem)
 admin.site.register(Contact)
 admin.site.register(ProblemReference, OpenProblemsReferencesAdmin)
-admin.site.register(Reference)

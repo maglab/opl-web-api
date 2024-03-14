@@ -1,5 +1,5 @@
 from django.db import models
-from .references import Reference
+from references.models import Reference
 from .contacts_users import Contact
 
 
@@ -120,11 +120,11 @@ class RelatedProblem(models.Model):
 
 
 class ProblemReference(models.Model):
-    problem_id = models.ForeignKey(OpenProblem, on_delete=models.SET_NULL, null=True)
-    reference_id = models.ForeignKey(Reference, on_delete=models.SET_NULL, null=True)
+    open_problem = models.ForeignKey(OpenProblem, on_delete=models.SET_NULL, null=True)
+    reference = models.ForeignKey(Reference, on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
-        return f"{self.problem_id} : {self.reference_id.ref_title}"
+        return f"{self.open_problem} : {self.reference.title}"
 
     class Meta:
         db_table = "open_problem_reference"

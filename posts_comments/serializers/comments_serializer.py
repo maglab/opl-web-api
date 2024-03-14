@@ -8,8 +8,8 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
-            "comment_id",
-            "submission_id",
+            "id",
+            "post",
             "parent",
             "full_text",
             "alias",
@@ -25,7 +25,7 @@ class RecursiveCommentSerializer(CommentSerializer):
     class Meta:
         model = Comment
         fields = [
-            "comment_id",
+            "id",
             "submission_id",
             "parent",
             "full_text",
@@ -49,7 +49,7 @@ class CommentsSerializer(CommentSerializer):
         model = Comment
         fields = [
             "comment_id",
-            "submission_id",
+            "posts",
             "parent",
             "full_text",
             "children",

@@ -1,4 +1,4 @@
-from open_problems.models import Journal
+from references.models import Journal
 from .get_doi_information import doi_crossref_search
 from .get_pmid_information import (
     PMIDRequestException,
@@ -66,5 +66,4 @@ def create_journal_instance(reference_dict: dict) -> dict:
     return {key: value for key, value in reference_dict.items() if key != "journal"}
 
 
-def create_author_instances(reference_dict):
-    ...
+def create_author_instances(reference_dict): ...

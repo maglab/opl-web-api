@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from open_problems.models import Reference
+from references.models import Reference
 
 
 class ReferenceSerializer(ModelSerializer):

@@ -7,7 +7,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.response import Response
 
 from open_problems.models.open_problems import OpenProblem
-from open_problems.models import Reference
+from references.models import Reference
 from utils.Pagination import Pagination
 from utils.create_reference import create_reference, create_journal_instance
 from ..models.Post import Post, PostReferences
@@ -18,6 +18,7 @@ from ..serializers.submissions_serializer import (
 
 
 # base url  /api/posts
+
 
 # Create your views here.
 class ListPosts(ListCreateAPIView):
@@ -107,5 +108,3 @@ def get_references(request, id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-
