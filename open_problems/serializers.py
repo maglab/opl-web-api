@@ -1,10 +1,6 @@
 from rest_framework import serializers
 
-from open_problems.models.open_problems import (
-    Contact,
-    SubmittedOpenProblem,
-)
-from open_problems.models.open_problems import OpenProblem
+from open_problems.models import Contact, SubmittedOpenProblem, OpenProblem
 from utils.recursive_serializer import RecursiveSerializer
 
 

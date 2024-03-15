@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 
-from open_problems.models.open_problems import SubmittedOpenProblem
+from open_problems.models import SubmittedOpenProblem
 from open_problems.serializers import SubmittedOpenProblemSerializer
 from ..service.create_instances import create_contact, pmid_doi_conversion
 

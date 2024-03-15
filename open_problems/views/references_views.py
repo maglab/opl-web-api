@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 
 from references.serializers import ReferenceSerializer
-from ..models.open_problems import OpenProblem
+from ..models import OpenProblem
 
 
 class ListReferencesView(ListAPIView):
