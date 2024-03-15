@@ -1,6 +1,6 @@
 from django.db import models
 
-from open_problems.models.open_problems import OpenProblem
+from open_problems.models import OpenProblem
 
 
 # Abstract table that will link a problem to all annotations

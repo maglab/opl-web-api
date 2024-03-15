@@ -10,8 +10,6 @@ from open_problems.custom_admin_classes.submitted_problems_admin import (
 from open_problems.models import (
     Contact,
     OpenProblem,
-    ProblemReference,
-    RelatedProblem,
     SubmittedOpenProblem,
 )
 
@@ -19,6 +17,4 @@ from open_problems.models import (
 
 admin.site.register(OpenProblem, OPAdmin)
 admin.site.register(SubmittedOpenProblem, SubmittedProblemsAdmin)
-admin.site.register(RelatedProblem)
 admin.site.register(Contact)
-admin.site.register(ProblemReference, OpenProblemsReferencesAdmin)

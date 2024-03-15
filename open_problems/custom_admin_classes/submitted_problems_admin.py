@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 
-from open_problems.models.open_problems import (
+from open_problems.models import (
     OpenProblem,
     SubmittedOpenProblem,
 )
