@@ -5,7 +5,6 @@ from open_problems.models.open_problems import (
     SubmittedOpenProblem,
 )
 from open_problems.models.open_problems import OpenProblem
-from utils.base_serializer import BaseSerializer
 from utils.recursive_serializer import RecursiveSerializer
 
 
@@ -39,9 +38,10 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
 
 
 # Serializer for parent node of open problem
-class ParentSerializer(BaseSerializer):
+class ParentSerializer(serializers.ModelSerializer):
     class Meta:
         model = OpenProblem
+        fields = "__all__"
 
 
 # Serializer for user submitted open problems
