@@ -3,8 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from posts_comments.models.Post import Post
-from posts_comments.models.comments import Comment
+from posts_comments.models import Solution
+from posts_comments.models import Comment
 from posts_comments.serializers.comments_serializer import CommentSerializer
 from utils.Pagination import Pagination
 
@@ -21,8 +21,7 @@ class ListComments(ListCreateAPIView):
             queryset = queryset.filter(post=post_id, is_active=True)
         return queryset
 
-    def post(self, request, *args, **kwargs):
-        ...
+    def post(self, request, *args, **kwargs): ...
 
 
 class CommentDetail(RetrieveUpdateDestroyAPIView):
@@ -34,8 +33,8 @@ class CommentDetail(RetrieveUpdateDestroyAPIView):
 def post_comment(request, post_id):
     ## Keep this one for now until i figure out how we handle the references.
     try:
-        submission = Post.objects.get(submission_id=post_id)
-    except Post.DoesNotExist:
+        submission = Solution.objects.get(submission_id=post_id)
+    except Solution.DoesNotExist:
         return Response(
             {"error": "Submission not found."}, status=status.HTTP_404_NOT_FOUND
         )
