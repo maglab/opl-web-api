@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from posts_comments.models.comments import Comment
+from posts_comments.models import Comment
 
 
 # For serializing a comment without its children
