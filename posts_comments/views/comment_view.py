@@ -5,7 +5,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from posts_comments.models import Solution
 from posts_comments.models import Comment
-from posts_comments.serializers.comments_serializer import CommentSerializer
+from posts_comments.serializers import CommentSerializer
 from utils.Pagination import Pagination
 
 

@@ -22,11 +22,15 @@ class Post(models.Model):
 
 
 class Solution(Post):
-    # objects line here since it isn't automatically set for some reason
-    objects = models.Manager()
+    open_problem = models.ForeignKey(
+        OpenProblem, on_delete=models.CASCADE, related_name="solution"
+    )
 
 
-class Discussion(Post): ...
+class Discussion(Post):
+    open_problem = models.ForeignKey(
+        OpenProblem, on_delete=models.CASCADE, related_name="discussion"
+    )
 
 
 class Comment(models.Model):

@@ -13,7 +13,8 @@ class ContactSerializer(serializers.ModelSerializer):
 class OpenProblemsSerializer(serializers.ModelSerializer):
     contact = ContactSerializer()
     children = RecursiveSerializer(many=True, read_only=True)
-    post_count = serializers.SerializerMethodField()
+    solution_count = serializers.SerializerMethodField()
+    discussion_count = serializers.SerializerMethodField()
 
     class Meta:
         model = OpenProblem
@@ -24,13 +25,18 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
             "contact",
             "parent_problem",
             "descendants_count",
-            "post_count",
+            "solution_count",
             "children",
+            "discussion_count",
         ]
 
     @staticmethod
-    def get_post_count(obj):
-        return obj.post_set.count()
+    def get_solution_count(obj):
+        return obj.solution.count()
+
+    @staticmethod
+    def get_discussion_count(obj):
+        return obj.discussion.count()
 
 
 # Serializer for parent node of open problem
