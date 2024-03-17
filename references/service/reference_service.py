@@ -3,7 +3,7 @@ from ..models import Journal, Author, Reference
 
 class ReferenceService:
     """
-    Class that returns a reference dictionary ready to be serialized and saved.
+    Class that returns a reference dictionary ready to be serialized and saved. Utilises get or create to prevent duplicates.
     """
 
     def __init__(self, reference_data: dict):
@@ -30,7 +30,8 @@ class ReferenceService:
     def create_reference(self):
         self._create_journal_instance()
         self._create_author_instances()
-        reference_instance = Reference(
+        # Check for reference instance as well
+        reference_instance, created = Reference.objects.get_or_create(
             title=self.title,
             year=self.year,
             journal=self.journal,
@@ -38,5 +39,4 @@ class ReferenceService:
             citation=self.citation,
             doi=self.doi,
         )
-        reference_instance.save()
         return reference_instance
