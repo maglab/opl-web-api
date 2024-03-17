@@ -1,10 +1,4 @@
 from ..models import Journal, Author, Reference
-from get_doi_information import doi_crossref_search
-from get_pmid_information import (
-    PMIDRequestException,
-    get_pmid_information,
-    get_pmid_citation,
-)
 
 
 class ReferenceService:
@@ -46,33 +40,3 @@ class ReferenceService:
         )
         reference_instance.save()
         return reference_instance
-
-
-def create_reference(ref_type, value):
-    if ref_type == "DOI":
-        doi_information = doi_crossref_search(value)
-        return doi_information
-
-    elif ref_type == "PMID":
-        # Get the reference information from pubmed api first and the retrieve the citation from the api.
-        # Create single dictionary to use
-        try:
-            pmid_information = get_pmid_information(value)
-        except ValueError as e:
-            return e
-
-        try:
-            pmid_reference = get_pmid_citation(value)
-        except PMIDRequestException:
-            return PMIDRequestException
-
-        if pmid_reference is not None and pmid_information is not None:
-            return {
-                "title": pmid_information["title"],
-                "publish_date": pmid_information["year"],
-                "journal": pmid_information["journal"],
-                "citation": pmid_reference,
-                "doi": pmid_information.get("doi"),
-            }
-
-    return None

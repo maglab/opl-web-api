@@ -1,3 +1,4 @@
 from django.urls import path
+from .views import convert_reference
 
-url_patterns = [path("")]
+urlpatterns = [path("convert", convert_reference)]
