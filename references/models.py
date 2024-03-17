@@ -33,10 +33,7 @@ class Reference(models.Model):
     journal_id = models.ForeignKey(
         Journal, on_delete=models.SET_NULL, null=True, blank=True
     )
-    authors = models.ManyToManyField(Author, blank=True, null=True)
-    link = models.CharField(
-        max_length=200, null=True, blank=True
-    )  # If given source is a Link
+    authors = models.ManyToManyField(Author, blank=True)
 
     class Meta:
         db_table_comment = "Contains all reference information"

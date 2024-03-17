@@ -14,7 +14,7 @@ class Post(models.Model):
     contact = models.ForeignKey(
         Contact, on_delete=models.DO_NOTHING, blank=True, null=True
     )
-    references = models.ManyToManyField(Reference, null=True, blank=True)
+    references = models.ManyToManyField(Reference, blank=True)
     is_active = models.BooleanField(default=False)
 
     class Meta:
