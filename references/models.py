@@ -30,7 +30,7 @@ class Reference(models.Model):
     relevance = models.PositiveSmallIntegerField(null=True, blank=True)
     year = models.CharField(max_length=4)
     isbn = models.IntegerField(null=True, blank=True)
-    journal_id = models.ForeignKey(
+    journal = models.ForeignKey(
         Journal, on_delete=models.SET_NULL, null=True, blank=True
     )
     authors = models.ManyToManyField(Author, blank=True)

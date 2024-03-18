@@ -9,34 +9,38 @@ class ReferenceService:
     def __init__(self, reference_data: dict):
         self.title = reference_data["title"]
         self.year = reference_data["year"]
-        self.journal = reference_data["journal"]
-        self.authors = reference_data["authors"]
+        self.journal_name = reference_data["journal"]
+        self.author_names = reference_data["authors"]
         self.citation = reference_data["citation"]
         self.doi = reference_data["doi"]
 
     def _create_journal_instance(self):
         journal_instance, created = Journal.objects.get_or_create(
-            journal_name=self.journal
+            name=self.journal_name
         )
-        self.journal = journal_instance.pk
+        return journal_instance
 
     def _create_author_instances(self):
-        author_list = []
-        for author in self.authors:
-            author_instance, created = Author.objects.get_or_create(name=author)
-            author_list.append(author_instance.pk)
-        self.authors = author_list
+        author_instances = []
+        for author_name in self.author_names:
+            author_instance, created = Author.objects.get_or_create(name=author_name)
+            author_instances.append(author_instance)
+        return author_instances
 
     def create_reference(self):
-        self._create_journal_instance()
-        self._create_author_instances()
-        # Check for reference instance as well
+        journal_instance = self._create_journal_instance()
+        author_instances = self._create_author_instances()
+
+        # Create or get the reference
         reference_instance, created = Reference.objects.get_or_create(
             title=self.title,
             year=self.year,
-            journal=self.journal,
-            authors=self.authors,
+            journal=journal_instance,
             citation=self.citation,
             doi=self.doi,
         )
+
+        # Add authors to the reference (Many-to-Many relationship)
+        reference_instance.authors.add(*author_instances)
+
         return reference_instance
