@@ -8,12 +8,12 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     full_text = models.TextField(null=True)
     open_problem = models.ForeignKey(OpenProblem, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, null=True, blank=True)
-    last_name = models.CharField(max_length=50, null=True, blank=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True)  # Temporary
+    last_name = models.CharField(max_length=50, null=True, blank=True)  # Temporary
+    alias = models.CharField(
+        max_length=100, null=True, blank=True
+    )  # Temporary - will be user
     affiliation = models.CharField(max_length=50, null=True, blank=True)
-    contact = models.ForeignKey(
-        Contact, on_delete=models.DO_NOTHING, blank=True, null=True
-    )
     references = models.ManyToManyField(Reference, blank=True)
     is_active = models.BooleanField(default=False)
 
@@ -40,7 +40,7 @@ class Comment(models.Model):
         "self", null=True, on_delete=models.CASCADE, blank=True, related_name="children"
     )
     full_text = models.TextField(blank=False, null=False)
-    alias = models.CharField(max_length=50, blank=True, null=True)
+    alias = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_active = models.BooleanField(default=False)
 

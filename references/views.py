@@ -25,7 +25,7 @@ def convert_reference(request):
 
         try:
             reference_data = converter_object.retrieve_reference()
-            return Response(data={"reference": reference_data})
+            return Response(data=reference_data)
         except (DOIRequestException, PMIDRequestException) as e:
             return Response(data={"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
     except KeyError:
