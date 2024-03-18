@@ -6,7 +6,7 @@ from .models import Solution, Discussion, Comment
 # Posts
 class PostSerializer(serializers.ModelSerializer):
     open_problem_title = serializers.ReadOnlyField(source="open_problem.title")
-    references = ReferenceSerializer(many=True)
+    references = ReferenceSerializer(many=True, read_only=True)
 
     class Meta:
         fields = "__all__"
