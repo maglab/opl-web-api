@@ -8,11 +8,12 @@ class Species(models.Model):
     genus = models.CharField(max_length=50, null=True)
     species = models.CharField(max_length=50, null=True)
 
-    def __str__(self):
+    @property
+    def name(self):
         return f"{self.genus} {self.species}"
 
-    class Meta:
-        db_table = "Species"
+    def __str__(self):
+        return f"{self.genus} {self.species}"
 
 
 class SpeciesProblem(AnnotationsProblems):

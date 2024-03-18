@@ -3,15 +3,9 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
-
-from annotations.models.compounds import CompoundProblems
-from annotations.models.genes import GeneProblem
-from annotations.models.species import SpeciesProblem
-from annotations.models.subjects import SubjectProblem
-from annotations.serializers.compound_serializer import CompoundProblemSerializer
-from annotations.serializers.gene_serializer import GeneProblemlSerializer
-from annotations.serializers.species_serializer import SpeciesProblemSerializer
-from annotations.serializers.subject_serializer import SubjectProblemSerializer
+from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, SubjectProblem
+from annotations.serializers import (CompoundProblemSerializer, GeneProblemlSerializer, SpeciesProblemSerializer,
+                                     SubjectProblemSerializer)
 from utils.exceptions import EmptyQuerySetError
 
 
@@ -102,7 +96,7 @@ class MultiAnnotationView(APIView):
     models_serializers = {
         "gene": (GeneProblem, GeneProblemlSerializer),
         "subject": (SubjectProblem, SubjectProblemSerializer),
-        "compound": (CompoundProblems, CompoundProblemSerializer),
+        "compound": (CompoundProblem, CompoundProblemSerializer),
         "species": (SpeciesProblem, SpeciesProblemSerializer),
     }
 
@@ -112,7 +106,6 @@ class MultiAnnotationView(APIView):
             annotation_name = key
             intermediary_model, serializer = value
             queryset = intermediary_model.objects.filter(open_problem=problem_id)
-            data[annotation_name] = serializer(
-                queryset, many=True, context={"request": request}
-            ).data
+            data[annotation_name] = [item for item in serializer(queryset, many=True, context={"request": request}).data
+                                     if item != annotation_name]
         return Response(data, status=status.HTTP_200_OK)

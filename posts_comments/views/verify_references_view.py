@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from utils.get_doi_information import doi_crossref_search
-from utils.get_pmid_information import get_pmid_information
+from references.service.get_doi_information import doi_crossref_search
+from references.service.get_pmid_information import get_pmid_information
 
 
 @api_view(["POST"])

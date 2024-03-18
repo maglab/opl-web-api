@@ -9,8 +9,12 @@ class PMIDRequestException(Exception):
         super().__init__(message)
 
 
-class Converter:
+class DOIRequestException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
 
+
+class Converter:
     """
     Base class for converting
     """
@@ -18,39 +22,15 @@ class Converter:
     __response_data = None
     reference_dictionary = {}
 
-    def __init__(self, identifier, journal_model, author_model):
+    def __init__(self, identifier: str):
         self.identifier = identifier
-        self.Journal = journal_model
-        self.Author = author_model
-
-    def _create_journal_instance(self):
-        """
-        Format reference_dict reference instance using dictionary of reference information. Needed only because journal is a foreign key
-        and submitted journal data is a string.
-        """
-        journal_instance, created = self.Journal.objects.get_or_create(
-            journal_name=self.reference_dictionary["journal"]
-        )
-        self.reference_dictionary["journal_id"] = journal_instance
-
-    def _create_author_instance(self):
-        """
-        Convert list of authors into author instances and inset back into reference_dictionary
-        """
-        author_instances = []
-        for author in self.reference_dictionary["authors"]:
-            author_instance, created = self.Author.objects.get_or_create(
-                author_name=author
-            )
-            author_instances.append(author_instance)
-        self.reference_dictionary["authors"] = author_instances
 
 
 class DoiConverter(Converter):
     crossref_works = Works
 
-    def __init__(self, identifier, journal, author):
-        super().__init__(identifier, journal, author)
+    def __init__(self, identifier):
+        super().__init__(identifier)
 
     def __format_reference(self):
         """Gets reference information from cross-ref api response and creates citation"""
@@ -87,7 +67,7 @@ class DoiConverter(Converter):
         try:
             search = works.doi(self.identifier)
         except TypeError:
-            raise TypeError("Unable to find DOI from crossref API")
+            raise DOIRequestException("Unable to find DOI from crossref API")
         else:
             self.__response_data = search
 
@@ -95,9 +75,6 @@ class DoiConverter(Converter):
         # Retrieve reference information and populate reference dictionary
         self.__send_request()
         self.__format_reference()
-        # Create instances
-        self._create_journal_instance()
-        self._create_journal_instance()
         return self.reference_dictionary
 
 
@@ -111,8 +88,8 @@ class PmidConverter(Converter):
     # Attributes for NCBI API citation request
     __base_url_ncbi = "https://api.ncbi.nlm.nih.gov/lit/ctxp/v1/pubmed/"
 
-    def __init__(self, identifier, journal, author):
-        super().__init__(identifier, journal, author)
+    def __init__(self, identifier):
+        super().__init__(identifier)
 
     def __send_request(self):
         url = f"{self.__base_url}{self.__end_point}?db={self.__database}&id={self.identifier}&retmode={self.__retmode}"
@@ -194,8 +171,4 @@ class PmidConverter(Converter):
         self.get_pmid_citation()
         self.__format_reference()
 
-        # Reformat the reference dictionary and insert model instances
-
-        super()._create_author_instance()
-        super()._create_journal_instance()
         return self.reference_dictionary

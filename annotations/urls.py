@@ -1,14 +1,8 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from annotations.models.compounds import CompoundProblems
-from annotations.models.genes import GeneProblem
-from annotations.models.species import SpeciesProblem
-from annotations.models.subjects import SubjectProblem
-from annotations.serializers.compound_serializer import CompoundsSerializer
-from annotations.serializers.gene_serializer import GeneSerializer
-from annotations.serializers.species_serializer import SpeciesSerializer
-from annotations.serializers.subject_serializer import SubjectSerializer
+from annotations.models import CompoundProblem, GeneProblem,  SpeciesProblem, SubjectProblem
+from annotations.serializers import CompoundsSerializer, GeneSerializer, SpeciesSerializer, SubjectSerializer
 from annotations.views.annotation_view import MultiAnnotationView
 from annotations.views.compounds_view import CompoundViewSet, CompoundProblemViewSet
 from annotations.views.gene_view import GeneViewSet, GeneProblemViewSet
@@ -42,7 +36,7 @@ viewsets_patterns = [
 model_serializer_data = {
     "gene": (GeneProblem, GeneSerializer),
     "subject": (SubjectProblem, SubjectSerializer),
-    "compound": (CompoundProblems, CompoundsSerializer),
+    "compound": (CompoundProblem, CompoundsSerializer),
     "species": (SpeciesProblem, SpeciesSerializer),
 }
 

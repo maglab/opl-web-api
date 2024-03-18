@@ -1,11 +1,11 @@
 from core.service import get_or_create_instance
-from open_problems.models import Author, Journal
+from references.models import Author, Journal
 from references.service import (
     PMIDRequestException,
     PmidConverter,
     DoiConverter,
 )
-from ..models.contacts_users import Contact, Organisation, JobField
+from ..models import Contact, Organisation, JobField
 
 
 def create_contact(data: dict):

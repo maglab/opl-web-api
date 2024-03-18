@@ -10,7 +10,7 @@ from core.service.queryset_helpers import (
     get_queryset_ordered,
     get_queryset_annotated,
 )
-from open_problems.models.open_problems import OpenProblem
+from open_problems.models import OpenProblem
 from open_problems.serializers import (
     OpenProblemsSerializer,
 )

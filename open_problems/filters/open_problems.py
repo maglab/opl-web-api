@@ -1,6 +1,6 @@
 from django_filters import FilterSet, CharFilter
 
-from ..models.open_problems import OpenProblem
+from ..models import OpenProblem
 
 
 class OpenProblemsFilter(FilterSet):
