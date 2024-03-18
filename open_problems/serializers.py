@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from open_problems.models import Contact, SubmittedOpenProblem, OpenProblem
+from references.serializers import ReferenceSerializer
 from utils.recursive_serializer import RecursiveSerializer
 
 
@@ -10,11 +11,20 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# Serializer for parent node of open problem
+class ParentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpenProblem
+        fields = "__all__"
+
+
 class OpenProblemsSerializer(serializers.ModelSerializer):
     contact = ContactSerializer()
     children = RecursiveSerializer(many=True, read_only=True)
+    references = ReferenceSerializer(many=True, read_only=True)
     solution_count = serializers.SerializerMethodField()
     discussion_count = serializers.SerializerMethodField()
+    parent_problem = ParentSerializer()
 
     class Meta:
         model = OpenProblem
@@ -24,6 +34,7 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
             "description",
             "contact",
             "parent_problem",
+            "references",
             "descendants_count",
             "solution_count",
             "children",
@@ -37,13 +48,6 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_discussion_count(obj):
         return obj.discussion.count()
-
-
-# Serializer for parent node of open problem
-class ParentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OpenProblem
-        fields = "__all__"
 
 
 # Serializer for user submitted open problems
