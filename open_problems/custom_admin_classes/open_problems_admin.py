@@ -29,5 +29,5 @@ toggle_active_status.description = "For setting open problems to active or inact
 class OPAdmin(admin.ModelAdmin):
     list_display = ["title", "problem_id", "contact", "is_active", "parent_problem"]
     actions = [toggle_active_status]
-    search_fields = ["problem_id", "title"]
+    search_fields = ["id", "title"]
     list_filter = ["is_active", "parent_problem"]
