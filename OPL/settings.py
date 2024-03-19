@@ -1,8 +1,11 @@
-from os import environ
+from os import environ, path
 from os.path import join, dirname
 from pathlib import Path
 
 from dotenv import load_dotenv
+
+
+BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
 
 # Load environment variables
 env_path = join(dirname(__file__), ".env")
@@ -59,7 +62,6 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -72,9 +74,9 @@ CORS_ALLOWED_ORIGINS = [
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
     ]
 }
 
@@ -85,7 +87,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             str(cwd_path.joinpath("templates")),
-            str(cwd_path.joinpath("questions", "templates")),
+            str(cwd_path.joinpath(BASE_DIR, "templates")),
         ],
         "APP_DIRS": True,
         "OPTIONS": {

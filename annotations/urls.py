@@ -1,15 +1,20 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from annotations.models import CompoundProblem, GeneProblem,  SpeciesProblem, SubjectProblem
-from annotations.serializers import CompoundsSerializer, GeneSerializer, SpeciesSerializer, SubjectSerializer
+from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, TagProblem
+from annotations.serializers import (
+    CompoundsSerializer,
+    GeneSerializer,
+    SpeciesSerializer,
+    TagSerializer,
+)
 from annotations.views.annotation_view import MultiAnnotationView
 from annotations.views.compounds_view import CompoundViewSet, CompoundProblemViewSet
 from annotations.views.gene_view import GeneViewSet, GeneProblemViewSet
 from annotations.views.species_view import SpeciesViewSet, SpeciesProblemViewSet
 from annotations.views.subject_view import (
-    SubjectViewSet,
-    SubjectProblemViewSet,
+    TagViewSet,
+    TagProblemViewset,
 )
 
 # Register routers the viewsets
@@ -17,7 +22,7 @@ from annotations.views.subject_view import (
 router = routers.DefaultRouter()
 viewsets = {
     "gene": GeneViewSet,
-    "subject": SubjectViewSet,
+    "subject": TagViewSet,
     "species": SpeciesViewSet,
     "compound": CompoundViewSet,
 }
@@ -28,14 +33,14 @@ for route, viewset in viewsets.items():
 # Create a list of prefixes for the viewsets for urls to be dynamically generated
 viewsets_patterns = [
     (GeneProblemViewSet, "gene"),
-    (SubjectProblemViewSet, "subject"),
+    (TagProblemViewset, "tag"),
     (SpeciesProblemViewSet, "species"),
     (CompoundProblemViewSet, "compound"),
 ]
 
 model_serializer_data = {
     "gene": (GeneProblem, GeneSerializer),
-    "subject": (SubjectProblem, SubjectSerializer),
+    "tag": (TagProblem, TagProblem),
     "compound": (CompoundProblem, CompoundsSerializer),
     "species": (SpeciesProblem, SpeciesSerializer),
 }
