@@ -3,6 +3,7 @@ from rest_framework import serializers
 from open_problems.models import Contact, SubmittedOpenProblem, OpenProblem
 from references.serializers import ReferenceSerializer
 from utils.recursive_serializer import RecursiveSerializer
+from annotations.serializers import TagSerializer
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -25,6 +26,7 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
     solution_count = serializers.SerializerMethodField()
     discussion_count = serializers.SerializerMethodField()
     parent_problem = ParentSerializer()
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = OpenProblem
@@ -39,6 +41,7 @@ class OpenProblemsSerializer(serializers.ModelSerializer):
             "solution_count",
             "children",
             "discussion_count",
+            "tags",
         ]
 
     @staticmethod
