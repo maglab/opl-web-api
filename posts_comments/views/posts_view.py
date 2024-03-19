@@ -3,7 +3,7 @@ import json
 from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework import serializers
-
+from rest_framework.exceptions import NotFound
 from utils.Pagination import Pagination
 from ..models import Solution, Discussion
 from ..serializers import SolutionSerializer, DiscussionSerializer
@@ -21,6 +21,8 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
             return Solution.objects.all()
         elif post_type == "discussion":
             return Discussion.objects.all()
+        else:
+            raise NotFound("Invalid post type")
 
     def get_serializer_class(self):
         post_type = self.request.query_params.get("post_type")
@@ -28,16 +30,17 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
             return SolutionSerializer
         elif post_type == "discussion":
             return DiscussionSerializer
+        else:
+            raise NotFound("Invalid post_type")
 
 
 class ListCreateDiscussion(ListAPIView):
-    serializer_class = SolutionSerializer
+    serializer_class = DiscussionSerializer
     pagination_class = Pagination
 
     def get_queryset(self):
         open_problem_id = self.kwargs.get("id")
-        discussion_objects = Discussion.objects.all()
-        queryset = discussion_objects.filter(
+        queryset = Discussion.objects.filter(
             open_problem=open_problem_id, is_active=True
         )
         return queryset
@@ -61,8 +64,7 @@ class ListCreateSolution(ListCreateAPIView):
 
     def get_queryset(self):
         open_problem_id = self.kwargs.get("id")
-        solution_objects = Solution.objects.all()
-        queryset = solution_objects.filter(open_problem=open_problem_id, is_active=True)
+        queryset = Solution.objects.filter(open_problem=open_problem_id, is_active=True)
         return queryset
 
     def perform_create(self, serializer):
