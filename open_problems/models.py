@@ -1,5 +1,6 @@
 from django.db import models
 from references.models import Reference
+from annotations.models.tags import Tag
 
 
 class JobInformation(models.Model):
@@ -61,7 +62,7 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
-    # tags = models.ManyToManyField(Tag, through=TagProblem)
+    tags = models.ManyToManyField(to=Tag, blank=True)
 
     def get_descendants(self):
         count = 0
@@ -87,7 +88,6 @@ class OpenProblem(OpenProblemAbstract):
             instance.save()
 
     class Meta:
-        db_table = "open_problem"
         db_table_comment = "These are the current open problems that we have accepted from the submitted questions"
         verbose_name = "Open Problem"
 
@@ -99,7 +99,6 @@ class SubmittedOpenProblem(OpenProblemAbstract):
     parent_problem = models.ForeignKey(
         OpenProblem, null=True, blank=True, on_delete=models.SET_NULL
     )
-    species = models.CharField(max_length=50, null=True, blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)

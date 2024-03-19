@@ -31,3 +31,4 @@ class OPAdmin(admin.ModelAdmin):
     actions = [toggle_active_status]
     search_fields = ["id", "title"]
     list_filter = ["is_active", "parent_problem"]
+    autocomplete_fields = ["tags"]

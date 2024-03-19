@@ -3,12 +3,11 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, TagProblem
+from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem
 from annotations.serializers import (
     CompoundProblemSerializer,
     GeneProblemlSerializer,
     SpeciesProblemSerializer,
-    TagProblemSerializer,
 )
 from utils.exceptions import EmptyQuerySetError
 
@@ -99,7 +98,6 @@ class MultiAnnotationView(APIView):
 
     models_serializers = {
         "gene": (GeneProblem, GeneProblemlSerializer),
-        "subject": (TagProblem, TagProblemSerializer),
         "compound": (CompoundProblem, CompoundProblemSerializer),
         "species": (SpeciesProblem, SpeciesProblemSerializer),
     }
