@@ -17,6 +17,9 @@ class Post(models.Model):
     references = models.ManyToManyField(Reference, blank=True)
     is_active = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.id}: {self.created_at}"
+
     class Meta:
         abstract = True
 
@@ -33,7 +36,22 @@ class Discussion(Post):
     )
 
 
-class Comment(models.Model):
+class CommentSolution(models.Model):
+    id = models.AutoField(primary_key=True)
+    post = models.ForeignKey(Solution, on_delete=models.DO_NOTHING)
+    parent = models.ForeignKey(
+        "self", null=True, on_delete=models.CASCADE, blank=True, related_name="children"
+    )
+    full_text = models.TextField(blank=False, null=False)
+    alias = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"{self.id}:{self.full_text}"
+
+
+class CommentDiscussion(models.Model):
     id = models.AutoField(primary_key=True)
     post = models.ForeignKey(Solution, on_delete=models.DO_NOTHING)
     parent = models.ForeignKey(

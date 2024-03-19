@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from references.serializers import ReferenceSerializer
-from .models import Solution, Discussion, Comment
+from .models import Solution, Discussion, CommentSolution, CommentDiscussion
 
 
 # Posts
@@ -25,22 +25,17 @@ class DiscussionSerializer(PostSerializer):
 
 
 # Comments
-class CommentSerializer(serializers.ModelSerializer):
+class CommentSolutionSerializer(serializers.ModelSerializer):
+    post = SolutionSerializer()
+
     class Meta:
-        model = Comment
+        model = CommentSolution
         fields = "__all__"
 
 
-# Nested recursive serializer for getting child comments
-class RecursiveCommentSerializer(CommentSerializer):
-    children = serializers.SerializerMethodField
+class CommentDiscussionSerializer(serializers.ModelSerializer):
+    post = DiscussionSerializer()
 
     class Meta:
-        model = Comment
-
-    def get_children(self, instance):
-        children_queryset = instance.children.all()
-        serializer = RecursiveCommentSerializer(
-            children_queryset, many=True, context=self.context
-        )
-        return serializer.data
+        model = CommentDiscussion
+        fields = "__all__"

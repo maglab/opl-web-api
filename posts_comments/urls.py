@@ -24,9 +24,11 @@ urlpatterns = [
         "discussions/<int:id>",
         ListCreateDiscussion.as_view(),
     ),
-    path("<int:id>", PostDetail.as_view()),
-    path("<int:id>/comments", ListCreateComments.as_view()),
-    path("<int:post_id>/<int:comment_id>", CommentDetail.as_view()),
+    path("<str:post_type>/<int:id>", PostDetail.as_view()),
+    path(
+        "<int:id>/<str:post_type>/comments", ListCreateComments.as_view()
+    ),  # Post and List
+    path("<str:post_type>/comments/<int:id>", CommentDetail.as_view()),
     path("verify-reference", verify_reference),  # Will delete later
     path("verify-references", verify_references),  # Will delete later
 ]
