@@ -7,7 +7,6 @@ from .models import (
     Species,
     SpeciesProblem,
     Tag,
-    TagProblem,
 )
 
 
@@ -69,12 +68,3 @@ class TagSerializer(ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
-
-
-class TagProblemSerializer(AnnotationProblemSerializer):
-    tag = TagSerializer()
-    related_field = "tag"
-
-    class Meta:
-        model = TagProblem
-        fields = ["tag"]

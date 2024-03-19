@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, TagProblem
+from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem
 from annotations.serializers import (
     CompoundsSerializer,
     GeneSerializer,
@@ -14,7 +14,6 @@ from annotations.views.gene_view import GeneViewSet, GeneProblemViewSet
 from annotations.views.species_view import SpeciesViewSet, SpeciesProblemViewSet
 from annotations.views.subject_view import (
     TagViewSet,
-    TagProblemViewset,
 )
 
 # Register routers the viewsets
@@ -33,14 +32,12 @@ for route, viewset in viewsets.items():
 # Create a list of prefixes for the viewsets for urls to be dynamically generated
 viewsets_patterns = [
     (GeneProblemViewSet, "gene"),
-    (TagProblemViewset, "tag"),
     (SpeciesProblemViewSet, "species"),
     (CompoundProblemViewSet, "compound"),
 ]
 
 model_serializer_data = {
     "gene": (GeneProblem, GeneSerializer),
-    "tag": (TagProblem, TagProblem),
     "compound": (CompoundProblem, CompoundsSerializer),
     "species": (SpeciesProblem, SpeciesSerializer),
 }
