@@ -3,9 +3,13 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, SubjectProblem
-from annotations.serializers import (CompoundProblemSerializer, GeneProblemlSerializer, SpeciesProblemSerializer,
-                                     SubjectProblemSerializer)
+from annotations.models import CompoundProblem, GeneProblem, SpeciesProblem, TagProblem
+from annotations.serializers import (
+    CompoundProblemSerializer,
+    GeneProblemlSerializer,
+    SpeciesProblemSerializer,
+    TagProblemSerializer,
+)
 from utils.exceptions import EmptyQuerySetError
 
 
@@ -95,7 +99,7 @@ class MultiAnnotationView(APIView):
 
     models_serializers = {
         "gene": (GeneProblem, GeneProblemlSerializer),
-        "subject": (SubjectProblem, SubjectProblemSerializer),
+        "subject": (TagProblem, TagProblemSerializer),
         "compound": (CompoundProblem, CompoundProblemSerializer),
         "species": (SpeciesProblem, SpeciesProblemSerializer),
     }
@@ -106,6 +110,11 @@ class MultiAnnotationView(APIView):
             annotation_name = key
             intermediary_model, serializer = value
             queryset = intermediary_model.objects.filter(open_problem=problem_id)
-            data[annotation_name] = [item for item in serializer(queryset, many=True, context={"request": request}).data
-                                     if item != annotation_name]
+            data[annotation_name] = [
+                item
+                for item in serializer(
+                    queryset, many=True, context={"request": request}
+                ).data
+                if item != annotation_name
+            ]
         return Response(data, status=status.HTTP_200_OK)

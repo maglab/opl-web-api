@@ -61,7 +61,7 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
-    objects = models.Manager()
+    # tags = models.ManyToManyField(Tag, through=TagProblem)
 
     def get_descendants(self):
         count = 0

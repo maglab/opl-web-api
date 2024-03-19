@@ -1,5 +1,4 @@
 from django.db import models
-
 from open_problems.models import OpenProblem
 
 
@@ -13,7 +12,7 @@ class Annotation(models.Model):
 
 
 class AnnotationsProblems(models.Model):
-    annotation_id = models.AutoField(primary_key=True)
+    annotation = models.AutoField(primary_key=True)
     open_problem = models.ForeignKey(OpenProblem, on_delete=models.DO_NOTHING)
 
     class Meta:

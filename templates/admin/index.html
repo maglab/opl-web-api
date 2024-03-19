@@ -1,0 +1,19 @@
+{% extends "admin/index.html" %}
+{% block content %}
+<div id="content-main">
+            {{ block.super }}
+
+    <div class="app-utilities module">
+    <table>
+        <caption> Utilities </caption>
+        <tbody>
+            <tr>
+                <th scope="row"><a href="{% url 'json-upload' %}">Upload JSON for Models</a></th>
+                <td><a href="{% url 'json-upload' %}" class="viewsitelink">Upload JSON data for creating or updating Tags.</a></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+</div>
+{% endblock %}

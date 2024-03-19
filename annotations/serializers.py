@@ -1,5 +1,14 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Compound, CompoundProblem, Gene, GeneProblem, Species, SpeciesProblem, Subject, SubjectProblem
+from .models import (
+    Compound,
+    CompoundProblem,
+    Gene,
+    GeneProblem,
+    Species,
+    SpeciesProblem,
+    Tag,
+    TagProblem,
+)
 
 
 class AnnotationProblemSerializer(ModelSerializer):
@@ -56,16 +65,16 @@ class SpeciesProblemSerializer(AnnotationProblemSerializer):
         fields = ["species"]
 
 
-class SubjectSerializer(ModelSerializer):
+class TagSerializer(ModelSerializer):
     class Meta:
-        model = Subject
+        model = Tag
         fields = "__all__"
 
 
-class SubjectProblemSerializer(AnnotationProblemSerializer):
-    subject = SubjectSerializer()
-    related_field = "subject"
+class TagProblemSerializer(AnnotationProblemSerializer):
+    tag = TagSerializer()
+    related_field = "tag"
 
     class Meta:
-        model = SubjectProblem
-        fields = ["subject"]
+        model = TagProblem
+        fields = ["tag"]
