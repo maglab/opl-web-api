@@ -26,16 +26,28 @@ class DiscussionSerializer(PostSerializer):
 
 # Comments
 class CommentSolutionSerializer(serializers.ModelSerializer):
-    post = SolutionSerializer()
+    post = serializers.PrimaryKeyRelatedField(queryset=Solution.objects.all())
 
     class Meta:
         model = CommentSolution
         fields = "__all__"
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        post_instance = instance.post
+        representation["post"] = SolutionSerializer(post_instance).data
+        return representation
+
 
 class CommentDiscussionSerializer(serializers.ModelSerializer):
-    post = DiscussionSerializer()
+    post = serializers.PrimaryKeyRelatedField(queryset=Discussion.objects.all())
 
     class Meta:
         model = CommentDiscussion
         fields = "__all__"
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        post_instance = instance.post
+        representation["post"] = DiscussionSerializer(post_instance).data
+        return representation
