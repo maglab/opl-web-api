@@ -130,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Set 'SECURE_PROXY_SSL_HEADER' to tell Django that the connection is HTTPS even if it's forwarded by a proxy.
 # http_protocol = configuration['settings']['httpProtocol']
 http_protocol = environ.get("HTTP_PROTOCOL")
