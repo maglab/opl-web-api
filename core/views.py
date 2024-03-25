@@ -33,8 +33,9 @@ class JSONImportView(View):
                     raise Http404("Model not found")
 
                 for item in data:
-                    instance = model.objects.get_or_create(**item)
-                    instance.save()
+                    instance, created = model.objects.get_or_create(**item)
+                    if created:
+                        instance.save()
                 return redirect(self.success_url)
             except json.JSONDecodeError:
                 form.add_error("json_file", "Invalid JSON file")
