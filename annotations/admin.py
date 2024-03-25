@@ -15,7 +15,7 @@ class GeneProblemAdmin(admin.ModelAdmin):
 
 
 class SpeciesAdmin(admin.ModelAdmin):
-    list_display = ["genus", "species", "name"]
+    list_display = ["name", "genus", "species"]
     search_fields = ["name"]
 
     def name(self, obj):
