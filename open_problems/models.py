@@ -50,6 +50,7 @@ class OpenProblemAbstract(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ["problem_id"]
 
 
 class OpenProblem(OpenProblemAbstract):
