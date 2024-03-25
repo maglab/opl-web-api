@@ -33,7 +33,7 @@ class JSONImportView(View):
                     raise Http404("Model not found")
 
                 for item in data:
-                    instance = model(**item)
+                    instance = model.objects.get_or_create(**item)
                     instance.save()
                 return redirect(self.success_url)
             except json.JSONDecodeError:
