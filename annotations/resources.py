@@ -15,7 +15,6 @@ class GeneResource(resources.ModelResource):
 
 
 class GeneProblemResource(resources.ModelResource):
-    # Assuming 'OpenProblem' and 'Gene' have primary key field named 'id'
     open_problem = fields.Field(
         column_name="open_problem",
         attribute="open_problem",
@@ -41,5 +40,16 @@ class SpeciesResource(resources.ModelResource):
 
 
 class SpeciesProblemResource(resources.ModelResource):
+    open_problem = fields.Field(
+        column_name="open_problem",
+        attribute="open_problem",
+        widget=ForeignKeyWidget(OpenProblem, "problem_id"),
+    )
+    species = fields.Field(
+        column_name="species",
+        attribute="species",
+        widget=ForeignKeyWidget(Species, "id"),
+    )
+
     class Meta:
         model = SpeciesProblem
