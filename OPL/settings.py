@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "references",
     "core",
     "corsheaders",
+    "import_export",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

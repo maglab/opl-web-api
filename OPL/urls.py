@@ -5,7 +5,6 @@ from django.views.static import serve
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from core.views import JSONImportView
 
 static_urlpatterns = [
     re_path(r"^(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
@@ -22,11 +21,6 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path(
-        "api/admin/upload-json",
-        admin.site.admin_view(JSONImportView.as_view()),
-        name="json-upload",
-    ),
     path("api/admin/", admin.site.urls),
     path("api/open-problems/", include("open_problems.urls")),
     path("api/posts/", include("posts_comments.urls")),
