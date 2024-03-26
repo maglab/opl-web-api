@@ -1,29 +1,42 @@
 from django.contrib import admin
 from .models import Gene, GeneProblem, Species, SpeciesProblem, Tag
+from import_export.admin import ImportExportModelAdmin
+from .resources import (
+    TagResource,
+    GeneResource,
+    GeneProblemResource,
+    SpeciesResource,
+    SpeciesProblemResource,
+)
 
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ["id", "title"]
+    resource_class = TagResource
 
 
-class GeneAdmin(admin.ModelAdmin):
+class GeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ["gene_name", "gene_symbol"]
+    resource_class = GeneResource
 
 
-class GeneProblemAdmin(admin.ModelAdmin):
+class GeneProblemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     autocomplete_fields = ["gene", "open_problem"]
+    resource_class = GeneProblemResource
 
 
-class SpeciesAdmin(admin.ModelAdmin):
+class SpeciesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["name", "genus", "species"]
     search_fields = ["name"]
+    resource_class = SpeciesResource
 
     def name(self, obj):
         return obj.name
 
 
-class SpeciesProblemAdmin(admin.ModelAdmin):
+class SpeciesProblemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     autocomplete_fields = ["species", "open_problem"]
+    resource_class = SpeciesProblemResource
 
 
 admin.site.register(Tag, TagAdmin)
