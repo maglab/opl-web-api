@@ -112,6 +112,14 @@ DATABASES = {
         "PORT": environ.get("DB_PORT"),
     }
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_backends",
+    }
+}
+
 STATIC_URL = "api/static/"
 STATIC_ROOT = str(cwd_path.joinpath("staticfiles"))
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
