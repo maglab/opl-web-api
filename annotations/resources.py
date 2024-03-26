@@ -26,10 +26,8 @@ class GeneProblemResource(resources.ModelResource):
 
     class Meta:
         model = GeneProblem
-        import_id_fields = [
-            "open_problem",
-            "gene",
-        ]  # Use fields relevant for identifying your objects
+        # Removed import_id_fields to stop treating any field combination as unique
+        import_id_fields = ["open_problem", "gene"]
         skip_unchanged = True
         report_skipped = True
 
@@ -53,3 +51,5 @@ class SpeciesProblemResource(resources.ModelResource):
 
     class Meta:
         model = SpeciesProblem
+        import_id_fields = ["open_problem", "species"]
+        report_skipped = True
