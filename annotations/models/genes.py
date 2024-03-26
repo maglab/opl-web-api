@@ -22,7 +22,7 @@ class GeneProblem(AnnotationsProblems):
     gene = models.ForeignKey(Gene, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.gene}: {self.problem_id} "
+        return f"{self.gene}: {self.open_problem.problem_id} "
 
     class Meta:
         db_table_comment = "Relation table for each gene and open problem"
