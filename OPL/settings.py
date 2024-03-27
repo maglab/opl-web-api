@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "annotations",
     "references",
     "core",
+    "users",
     "corsheaders",
     "import_export",
 ]
