@@ -1,12 +1,13 @@
 from django.db import models
-from open_problems.models import Contact, OpenProblem
+from open_problems.models import OpenProblem
+from users.models import UserProfile
 from references.models import Reference
 
 
 class Like(models.Model):
-    contact = models.ForeignKey(
-        Contact, null=True, blank=True, on_delete=models.CASCADE
-    )  # Temporary as we want users
+    user = models.ForeignKey(
+        UserProfile, null=True, blank=True, on_delete=models.CASCADE
+    )
     liked_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -81,4 +82,4 @@ class SolutionLike(Like):
     solution = models.ForeignKey(Solution, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ["contact", "solution"]  # One like per solution per user
+        unique_together = ["user", "solution"]  # One like per solution per user
