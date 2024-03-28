@@ -1,5 +1,3 @@
-import json
-
 from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework import serializers
