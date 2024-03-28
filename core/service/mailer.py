@@ -1,9 +1,20 @@
 from mailersend import emails
+import os
+
+
+class EmptyEmailBodyError(Exception):
+    """Exception raised when user has not set up the email body"""
+
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return str(self.message)
 
 
 class EmailSenderTemplate:
     mail_body = {}
-    mailer = emails.NewEmail()
+    mailer = emails.NewEmail(os.environ.get("MAILERSEND_API_KEY"))
     ready_to_send = False
 
     def __init__(
@@ -31,3 +42,7 @@ class EmailSenderTemplate:
     def send_email(self):
         if self.ready_to_send:
             self.mailer.send(self.mail_body)
+        else:
+            raise EmptyEmailBodyError(
+                "Please set up the email body through set_up_emal()"
+            )
