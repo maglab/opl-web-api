@@ -65,22 +65,6 @@ class OpenProblem(OpenProblemAbstract):
     is_active = models.BooleanField(default=False)
     tags = models.ManyToManyField(to=Tag, blank=True)
 
-    def get_descendants(self):
-        count = 0
-        children = OpenProblem.objects.filter(parent_problem=self)
-
-        for child in children:
-            count += 1  # Count the immediate child
-            count += child.get_descendants()
-
-        return count
-
-    def get_ordered_children_descending(self):
-        children = OpenProblem.objects.filter(parent_problem=self).order_by(
-            "-descendants_count"
-        )
-        return children
-
     @classmethod
     def update_descendants_count(cls):
         all_instances = cls.objects.all()
