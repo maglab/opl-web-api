@@ -51,10 +51,10 @@ INSTALLED_APPS = [
     "annotations",
     "references",
     "import_export",
-    "rest_framework_filters",
     "core",
     "users",
     "corsheaders",
+    "django_filters",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -81,10 +81,7 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
-    "DEFAULT_FILTER_BACKENDS": (
-        "rest_framework_filters.backends.RestFrameworkFilterBackend",
-        ...,
-    ),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 ROOT_URLCONF = "OPL.urls"
