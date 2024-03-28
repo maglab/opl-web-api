@@ -7,9 +7,7 @@ from .views.utils import test_view
 from .views.utils import verify_token
 
 urlpatterns = [
-    path(
-        "", RetrieveProblems.as_view()
-    ),  # From here we build the parameters after the sorting eg "latest?subject=1"
+    path("", RetrieveProblems.as_view()),
     # Single problem
     path("<int:id>", RetrieveSingleProblem.as_view()),
     # User submitted problem view

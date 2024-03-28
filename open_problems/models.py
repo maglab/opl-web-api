@@ -1,6 +1,12 @@
 from django.db import models
 from references.models import Reference
-from annotations.models.tags import Tag
+from annotations.models import Tag
+from .managers_querysets import OpenProblemManager
+
+
+"""
+We should move this into users app.
+"""
 
 
 class JobInformation(models.Model):
@@ -47,6 +53,8 @@ class OpenProblemAbstract(models.Model):
         Contact, null=True, on_delete=models.SET_NULL, blank=True
     )  # Non authenticated
     references = models.ManyToManyField(Reference, blank=True)
+    # custom manager here
+    objects = OpenProblemManager()
 
     class Meta:
         abstract = True

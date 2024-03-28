@@ -6,15 +6,18 @@ from annotations.serializers import (
     CompoundsSerializer,
     GeneSerializer,
     SpeciesSerializer,
-    TagSerializer,
 )
-from annotations.views.annotation_view import MultiAnnotationView
-from annotations.views.compounds_view import CompoundViewSet, CompoundProblemViewSet
-from annotations.views.gene_view import GeneViewSet, GeneProblemViewSet
-from annotations.views.species_view import SpeciesViewSet, SpeciesProblemViewSet
-from annotations.views.subject_view import (
+from annotations.views import (
+    MultiAnnotationView,
+    CompoundViewSet,
+    CompoundProblemViewSet,
+    GeneViewSet,
+    GeneProblemViewSet,
+    SpeciesViewSet,
+    SpeciesProblemViewSet,
     TagViewSet,
 )
+
 
 # Register routers the viewsets
 
