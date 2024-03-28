@@ -1,5 +1,9 @@
 from crossref.restful import Works
 
+"""
+TO BE DELETED ONCE SPA STOPS USING -> MOVED INTO CONVERTER CLASS IN THIS DIRECTORY
+"""
+
 
 def format_harvard(data):
     """Gets reference information from cross-ref api response and creates citation"""

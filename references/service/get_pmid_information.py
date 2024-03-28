@@ -2,6 +2,10 @@ from xml.etree import ElementTree as ET
 
 import requests
 
+"""
+TO BE DELETED ONCE SPA STOPS USING IT
+"""
+
 
 class PMIDRequestException(Exception):
     def __init__(self, message):
