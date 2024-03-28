@@ -50,10 +50,11 @@ INSTALLED_APPS = [
     "posts_comments",
     "annotations",
     "references",
+    "import_export",
+    "rest_framework_filters",
     "core",
     "users",
     "corsheaders",
-    "import_export",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -79,7 +80,11 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
-    ]
+    ],
+    "DEFAULT_FILTER_BACKENDS": (
+        "rest_framework_filters.backends.RestFrameworkFilterBackend",
+        ...,
+    ),
 }
 
 ROOT_URLCONF = "OPL.urls"
