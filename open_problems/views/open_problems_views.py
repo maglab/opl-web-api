@@ -1,11 +1,10 @@
 from django.db import models
 from django.db.models import QuerySet
 from rest_framework import status
-from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-
+from rest_framework_filters.backends import DjangoFilterBackend
 from core.service.queryset_helpers import (
     get_queryset_ordered,
     get_queryset_annotated,
@@ -28,8 +27,8 @@ class RetrieveProblems(ListAPIView):
         "title",
         "description",
     ]
+    filter_backends = [DjangoFilterBackend]
     filterset_class = OpenProblemsFilter
-    filter_backends = [SearchFilter]
     pagination_class = Pagination
     serializer_class = OpenProblemsSerializer
 
@@ -72,28 +71,6 @@ class RetrieveProblems(ListAPIView):
                 id_string="-post_count",
             )
 
-    @staticmethod
-    def filter_by_annotations(
-        queryset: QuerySet, annotation_type: str, ids: [int]
-    ) -> QuerySet:
-        """
-        Static method to apply filtering on queryset.
-        Parameters:
-            queryset (QuerySet): Django Queryset of selected model
-            annotation_type (str): Annotation type referencing the model to cross-reference to with current queryset
-            ids ([ids]): Array of ids to retrieve objects from given annotation model.
-
-        Returns:
-            QuerySet
-        """
-        # Instead we parse a string for annotation types
-
-        if len(ids) == 0:
-            return queryset
-        else:
-            filter_keyword = f"{annotation_type}problem__{annotation_type}__id__in"
-            return queryset.filter(**{filter_keyword: ids})
-
     def get_queryset(self) -> QuerySet:
         """
         The queryset to be returned as the list view. Queryset is filtered by annotation and then sorted and then sorted
@@ -111,11 +88,6 @@ class RetrieveProblems(ListAPIView):
         else:
             sorting = (
                 "latest"  # Set sorting to latest as default if there is no value there
-            )
-
-        for parameter_name, parameter_value in query_params.items():
-            queryset = self.filter_by_annotations(
-                queryset=queryset, annotation_type=parameter_name, ids=parameter_value
             )
 
         queryset = self.sort_queryset(queryset, sorting)
