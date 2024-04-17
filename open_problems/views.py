@@ -29,14 +29,14 @@ class RetrieveProblems(ListAPIView):
     filterset_class = OpenProblemsFilter
     pagination_class = Pagination
     serializer_class = OpenProblemsSerializer
+    queryset = OpenProblem.objects.all()
 
     def get_queryset(self) -> QuerySet:
         """
         Use custom manager to sort open problems via query parameter.
         """
-        queryset = (
-            super().get_queryset()
-        )  # Starts with the base queryset, this should trigger filtering.
+        queryset = super().get_queryset()
+        # Starts with the base queryset, this should trigger filtering.
         sorting = self.request.query_params.get("sorting", None)
 
         if sorting == "latest":

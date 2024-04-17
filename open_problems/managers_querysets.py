@@ -7,17 +7,15 @@ class OpenProblemManager(models.Manager):
         return self.filter(parent=None)
 
     def latest(self):
-        return self.order_by("-id")
+        return self.order_by("-problem_id")
 
     def top(self):
         return self.order_by("-descendants_count")
 
     def answered(self):
         return self.annotate(
-            has_solution=Exists(
-                self.solution_set.filter(open_problem_id=OuterRef("pk"))
-            ),
+            has_solution=Exists(self.solution_set.filter(open_problem=OuterRef("pk"))),
             has_discussion=Exists(
-                self.discussion_set.filter(open_problem_id=OuterRef("pk"))
+                self.discussion_set.filter(open_problem=OuterRef("pk"))
             ),
         ).filter(Q(has_solution=True) | Q(has_discussion=True))

@@ -54,7 +54,7 @@ class SpeciesProblem(AnnotationsProblems):
     species = models.ForeignKey(Species, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.species}: {self.open_problem.problem_id} "
+        return f"{self.species}: {self.open_problem.title} "
 
     class Meta:
         db_table_comment = "Relation table for each species and open problem"
@@ -79,7 +79,7 @@ class GeneProblem(AnnotationsProblems):
     gene = models.ForeignKey(Gene, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.gene}: {self.open_problem.problem_id} "
+        return f"{self.gene}: {self.open_problem.title} "
 
 
 class Tag(models.Model):
