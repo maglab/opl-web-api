@@ -5,7 +5,7 @@ from references.service import (
     PmidConverter,
     DoiConverter,
 )
-from ..models import Contact, Organisation, JobField
+from users.models import Contact, Organisation, JobField
 
 
 def create_contact(data: dict):
@@ -22,7 +22,6 @@ def create_contact(data: dict):
     first_name = data["first_name"]
     last_name = data["last_name"]
     email = data["email"]
-    print(organisation)
 
     if first_name and last_name or email:
         organisation_instance, created = (
