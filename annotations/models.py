@@ -22,7 +22,7 @@ class AnnotationsProblems(models.Model):
 class Compound(models.Model):
     id = models.AutoField(primary_key=True)
     compound_name = models.CharField(max_length=50, unique=True)
-    chembl_id = models.CharField(max_length=20, unique=True)  # We track
+    chembl_id = models.CharField(max_length=20, unique=True, blank=True)  # We track
 
     class Meta:
         db_table_comment = "Table for all compounds"
