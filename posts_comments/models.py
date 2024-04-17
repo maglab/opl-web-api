@@ -78,8 +78,8 @@ class CommentDiscussion(models.Model):
 
 
 # Intermediary tables for now
-class SolutionLike(Like):
-    solution = models.ForeignKey(Solution, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ["user", "solution"]  # One like per solution per user
+# class SolutionLike(Like):
+#     solution = models.ForeignKey(Solution, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         unique_together = ["user", "solution"]  # One like per solution per user
