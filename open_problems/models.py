@@ -2,24 +2,24 @@ from django.db import models
 from references.models import Reference
 from annotations.models import Tag
 from .managers_querysets import OpenProblemManager
-
+from users.models import Organisation, JobInformation
 
 """
 We should move this into users app.
 """
 
 
-class JobInformation(models.Model):
-    info_id = models.AutoField(primary_key=True)
-    info_title = models.CharField(max_length=50, unique=True)
-
-    class Meta:
-        abstract = True
-
-
-class Organisation(JobInformation):
-    def __str__(self) -> str:
-        return f"{self.info_title}"
+# class JobInformation(models.Model):
+#     info_id = models.AutoField(primary_key=True)
+#     info_title = models.CharField(max_length=50, unique=True)
+#
+#     class Meta:
+#         abstract = True
+#
+#
+# class Organisation(JobInformation):
+#     def __str__(self) -> str:
+#         return f"{self.info_title}"
 
 
 class JobField(JobInformation):

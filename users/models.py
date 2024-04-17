@@ -4,6 +4,19 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
+class JobInformation(models.Model):
+    info_id = models.AutoField(primary_key=True)
+    info_title = models.CharField(max_length=50, unique=True)
+
+    class Meta:
+        abstract = True
+
+
+class Organisation(JobInformation):
+    def __str__(self) -> str:
+        return f"{self.info_title}"
+
+
 # Need to test how this userprofile would work with open Id.
 class UserProfile(models.Model):
     account = models.OneToOneField(
