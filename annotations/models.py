@@ -22,6 +22,7 @@ class AnnotationsProblems(models.Model):
 class Compound(models.Model):
     id = models.AutoField(primary_key=True)
     compound_name = models.CharField(max_length=50, unique=True)
+    chembl_id = models.CharField(max_length=20, unique=True)  # We track
 
     class Meta:
         db_table_comment = "Table for all compounds"
@@ -79,15 +80,13 @@ class GeneProblem(AnnotationsProblems):
     gene = models.ForeignKey(Gene, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.gene}: {self.open_problem.title} "
+        return f"{self.gene}: {self.open_problem.title}"
 
 
 class Tag(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
-    title = models.CharField(
-        max_length=100, blank=True, null=True
-    )  # Field name made lowercase.
-    description = models.TextField(blank=True, null=True)  # Field name made lowercase.
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.id}: {self.title}"
