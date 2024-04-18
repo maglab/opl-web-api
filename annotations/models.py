@@ -41,7 +41,7 @@ class Species(models.Model):
 
 class Gene(models.Model):
     id = models.AutoField(primary_key=True)
-    gene_name = models.CharField(max_length=50)
+    gene_name = models.CharField(max_length=100)
     gene_symbol = models.CharField(max_length=10)
     entrez_id = models.CharField(max_length=20, blank=True)
     species = models.ForeignKey(
