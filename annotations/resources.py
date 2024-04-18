@@ -3,6 +3,7 @@ from .models import Tag, Gene, Species
 
 
 class TagResource(resources.ModelResource):
+
     class Meta:
         model = Tag
 
