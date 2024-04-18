@@ -19,8 +19,8 @@ class GeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 class SpeciesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["name", "genus", "species"]
-    search_fields = ["name"]
+    list_display = ["full_name", "genus", "species"]
+    search_fields = ["full_name"]
     resource_class = SpeciesResource
 
     def name(self, obj):
