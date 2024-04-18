@@ -9,19 +9,9 @@ class Annotation(models.Model):
         abstract = True
 
 
-class AnnotationsProblems(models.Model):
-    annotation = models.AutoField(primary_key=True)
-    open_problem = models.ForeignKey(
-        "open_problems.OpenProblem", on_delete=models.DO_NOTHING
-    )
-
-    class Meta:
-        abstract = True
-
-
 class Compound(models.Model):
     id = models.AutoField(primary_key=True)
-    compound_name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True)
     chembl_id = models.CharField(max_length=20, unique=True, blank=True)  # We track
 
     class Meta:
@@ -29,13 +19,6 @@ class Compound(models.Model):
 
     def __str__(self):
         return f"{self.id: {self.compound_name}}"
-
-
-class CompoundProblem(AnnotationsProblems):
-    compound = models.ForeignKey(Compound, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.compound.compound_name} : {self.open_problem}"
 
 
 class Species(models.Model):
@@ -51,16 +34,6 @@ class Species(models.Model):
         return f"{self.genus} {self.species}"
 
 
-class SpeciesProblem(AnnotationsProblems):
-    species = models.ForeignKey(Species, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"{self.species}: {self.open_problem.title} "
-
-    class Meta:
-        db_table_comment = "Relation table for each species and open problem"
-
-
 class Gene(models.Model):
     id = models.AutoField(primary_key=True)
     gene_name = models.CharField(max_length=50, unique=True)
@@ -74,13 +47,6 @@ class Gene(models.Model):
 
     class Meta:
         db_table_comment = "Table for all genes"
-
-
-class GeneProblem(AnnotationsProblems):
-    gene = models.ForeignKey(Gene, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return f"{self.gene}: {self.open_problem.title}"
 
 
 class Tag(models.Model):

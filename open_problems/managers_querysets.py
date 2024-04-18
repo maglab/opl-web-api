@@ -7,7 +7,7 @@ class OpenProblemManager(models.Manager):
         return self.filter(parent=None)
 
     def latest(self):
-        return self.order_by("-problem_id")
+        return self.order_by("problem_id")
 
     def top(self):
         return self.order_by("-descendants_count")
