@@ -1,6 +1,6 @@
 from django.db import models
 from references.models import Reference
-from annotations.models import Tag
+from annotations.models import Tag, Species, Compound, Gene
 from .managers_querysets import OpenProblemManager
 from users.models import Contact
 
@@ -13,6 +13,11 @@ class OpenProblemAbstract(models.Model):
         Contact, null=True, on_delete=models.SET_NULL, blank=True
     )  # Non authenticated
     references = models.ManyToManyField(Reference, blank=True)
+    tags = models.ManyToManyField(to=Tag, blank=True)
+    species = models.ManyToManyField(to=Species, blank=True)
+    compounds = models.ManyToManyField(to=Compound, blank=True)
+    genes = models.ManyToManyField(to=Gene, blank=True)
+
     # custom manager here
     objects = OpenProblemManager()
 
@@ -31,7 +36,6 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
-    tags = models.ManyToManyField(to=Tag, blank=True)
 
     @classmethod
     def update_descendants_count(cls):

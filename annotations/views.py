@@ -1,21 +1,14 @@
 from rest_framework import status
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from annotations.models import (
-    CompoundProblem,
-    GeneProblem,
-    SpeciesProblem,
     Compound,
     Gene,
     Species,
     Tag,
 )
 from annotations.serializers import (
-    CompoundProblemSerializer,
-    GeneProblemlSerializer,
-    SpeciesProblemSerializer,
     CompoundsSerializer,
     GeneSerializer,
     SpeciesSerializer,
@@ -103,49 +96,11 @@ class AnnotationProblemViewSet(ReadOnlyModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class MultiAnnotationView(APIView):
-    """
-    A view for retrieving all annotations tied to an open problem.
-    """
-
-    models_serializers = {
-        "gene": (GeneProblem, GeneProblemlSerializer),
-        "compound": (CompoundProblem, CompoundProblemSerializer),
-        "species": (SpeciesProblem, SpeciesProblemSerializer),
-    }
-
-    def get(self, request, problem_id: int):
-        data = {}
-        for key, value in self.models_serializers.items():
-            annotation_name = key
-            intermediary_model, serializer = value
-            queryset = intermediary_model.objects.filter(open_problem=problem_id)
-            data[annotation_name] = [
-                item
-                for item in serializer(
-                    queryset, many=True, context={"request": request}
-                ).data
-                if item != annotation_name
-            ]
-        return Response(data, status=status.HTTP_200_OK)
-
-
 class CompoundViewSet(AnnotationViewSet):
     """Viewset for species model"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(Compound, CompoundsSerializer, *args, **kwargs)
-
-
-class CompoundProblemViewSet(AnnotationProblemViewSet):
-    """Viewset for SpeciesProblem Model"""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            CompoundProblem,
-            CompoundProblemSerializer,
-            annotation_foreign_key="compound",
-        )
 
 
 class GeneViewSet(AnnotationViewSet):
@@ -156,25 +111,11 @@ class GeneViewSet(AnnotationViewSet):
         )
 
 
-class GeneProblemViewSet(AnnotationProblemViewSet):
-    def __init__(self, *args, **kwargs):
-        super().__init__(GeneProblem, GeneProblemlSerializer, "gene_id")
-
-
 class SpeciesViewSet(AnnotationViewSet):
     """Viewset for species model"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(Species, SpeciesSerializer, *args, **kwargs)
-
-
-class SpeciesProblemViewSet(AnnotationProblemViewSet):
-    """Viewset for SpeciesProblem Model"""
-
-    def __init__(self):
-        super().__init__(
-            SpeciesProblem, SpeciesProblemSerializer, annotation_foreign_key="species"
-        )
 
 
 class TagViewSet(AnnotationViewSet):

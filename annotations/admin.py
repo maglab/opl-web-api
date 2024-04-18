@@ -1,12 +1,10 @@
 from django.contrib import admin
-from .models import Gene, GeneProblem, Species, SpeciesProblem, Tag
+from .models import Gene, Species, Tag, Compound
 from import_export.admin import ImportExportModelAdmin
 from .resources import (
     TagResource,
     GeneResource,
-    GeneProblemResource,
     SpeciesResource,
-    SpeciesProblemResource,
 )
 
 
@@ -20,27 +18,20 @@ class GeneAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resource_class = GeneResource
 
 
-class GeneProblemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    autocomplete_fields = ["gene", "open_problem"]
-    resource_class = GeneProblemResource
-
-
 class SpeciesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["name", "genus", "species"]
-    search_fields = ["name"]
+    list_display = ["full_name", "genus", "species"]
+    search_fields = ["full_name"]
     resource_class = SpeciesResource
 
     def name(self, obj):
         return obj.name
 
 
-class SpeciesProblemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    autocomplete_fields = ["species", "open_problem"]
-    resource_class = SpeciesProblemResource
+class CompoundAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ["id", "name", "chembl_id", "pubchem_id"]
 
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Species, SpeciesAdmin)
-admin.site.register(SpeciesProblem, SpeciesProblemAdmin)
 admin.site.register(Gene, GeneAdmin)
-admin.site.register(GeneProblem, GeneProblemAdmin)
+admin.site.register(Compound, CompoundAdmin)

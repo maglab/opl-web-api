@@ -1,70 +1,34 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from utils.serializers import AllFieldsSerializer
 from .models import (
     Compound,
-    CompoundProblem,
     Gene,
-    GeneProblem,
     Species,
-    SpeciesProblem,
     Tag,
 )
 
 
-class AnnotationProblemSerializer(ModelSerializer):
-    related_field = None
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        related_instance = data.pop(self.related_field)
-        return related_instance
-
-
-class CompoundsSerializer(ModelSerializer):
-    class Meta:
+class CompoundsSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Compound
-        fields = "__all__"
 
 
-class CompoundProblemSerializer(AnnotationProblemSerializer):
-    compound = CompoundsSerializer()
-    related_field = "compound"
-
-    class Meta:
-        model = CompoundProblem
-        fields = ["compound"]
-
-
-class GeneSerializer(ModelSerializer):
-    class Meta:
+class GeneSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Gene
-        fields = "__all__"
 
 
-class GeneProblemlSerializer(AnnotationProblemSerializer):
-    gene = GeneSerializer()
-    related_field = "gene"
+class SpeciesSerializer(AllFieldsSerializer):
+    full_name = SerializerMethodField(read_only=True)
 
-    class Meta:
-        model = GeneProblem
-        fields = ["gene"]
+    @staticmethod
+    def get_full_name(obj):
+        return f"{obj.genus} {obj.species}"
 
-
-class SpeciesSerializer(ModelSerializer):
-    class Meta:
+    class Meta(AllFieldsSerializer.Meta):
         model = Species
-        fields = "__all__"
 
 
-class SpeciesProblemSerializer(AnnotationProblemSerializer):
-    species = SpeciesSerializer()
-    related_field = "species"
-
-    class Meta:
-        model = SpeciesProblem
-        fields = ["species"]
-
-
-class TagSerializer(ModelSerializer):
-    class Meta:
+class TagSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Tag
-        fields = "__all__"
