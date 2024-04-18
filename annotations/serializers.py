@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from utils.serializers import AllFieldsSerializer
 from .models import (
     Compound,
     Gene,
@@ -7,34 +8,26 @@ from .models import (
 )
 
 
-class AnnotationProblemSerializer(ModelSerializer):
-    related_field = None
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        related_instance = data.pop(self.related_field)
-        return related_instance
-
-
-class CompoundsSerializer(ModelSerializer):
-    class Meta:
+class CompoundsSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Compound
-        fields = "__all__"
 
 
-class GeneSerializer(ModelSerializer):
-    class Meta:
+class GeneSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Gene
-        fields = "__all__"
 
 
-class SpeciesSerializer(ModelSerializer):
-    class Meta:
+class SpeciesSerializer(AllFieldsSerializer):
+    full_name = SerializerMethodField(read_only=True)
+
+    def get_full_name(self, obj):
+        return f"{obj.genus} {obj.species}"
+
+    class Meta(AllFieldsSerializer.Meta):
         model = Species
-        fields = "__all__"
 
 
-class TagSerializer(ModelSerializer):
-    class Meta:
+class TagSerializer(AllFieldsSerializer):
+    class Meta(AllFieldsSerializer.Meta):
         model = Tag
-        fields = "__all__"
