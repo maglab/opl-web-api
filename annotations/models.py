@@ -11,8 +11,9 @@ class Annotation(models.Model):
 
 class Compound(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, unique=True)
-    chembl_id = models.CharField(max_length=20, unique=True, blank=True)  # We track
+    name = models.CharField(max_length=100, unique=True)
+    chembl_id = models.CharField(max_length=20, blank=True)
+    pubchem_id = models.CharField(max_length=20, blank=True)
 
     class Meta:
         db_table_comment = "Table for all compounds"
