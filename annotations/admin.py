@@ -28,9 +28,10 @@ class SpeciesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 class CompoundAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["id", ""]
+    list_display = ["id", "name", "chembl_id"]
 
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Species, SpeciesAdmin)
 admin.site.register(Gene, GeneAdmin)
+admin.site.register(Compound, CompoundAdmin)

@@ -18,7 +18,7 @@ class Compound(models.Model):
         db_table_comment = "Table for all compounds"
 
     def __str__(self):
-        return f"{self.id: {self.compound_name}}"
+        return f"{self.id}:{self.name}"
 
 
 class Species(models.Model):

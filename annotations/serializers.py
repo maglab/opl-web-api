@@ -21,7 +21,8 @@ class GeneSerializer(AllFieldsSerializer):
 class SpeciesSerializer(AllFieldsSerializer):
     full_name = SerializerMethodField(read_only=True)
 
-    def get_full_name(self, obj):
+    @staticmethod
+    def get_full_name(obj):
         return f"{obj.genus} {obj.species}"
 
     class Meta(AllFieldsSerializer.Meta):
