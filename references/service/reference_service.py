@@ -44,3 +44,13 @@ class ReferenceService:
         reference_instance.authors.add(*author_instances)
 
         return reference_instance
+
+
+def retrieve_references(references: list) -> list:
+    # Return a list of primary keys of each instance for now
+    reference_instances = []
+    for reference in references:
+        reference_service_object = ReferenceService(reference)
+        reference_instance = reference_service_object.create_reference()
+        reference_instances.append(reference_instance)
+    return reference_instances

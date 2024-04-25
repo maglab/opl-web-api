@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-
 from references.models import Reference
+from .service import ReferenceService
 
 
 class ReferenceSerializer(ModelSerializer):

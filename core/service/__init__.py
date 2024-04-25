@@ -1,4 +1,4 @@
-from .get_or_create_instance import get_or_create_instance
+from .service import get_or_create_instances
 from .queryset_helpers import *
 
-__all__ = ["get_or_create_instance", "get_queryset_annotated", "get_queryset_ordered"]
+__all__ = ["get_or_create_instances", "get_queryset_annotated", "get_queryset_ordered"]

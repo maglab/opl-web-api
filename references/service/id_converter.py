@@ -33,12 +33,30 @@ class DoiConverter(Converter):
         super().__init__(identifier)
 
     def __format_reference(self):
-        """Gets reference information from cross-ref api response and creates citation"""
+        """Gets reference information from cross-ref API response and creates citation."""
+        if not self.__response_data:
+            return DOIRequestException(message="No reference found")
+
         authors = self.__response_data.get("author", [])
-        date_parts = self.__response_data.get("published-print", {}).get(
-            "date-parts", []
-        )
-        year = date_parts[0][0] if date_parts and date_parts[0] else ""
+        try:
+            author_list = (
+                ", ".join(
+                    f"{author['family']}, {author['given'][0]}." for author in authors
+                )
+                if authors
+                else ""
+            )
+        except AttributeError:
+            author_list = []
+
+        try:
+            date_parts = self.__response_data.get("published-print", {}).get(
+                "date-parts", []
+            )
+            year = str(date_parts[0][0]) if date_parts and date_parts[0] else ""
+        except (AttributeError, IndexError):
+            year = ""
+
         title = self.__response_data.get("title", [""])[0]
         journal = self.__response_data.get("short-container-title", [""])[0]
         volume = self.__response_data.get("volume", "")
@@ -47,11 +65,7 @@ class DoiConverter(Converter):
         publisher = self.__response_data.get("publisher", "")
         doi = self.__response_data.get("DOI", "")
 
-        author_list = ", ".join(
-            [f"{author['family']}, {author['given'][0]}." for author in authors]
-        )
-
-        citation = f'{author_list} ({year}) "{title}." *{journal}*, {volume}({issue}), {pages}. {publisher}. doi:{doi}'
+        citation = f'{author_list[0] if isinstance(author_list, list) else author_list} ({year}) "{title}." *{journal}*, {volume}({issue}), {pages}. {publisher}. doi:{doi}'
         self.reference_dictionary = {
             "title": title,
             "authors": author_list,
@@ -137,11 +151,14 @@ class PmidConverter(Converter):
             authors: list - List containing names of authors as strings
         """
         authors = []
-        for author in author_list.findall(".//Author"):
-            last_name = self.__extract_text(author, ".//LastName")
-            initials = self.__extract_text(author, ".//Initials")
-            if last_name and initials:
-                authors.append(f"{last_name}, {initials}")
+        try:
+            for author in author_list.findall(".//Author"):
+                last_name = self.__extract_text(author, ".//LastName")
+                initials = self.__extract_text(author, ".//Initials")
+                if last_name and initials:
+                    authors.append(f"{last_name}, {initials}")
+        except AttributeError:
+            return authors
         return authors
 
     def __format_reference(self):

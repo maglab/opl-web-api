@@ -9,10 +9,7 @@ from posts_comments.views.posts_view import (
     ListCreateDiscussion,
     PostDetail,
 )
-from posts_comments.views.verify_references_view import (
-    verify_reference,
-    verify_references,
-)
+
 
 # url /api/posts/
 urlpatterns = [
@@ -29,6 +26,4 @@ urlpatterns = [
         "<int:id>/<str:post_type>/comments", ListCreateComments.as_view()
     ),  # Post and List
     path("<str:post_type>/comments/<int:id>", CommentDetail.as_view()),
-    path("verify-reference", verify_reference),  # Will delete later
-    path("verify-references", verify_references),  # Will delete later
 ]
