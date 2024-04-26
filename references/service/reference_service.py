@@ -7,12 +7,12 @@ class ReferenceService:
     """
 
     def __init__(self, reference_data: dict):
-        self.title = reference_data["title"]
-        self.year = reference_data["year"]
-        self.journal_name = reference_data["journal"]
-        self.author_names = reference_data["authors"]
-        self.citation = reference_data["citation"]
-        self.doi = reference_data["doi"]
+        self.title = reference_data.get("title", "")
+        self.year = reference_data.get("year", "")
+        self.journal_name = reference_data.get("journal_name", "")
+        self.author_names = reference_data.get("author", "")
+        self.citation = reference_data.get("citation", "")
+        self.doi = reference_data.get("doi", "")
 
     def _create_journal_instance(self):
         journal_instance, created = Journal.objects.get_or_create(
@@ -44,3 +44,13 @@ class ReferenceService:
         reference_instance.authors.add(*author_instances)
 
         return reference_instance
+
+
+def retrieve_references(references: list) -> list:
+    # Return a list of primary keys of each instance for now
+    reference_instances = []
+    for reference in references:
+        reference_service_object = ReferenceService(reference)
+        reference_instance = reference_service_object.create_reference()
+        reference_instances.append(reference_instance)
+    return reference_instances

@@ -62,6 +62,10 @@ class SubmittedOpenProblem(OpenProblemAbstract):
     email = models.EmailField(max_length=50, null=True, blank=True)
     job_field = models.CharField(max_length=100, blank=True)
     organisation = models.CharField(max_length=100, blank=True)
+    tags = models.ManyToManyField(to=Tag, blank=True)
+    species = models.ManyToManyField(to=Species, blank=True)
+    compounds = models.ManyToManyField(to=Compound, blank=True)
+    genes = models.ManyToManyField(to=Gene, blank=True)
 
     def __str__(self) -> str:
         return f"{self.title} : {self.email}"

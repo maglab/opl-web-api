@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import UserProfile
+from .models import UserProfile, Contact
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -24,3 +24,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if profile_data:
             UserProfile.objects.get_or_create(account=user, **profile_data)
         return user
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = "__all__"

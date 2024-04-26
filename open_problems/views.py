@@ -1,19 +1,19 @@
 from django.db.models import QuerySet
 from django.db import transaction
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from django_filters.rest_framework import DjangoFilterBackend
 from open_problems.models import OpenProblem, SubmittedOpenProblem
+from .service.submit_service import set_up_data
 from open_problems.serializers import (
     OpenProblemsSerializer,
-    SubmittedOpenProblemSerializer,
+    SubmittedOpenProblemPostSerializer,
 )
 from utils.Pagination import Pagination
 from references.serializers import ReferenceSerializer
 from .filters import OpenProblemsFilter
-from .service.create_instances import create_contact, pmid_doi_conversion
 
 
 class RetrieveProblems(ListAPIView):
@@ -81,29 +81,26 @@ class ListReferencesView(ListAPIView):
         return open_problem.references.all()
 
 
-class SubmitOpenProblemView(ListCreateAPIView):
+class SubmitOpenProblemView(CreateAPIView):
     queryset = SubmittedOpenProblem.objects.all()
-    serializer_class = SubmittedOpenProblemSerializer
+    serializer_class = SubmittedOpenProblemPostSerializer
 
     def create(self, request, *args, **kwargs):
-        try:
-            with transaction.atomic():
-                # Create necessary instances
-                contact_instance = create_contact(data=request.data)
-                converted_references, unconverted_references = pmid_doi_conversion(
-                    reference_identifiers=request.data["references"]
-                )
-                request.data["references"] = converted_references
-                request.data["contact"] = (
-                    contact_instance.pk if contact_instance else None
-                )
-                serializer = self.serializer_class(data=request.data)
-                if serializer.is_valid():
+        with transaction.atomic():
+            try:
+                data = set_up_data(request.data)
+                print(data)
+                serializer = self.serializer_class(data=data)
+                if serializer.is_valid(raise_exception=True):
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(
-                {"error": f"An error occurred while processing the request. {e}"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+                else:
+                    return Response(
+                        data={f"error": f"Invalid data sent to endpoint"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            except Exception as e:
+                return Response(
+                    data={"error": f"Caught error {e}"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )

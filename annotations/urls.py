@@ -15,7 +15,7 @@ from annotations.views import (
 router = routers.DefaultRouter()
 viewsets = {
     "gene": GeneViewSet,
-    "subject": TagViewSet,
+    "tag": TagViewSet,
     "species": SpeciesViewSet,
     "compound": CompoundViewSet,
 }
@@ -24,7 +24,6 @@ for route, viewset in viewsets.items():
     router.register(route, viewset, basename=route)
 
 # Create a list of prefixes for the viewsets for urls to be dynamically generated
-
 
 # Base url api/annotations/
 urlpatterns = [
