@@ -23,7 +23,7 @@ class AnnotationViewSet(ReadOnlyModelViewSet, ListModelMixin):
 
     def __init__(self, detail_model, detail_serializer, *args, **kwargs):
         self.detail_model = detail_model
-        self.queryset = detail_model.objects.all()
+        self.queryset = detail_model.objects.filter(verified=True)
         self.serializer_class = detail_serializer
         super().__init__()
 
@@ -47,9 +47,11 @@ class CompoundViewSet(AnnotationViewSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(Compound, CompoundsSerializer, *args, **kwargs)
-        self.queryset = Compound.objects.annotate(
-            open_problem_count=Count("openproblem__compounds")
-        ).order_by("-open_problem_count")
+        self.queryset = (
+            Compound.objects.filter(verified=True)
+            .annotate(open_problem_count=Count("openproblem__compounds"))
+            .order_by("-open_problem_count")
+        )
 
 
 class GeneViewSet(AnnotationViewSet):
@@ -58,18 +60,22 @@ class GeneViewSet(AnnotationViewSet):
             Gene,
             GeneSerializer,
         )
-        self.queryset = Gene.objects.annotate(
-            open_problem_count=Count("openproblem__genes")
-        ).order_by("-open_problem_count")
+        self.queryset = (
+            Gene.objects.filter(verified=True)
+            .annotate(open_problem_count=Count("openproblem__genes"))
+            .order_by("-open_problem_count")
+        )
 
 
 class SpeciesViewSet(AnnotationViewSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(Species, SpeciesSerializer, *args, **kwargs)
-        self.queryset = Species.objects.annotate(
-            open_problem_count=Count("openproblem__species")
-        ).order_by("-open_problem_count")
+        self.queryset = (
+            Species.objects.filter(verified=True)
+            .annotate(open_problem_count=Count("openproblem__species"))
+            .order_by("-open_problem_count")
+        )
 
 
 class TagViewSet(AnnotationViewSet):
@@ -79,6 +85,8 @@ class TagViewSet(AnnotationViewSet):
             Tag,
             TagSerializer,
         )
-        self.queryset = Tag.objects.annotate(
-            open_problem_count=Count("openproblem__tags")
-        ).order_by("-open_problem_count")
+        self.queryset = (
+            Tag.objects.filter(verified=True)
+            .annotate(open_problem_count=Count("openproblem__tags"))
+            .order_by("-open_problem_count")
+        )

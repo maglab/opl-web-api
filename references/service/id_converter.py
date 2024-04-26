@@ -124,9 +124,11 @@ class PmidConverter(Converter):
             return PMIDRequestException(
                 "An error occurred during the request:" + str(e)
             )
+        except AttributeError:
+            return PMIDRequestException("Reference not found")
         else:
             response_json = response.json()
-            apa_citation = response_json["apa"]["format"]
+            apa_citation = response_json.get("apa", None).get("format", None)
             return apa_citation
 
     @staticmethod
