@@ -7,12 +7,12 @@ class ReferenceService:
     """
 
     def __init__(self, reference_data: dict):
-        self.title = reference_data["title"]
-        self.year = reference_data["year"]
-        self.journal_name = reference_data["journal"]
-        self.author_names = reference_data["authors"]
-        self.citation = reference_data["citation"]
-        self.doi = reference_data["doi"]
+        self.title = reference_data.get("title", "")
+        self.year = reference_data.get("year", "")
+        self.journal_name = reference_data.get("journal_name", "")
+        self.author_names = reference_data.get("author", "")
+        self.citation = reference_data.get("citation", "")
+        self.doi = reference_data.get("doi", "")
 
     def _create_journal_instance(self):
         journal_instance, created = Journal.objects.get_or_create(
