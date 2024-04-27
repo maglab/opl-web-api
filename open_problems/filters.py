@@ -9,11 +9,10 @@ class MultiValueCharFilter(filters.BaseCSVFilter, filters.CharFilter):
     def filter(self, qs, value):
         # value is either a list or an 'empty' value
         values = value or []
-
         for value in values:
             qs = super(MultiValueCharFilter, self).filter(qs, value)
 
-        return qs
+        return qs.distinct()
 
 
 class FullNameFilter(filters.CharFilter):
@@ -34,7 +33,7 @@ class FullNameFilter(filters.CharFilter):
                         Q(contact__first_name__icontains=part)
                         | Q(contact__last_name__icontains=part)
                     )
-        return qs
+        return qs.distinct()
 
 
 class OpenProblemsFilter(FilterSet):
