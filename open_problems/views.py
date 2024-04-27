@@ -21,10 +21,6 @@ class RetrieveProblems(ListAPIView):
     For retrieving all open problems and sort them depending on url and query parameters.
     """
 
-    search_fields = [
-        "title",
-        "description",
-    ]
     filter_backends = [DjangoFilterBackend]
     filterset_class = OpenProblemsFilter
     pagination_class = Pagination

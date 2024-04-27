@@ -5,54 +5,53 @@ from references.models import Reference
 from .models import OpenProblem
 
 
+class MultiValueCharFilter(filters.BaseCSVFilter, filters.CharFilter):
+    def filter(self, qs, value):
+        # value is either a list or an 'empty' value
+        values = value or []
+
+        for value in values:
+            qs = super(MultiValueCharFilter, self).filter(qs, value)
+
+        return qs
+
+
 class FullNameFilter(filters.CharFilter):
     def filter(self, qs, value):
-        if value:
-            parts = value.split()
-            if len(parts) == 2:
-                first_name, last_name = parts
-                qs = qs.filter(
-                    Q(contact__first_name__icontains=first_name)
-                    & Q(contact__last_name__icontains=last_name)
-                )
-            elif len(parts) == 1:
-                part = parts[0]
-                qs = qs.filter(
-                    Q(contact__first_name__icontains=part)
-                    | Q(contact__last_name__icontains=part)
-                )
+        values = value or []
+        for value in values:
+            if value:
+                parts = value.split()
+                if len(parts) == 2:
+                    first_name, last_name = parts
+                    qs = qs.filter(
+                        Q(contact__first_name__icontains=first_name)
+                        & Q(contact__last_name__icontains=last_name)
+                    )
+                elif len(parts) == 1:
+                    part = parts[0]
+                    qs = qs.filter(
+                        Q(contact__first_name__icontains=part)
+                        | Q(contact__last_name__icontains=part)
+                    )
         return qs
 
 
 class OpenProblemsFilter(FilterSet):
-    title = filters.CharFilter(lookup_expr="icontains")
-    tags = filters.ModelMultipleChoiceFilter(
-        queryset=Tag.objects.all(),
-        field_name="tags",
-        to_field_name="title",
-        conjoined=True,
-        label="tags",
+    title = filters.CharFilter(field_name="title", lookup_expr="icontains")
+    tags = MultiValueCharFilter(field_name="tags__title", lookup_expr="icontains")
+    genes = MultiValueCharFilter(
+        field_name="genes__gene_symbol", lookup_expr="icontains"
     )
-
-    # gene_problem_set is part of django naming convention
-    gene = filters.ModelMultipleChoiceFilter(
-        queryset=Gene.objects.all(),
-        field_name="geneproblem__gene__gene_symbol",  # Adjust based on how you want to filter
-        to_field_name="gene_symbol",  # This tells the filter to match the input against the gene_name field
-        label="Gene",
-        conjoined=True,
-    )
-    doi = filters.ModelMultipleChoiceFilter(
-        queryset=Reference.objects.all(),
-        field_name="references__doi",
-        to_field_name="doi",
-        label="reference doi",
-        conjoined=True,
+    references = MultiValueCharFilter(
+        field_name="references__doi", lookup_expr="icontains"
     )
     # Make custom method for filter since we cannot use name property.
-    species = filters.CharFilter(method="filter_by_species", label="species")
+    species = MultiValueCharFilter(
+        field_name="species__full_name", label="species", lookup_expr="icontains"
+    )
     # For now, we will search the contact table as we do not have any auth users.
-    author = FullNameFilter(label="Author")
+    authors = FullNameFilter(label="Author", field_name="contact")
 
     @staticmethod
     def filter_by_species(queryset, name, value):
@@ -73,4 +72,4 @@ class OpenProblemsFilter(FilterSet):
 
     class Meta:
         model = OpenProblem
-        fields = ["title", "tags", "gene", "species", "doi"]
+        fields = ["title", "tags", "genes", "species", "references", "authors"]
