@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import CreateAPIView
-from serializers import GeneralReportSerializer, OpenProblemReportSerializer
-from models import GeneralReport, OpenProblemReport
+from .serializers import GeneralReportSerializer, OpenProblemReportSerializer
+from .models import GeneralReport, OpenProblemReport
 
 # Create your views here.
 
