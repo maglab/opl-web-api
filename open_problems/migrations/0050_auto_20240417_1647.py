@@ -32,6 +32,7 @@ def migrate_gene_problems(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("open_problems", "0049_openproblem_compounds_openproblem_genes_and_more"),
+        ("users", "0004_contact"),
     ]
 
     operations = [

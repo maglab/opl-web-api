@@ -8,7 +8,6 @@ from django.db import migrations
 
 def transfer_many_to_many(apps, schema_editor):
     intermediary_model = apps.get_model("open_problems", "ProblemReference")
-
     for intermediary_object in intermediary_model.objects.all():
         open_problem = intermediary_object.open_problem
         reference = intermediary_object.reference

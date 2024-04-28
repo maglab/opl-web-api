@@ -8,6 +8,10 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("open_problems", "0047_alter_contact_job_field_delete_jobfield"),
+        (
+            "posts_comments",
+            "0037_delete_solutionlike",
+        ),
         ("users", "0004_contact"),
     ]
 

@@ -10,7 +10,10 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("open_problems", "0003_remove_researchsubmission_contact_and_more"),
+        (
+            "open_problems",
+            "0003_remove_researchsubmission_contact_and_more",
+        ),
     ]
 
     operations = [

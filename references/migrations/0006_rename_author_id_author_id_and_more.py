@@ -7,6 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("references", "0005_reference"),
+        ("open_problems", "0039_alter_problemreference_reference_id_and_more"),
     ]
 
     operations = [
