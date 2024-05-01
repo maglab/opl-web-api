@@ -1,13 +1,14 @@
-name: Publish docker image
+name: Publish development docker image
 
 on:
   push:
-    branches: ["development", "main"]
+    branches: ["development"]
   pull_request:
-    branches: ["development", "main"]
+    branches: ["development"]
 
 jobs:
   push_to_registry:
+    environment: "development"
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
