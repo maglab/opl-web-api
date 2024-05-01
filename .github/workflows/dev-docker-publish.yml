@@ -8,7 +8,7 @@ on:
 
 jobs:
   push_to_registry:
-    environment: "development"
+    environment: production
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
