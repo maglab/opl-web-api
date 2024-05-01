@@ -1,3 +1,4 @@
+import os
 from os import environ, path
 from os.path import join, dirname
 from pathlib import Path
@@ -158,13 +159,23 @@ SESSION_COOKIE_DOMAIN = session_cookie_domain
 
 CSRF_TRUSTED_ORIGINS = [
     "https://dev.longevityknowledge.app",
-    "https://dev-api.longevityknowledge.app",
-    "https://admin.longevityknowledge.app",
+    "https://longevityknowledge.app",
     "http://localhost:8000",
     "http://127.0.0.1",
 ]
 
 ALLOWED_HOSTS = ["*"]
+
 ## AZURE IDS
 AZURE_TENANT_ID = environ.get("AZURE_TENANT_ID")
 AZURE_CLIENT_ID = environ.get("AZURE_CLIENT_ID")
+
+# EMAIL BACKENDS - MAILTRAP
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "live.smtp.mailtrap.io"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = "2525"
+
+MAILTRAP_API_KEY = os.environ.get("MAILTRAP_API_KEY")
+MAILTRAP_SENDER = os.environ.get("MAILTRAP_SENDER")
