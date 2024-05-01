@@ -1,13 +1,14 @@
-name: Publish docker image
+name: Publish development docker image
 
 on:
   push:
-    branches: ["development", "main"]
+    branches: ["development"]
   pull_request:
-    branches: ["development", "main"]
+    branches: ["development"]
 
 jobs:
   push_to_registry:
+    environment: production
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -47,4 +48,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: microk8s kubectl rollout --namespace=opl-dev restart deployment
+          script: microk8s kubectl rollout --namespace=${{ vars.NAMESPACE }} restart deployment

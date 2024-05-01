@@ -1,48 +1,50 @@
-from mailersend import emails
 import os
+import mailtrap
+from abc import ABC, abstractmethod
+
+TEMPLATE_MAPPING = {"submit_problem_confirmation": ""}
 
 
-class EmptyEmailBodyError(Exception):
-    """Exception raised when user has not set up the email body"""
+def set_up_mailtrap_client(
+    api_host: str = mailtrap.MailtrapClient.DEFAULT_HOST,
+    api_port: int = mailtrap.MailtrapClient.DEFAULT_PORT,
+) -> mailtrap.MailtrapClient:
+    api_key = os.environ.get("MAILTRAP_API_KEY")
+    client = mailtrap.MailtrapClient(
+        token=api_key, api_port=api_port, api_host=api_host
+    )
+    return client
 
-    def __init__(self, message):
-        self.message = message
 
-    def __str__(self):
-        return str(self.message)
+class MailTrapSender:
+    sender = os.environ.get("MAILTRAP_SENDER")
+
+    def __init__(self, client: mailtrap.MailtrapClient) -> None:
+        self.client = client
+
+    def send_template_email(
+        self, uuid: str, variables: dict, to_email: str, name: str
+    ) -> None:
+        template = mailtrap.MailFromTemplate(
+            sender=mailtrap.Address(email=self.sender, name=name),
+            to=[mailtrap.Address(to_email)],
+            template_uuid=uuid,
+            template_variables=variables,
+        )
+        self.client.send(template)
 
 
-class EmailSenderTemplate:
-    mail_body = {}
-    mailer = emails.NewEmail(os.environ.get("MAILERSEND_API_KEY"))
-    ready_to_send = False
+# Classes for extracting template variables
+class Extractor(ABC):
+    @abstractmethod
+    def extract(self, data):
+        pass
 
-    def __init__(
-        self,
-        subject: str,
-        template_id: str,
-        mail_from: dict,
-        recipients: dict,
-        personalization: dict,
-    ):
-        self.subject = subject
-        self.template_id = template_id
-        self.mail_from = mail_from
-        self.recipients = recipients
-        self.personalization = personalization
 
-    def set_up_email(self):
-        self.mailer.set_mail_from(self.mail_from, self.mail_body)
-        self.mailer.set_mail_to(self.recipients, self.mail_body)
-        self.mailer.set_subject(self.subject, self.mail_body)
-        self.mailer.set_template(self.template_id, self.mail_body)
-        self.mailer.set_advanced_personalization(self.personalization, self.mail_body)
-        self.ready_to_send = True
-
-    def send_email(self):
-        if self.ready_to_send:
-            self.mailer.send(self.mail_body)
-        else:
-            raise EmptyEmailBodyError(
-                "Please set up the email body through set_up_emal()"
-            )
+class EmailExtractor(Extractor):
+    def extract(self, data):
+        email = data.get("email", "")
+        if email:
+            receiver = email.split("@")[0]
+            return receiver
+        return email
