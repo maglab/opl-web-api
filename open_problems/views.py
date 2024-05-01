@@ -85,10 +85,11 @@ class SubmitOpenProblemView(CreateAPIView):
         with transaction.atomic():
             try:
                 data = set_up_data(request.data)
-                print(data)
                 serializer = self.serializer_class(data=data)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
+                    # Here we check whether there is a contact
+                    email = serializer.data.get("email")
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
                 else:
                     return Response(
