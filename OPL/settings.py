@@ -115,7 +115,8 @@ DATABASES = {
         "PASSWORD": environ.get("DB_PASSWORD"),
         "HOST": environ.get("DB_HOST"),
         "PORT": environ.get("DB_PORT"),
-    }
+    },
+    "test": {"NAME": f"test_{environ.get('DB_NAME')}"},
 }
 
 CACHES = {

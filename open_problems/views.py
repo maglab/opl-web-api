@@ -12,11 +12,10 @@ from open_problems.serializers import (
     SubmittedOpenProblemPostSerializer,
 )
 from utils.Pagination import Pagination
-from references.serializers import ReferenceSerializer
 from .filters import OpenProblemsFilter
 
 
-class RetrieveProblems(ListAPIView):
+class ListProblemsView(ListAPIView):
     """
     For retrieving all open problems and sort them depending on url and query parameters.
     """
@@ -47,7 +46,7 @@ class RetrieveProblems(ListAPIView):
         return queryset
 
 
-class RetrieveSingleProblem(RetrieveAPIView):
+class RetrieveProblemView(RetrieveAPIView):
     """
     Retrieve single open problem using an identifier
     """
@@ -55,49 +54,32 @@ class RetrieveSingleProblem(RetrieveAPIView):
     serializer_class: Serializer = OpenProblemsSerializer
     queryset = OpenProblem
 
-    def get(self, request, *args, **kwargs):
-        """
-        Retrieve id from url path and return single object instance
-        """
-        object_id = self.kwargs.get("id")
-        queryset = self.queryset.objects.get(problem_id=object_id)
-        return Response(self.serializer_class(queryset).data, status=status.HTTP_200_OK)
-
-
-class ListReferencesView(ListAPIView):
-    """
-    List view to list all references for an open problem.
-    """
-
-    serializer_class = ReferenceSerializer
-
-    def get_queryset(self):
-        pk = self.kwargs["pk"]
-        open_problem = OpenProblem.objects.get(pk=pk)
-        return open_problem.references.all()
-
 
 class SubmitOpenProblemView(CreateAPIView):
     queryset = SubmittedOpenProblem.objects.all()
     serializer_class = SubmittedOpenProblemPostSerializer
 
+    @staticmethod
+    def send_confirmation_email(user_email: str): ...
+
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
-        with transaction.atomic():
-            try:
-                data = set_up_data(request.data)
-                serializer = self.serializer_class(data=data)
-                if serializer.is_valid(raise_exception=True):
-                    serializer.save()
-                    # Here we check whether there is a contact
-                    email = serializer.data.get("email")
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                else:
-                    return Response(
-                        data={f"error": f"Invalid data sent to endpoint"},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-            except Exception as e:
+        try:
+            data = set_up_data(request.data)
+            serializer = self.serializer_class(data=data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                # Here we check whether there is a contact
+                email = serializer.data.get("email")
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
                 return Response(
-                    data={"error": f"Caught error {e}"},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    data={f"error": f"Invalid data sent to endpoint"},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
+        except Exception as e:
+            return Response(
+                data={"error": f"Caught error {e}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

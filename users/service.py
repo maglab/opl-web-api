@@ -14,12 +14,12 @@ def get_or_create_contact(data: dict):
     organisation_instance = None
     if organisation:
         organisation_instance, _ = Organisation.objects.get_or_create(
-            info_title=organisation
+            title=organisation
         )
 
     job_field_instance = None
     if job_field:
-        job_field_instance, _ = JobField.objects.get_or_create(info_title=job_field)
+        job_field_instance, _ = JobField.objects.get_or_create(title=job_field)
 
     contact_instance, created = Contact.objects.get_or_create(
         first_name=first_name,
