@@ -36,7 +36,7 @@ class EmailClientFactory:
 
 class EmailSender(ABC):
     @abstractmethod
-    def send_email(self, to_email, subject, body):
+    def send_email(self, to_email, subject, body, name):
         pass
 
 
@@ -44,7 +44,9 @@ class MailtrapTemplateEmailSender(EmailSender):
     def __init__(self, client: mailtrap.MailtrapClient):
         self.client = client
 
-    def send_email(self, to_email: str, template_uuid: str, template_variables: dict):
+    def send_email(
+        self, to_email: str, template_uuid: str, template_variables: dict, name: str
+    ):
         mail = mailtrap.MailFromTemplate(
             sender=mailtrap.Address(
                 email="mailtrap@longevityknowledge.app", name="Mailtrap Test"

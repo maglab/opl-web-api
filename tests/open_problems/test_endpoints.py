@@ -1,13 +1,5 @@
 import json
 import random
-
-from django.urls import reverse, resolve
-from open_problems.views import (
-    ListProblemsView,
-    SubmitOpenProblemView,
-    RetrieveProblemView,
-)
-from .factories import OpenProblemFactory
 import pytest
 
 
@@ -29,7 +21,7 @@ class TestList:
         assert response.status_code == 200
         assert response_content.get("count") == random_integer
 
-    @pytest.mark.django_db
-    def test_list_query_params(self):
-        """Test with query params"""
-        ...
+    # @pytest.mark.django_db
+    # def test_list_query_params(self):
+    #     """Test with query params"""
+    #     ...

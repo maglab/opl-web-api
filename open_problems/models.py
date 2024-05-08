@@ -25,6 +25,9 @@ class OpenProblemAbstract(models.Model):
         abstract = True
         ordering = ["problem_id"]
 
+    def list_children(self):
+        return ", ".join([str(child) for child in self.children.all()])
+
 
 class OpenProblem(OpenProblemAbstract):
     parent_problem = models.ForeignKey(
