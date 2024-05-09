@@ -44,7 +44,7 @@ class TagAdmin(ImportExportModelAdmin, VerifyAdminMixin, admin.ModelAdmin):
 
 
 class GeneAdmin(ImportExportModelAdmin, VerifyAdminMixin, admin.ModelAdmin):
-    search_fields = ["gene_name", "gene_symbol"]
+    search_fields = ["name", "gene_symbol"]
     resource_class = GeneResource
 
 
@@ -59,6 +59,7 @@ class SpeciesAdmin(ImportExportModelAdmin, VerifyAdminMixin, admin.ModelAdmin):
 
 class CompoundAdmin(ImportExportModelAdmin, VerifyAdminMixin, admin.ModelAdmin):
     list_display = ["id", "name", "chembl_id", "pubchem_id"]
+    search_fields = ["name"]
 
 
 admin.site.register(Tag, TagAdmin)

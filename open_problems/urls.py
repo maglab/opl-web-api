@@ -1,19 +1,16 @@
 from django.urls import path
 
 from .views import (
-    RetrieveProblems,
-    RetrieveSingleProblem,
-    ListReferencesView,
+    ListProblemsView,
+    RetrieveProblemView,
     SubmitOpenProblemView,
 )
 
-
 urlpatterns = [
-    path("", RetrieveProblems.as_view()),
+    path("", ListProblemsView.as_view(), name="list"),
     # Single problem
-    path("<int:id>", RetrieveSingleProblem.as_view()),
+    path("<int:pk>", RetrieveProblemView.as_view(), name="retrieve"),
     # User submitted problem view
-    path("submit", SubmitOpenProblemView.as_view()),
+    path("submit", SubmitOpenProblemView.as_view(), name="submit"),
     # Get references for a problem
-    path("<int:pk>/references", ListReferencesView.as_view()),
 ]

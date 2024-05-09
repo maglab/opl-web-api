@@ -1,7 +1,5 @@
 from django.db.models import Q
 from django_filters import FilterSet, filters
-from annotations.models import Tag, Gene
-from references.models import Reference
 from .models import OpenProblem
 
 

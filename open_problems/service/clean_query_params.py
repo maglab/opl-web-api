@@ -2,7 +2,7 @@ from typing import Type
 
 from rest_framework.request import Request
 
-from utils.Pagination import Pagination
+from core.utils.Pagination import Pagination
 
 
 def clean_query_params(

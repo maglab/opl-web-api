@@ -1,8 +1,8 @@
 from rest_framework.generics import ListCreateAPIView, ListAPIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework import serializers
 from rest_framework.exceptions import NotFound
-from utils.Pagination import Pagination
+from core.utils.Pagination import Pagination
 from ..models import Solution, Discussion
 from ..serializers import SolutionSerializer, DiscussionSerializer
 from references.service import ReferenceService

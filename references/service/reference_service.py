@@ -52,5 +52,5 @@ def retrieve_references(references: list) -> list:
     for reference in references:
         reference_service_object = ReferenceService(reference)
         reference_instance = reference_service_object.create_reference()
-        reference_instances.append(reference_instance)
+        reference_instances.append(reference_instance.pk)
     return reference_instances

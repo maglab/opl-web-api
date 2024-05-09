@@ -3,7 +3,7 @@ from django.apps import apps
 from django.db.models import OuterRef, Exists, Q
 
 
-class OpenProblemManager(models.Manager):
+class OpenProblemQueryset(models.QuerySet):
     def root(self):
         return self.filter(parent=None)
 
@@ -15,7 +15,6 @@ class OpenProblemManager(models.Manager):
 
     def answered(self):
         Solution = apps.get_model("posts_comments", "Solution")
-
         return (
             self.get_queryset()
             .annotate(
@@ -24,4 +23,21 @@ class OpenProblemManager(models.Manager):
                 ),
             )
             .filter(has_solution=True)
-        )
+        ).order_by("-problem_id")
+
+
+class OpenProblemManager(models.Manager):
+    def get_queryset(self):
+        return OpenProblemQueryset(self.model, using=self._db)
+
+    def root(self):
+        return self.get_queryset().root()
+
+    def latest(self):
+        return self.get_queryset().latest()
+
+    def top(self):
+        return self.get_queryset().top()
+
+    def answered(self):
+        return self.get_queryset().answered()
