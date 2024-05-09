@@ -1,7 +1,7 @@
 from users.models import Contact, Organisation, JobField
 
 
-def get_or_create_contact(data: dict):
+def get_or_create_contact(data: dict, return_pk: bool = False):
     organisation = data.get("organisation", "")
     job_field = data.get("job_field", "")
     first_name = data.get("first_name", "")
@@ -28,5 +28,7 @@ def get_or_create_contact(data: dict):
         job_field=job_field_instance,
         organisation=organisation_instance,
     )
-
-    return contact_instance
+    if return_pk:
+        return contact_instance.pk
+    else:
+        return contact_instance

@@ -1,18 +1,33 @@
+import os
+import datetime as dt
+
 from django.db.models import QuerySet
 from django.db import transaction
+
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+
 from django_filters.rest_framework import DjangoFilterBackend
+
 from open_problems.models import OpenProblem, SubmittedOpenProblem
-from .service.submit_service import set_up_data
+from .service.submit_service import SubmitOpenProblemService
 from open_problems.serializers import (
     OpenProblemsSerializer,
     SubmittedOpenProblemPostSerializer,
 )
-from utils.Pagination import Pagination
+from core.utils.Pagination import Pagination
 from .filters import OpenProblemsFilter
+from core.emails import (
+    EmailExtractor,
+    MailtrapTemplateEmailSender,
+    MailtrapConfigurator,
+    get_templates,
+)
+
+
+MAILTRAP_TOKEN = os.environ.get("MAILTRAP_API_KEY")
 
 
 class ListProblemsView(ListAPIView):
@@ -58,26 +73,46 @@ class RetrieveProblemView(RetrieveAPIView):
 class SubmitOpenProblemView(CreateAPIView):
     queryset = SubmittedOpenProblem.objects.all()
     serializer_class = SubmittedOpenProblemPostSerializer
+    email_client = MailtrapConfigurator(token=MAILTRAP_TOKEN)
+    email_templates = get_templates()
 
-    @staticmethod
-    def send_confirmation_email(user_email: str): ...
+    def set_up_email_contents(self, request_data: dict):
+        template = self.email_templates.get("submit_open_problem")
+        uuid = template.get("uuid")
+        user_name, email = EmailExtractor.extract(data=request_data)
+        template_variables = template.get("template_variables")
+        template_variables["contact"] = user_name
+        template_variables["year"] = dt.datetime.now().year
+        return uuid, user_name, email, template_variables
+
+    def send_confirmation_email(self, uuid: str, email: str, template_variables: dict):
+        configured_client = self.email_client.configure_client()
+        sender = MailtrapTemplateEmailSender(client=configured_client)
+        sender.send_email(
+            to_email=email, template_uuid=uuid, template_variables=template_variables
+        )
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
         try:
-            data = set_up_data(request.data)
+            data = SubmitOpenProblemService(request=request.data).create()
             serializer = self.serializer_class(data=data)
             if serializer.is_valid(raise_exception=True):
-                serializer.save()
-                email = serializer.data.get("email")
-                email_name = ...
-
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(
-                    data={f"error": f"Invalid data sent to endpoint"},
-                    status=status.HTTP_400_BAD_REQUEST,
+                if not serializer.validated_data.get(
+                    "email"
+                ) or not serializer.validated_data.get("notify_user"):
+                    serializer.save()
+                    return Response(serializer.data, status.HTTP_201_CREATED)
+                uuid, user_name, email, template_variables = self.set_up_email_contents(
+                    request_data=request.data
                 )
+                self.send_confirmation_email(
+                    uuid=uuid,
+                    email=email,
+                    template_variables=template_variables,
+                )
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response(
                 data={"error": f"Caught error {e}"},

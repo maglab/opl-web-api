@@ -1,4 +1,6 @@
 from django.db import models
+from rest_framework.exceptions import ValidationError
+
 from references.models import Reference
 from annotations.models import Tag, Species, Compound, Gene
 from .managers_querysets import OpenProblemManager
@@ -69,13 +71,14 @@ class SubmittedOpenProblem(OpenProblemAbstract):
     species = models.ManyToManyField(to=Species, blank=True)
     compounds = models.ManyToManyField(to=Compound, blank=True)
     genes = models.ManyToManyField(to=Gene, blank=True)
+    notify_user = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.title} : {self.email}"
 
+    def clean(self):
+        if not self.email and self.notify_user:
+            raise ValidationError("Cannot notify contact without an email")
+
     class Meta:
-        db_table = "submitted_open_problem"
-        db_table_comment = (
-            "These are the submitted questions from users that will undergo review"
-        )
         verbose_name = "Submitted Problem"

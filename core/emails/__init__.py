@@ -1,3 +1,13 @@
-from mailer import EmailClientFactory, MailtrapTemplateEmailSender
+from .mailer import (
+    MailtrapTemplateEmailSender,
+    EmailExtractor,
+    MailtrapConfigurator,
+    get_templates,
+)
 
-__all__ = ["EmailClientFactory", "MailtrapTemplateEmailSender"]
+__all__ = [
+    "MailtrapTemplateEmailSender",
+    "EmailExtractor",
+    "MailtrapConfigurator",
+    "get_templates",
+]

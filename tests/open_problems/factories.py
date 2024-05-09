@@ -15,14 +15,10 @@ from ..references.factories import ReferenceFactory
 fake = Faker()
 
 
-class OpenProblemFactory(DjangoModelFactory):
-    class Meta:
-        model = OpenProblem
-
+class AbstractProblemFactory(DjangoModelFactory):
     title: str = fake.text(max_nb_chars=200)
     description: str = fake.text(max_nb_chars=500)
     contact = SubFactory(ContactFactory)
-    is_active = True
 
     @post_generation
     def references(self, create: bool, extracted: Iterable[Any], **kwargs):
@@ -70,7 +66,14 @@ class OpenProblemFactory(DjangoModelFactory):
         self.species.add(*extracted)
 
 
-class SubmittedOpenProblemFactory(OpenProblemFactory):
+class OpenProblemFactory(AbstractProblemFactory):
+    class Meta:
+        model = OpenProblem
+
+    is_active = True
+
+
+class SubmittedOpenProblemFactory(AbstractProblemFactory):
     class Meta:
         model = SubmittedOpenProblem
 
@@ -79,3 +82,4 @@ class SubmittedOpenProblemFactory(OpenProblemFactory):
     email = fake.email()
     organisation = fake.company()
     job_field = fake.job()
+    notify_user = False

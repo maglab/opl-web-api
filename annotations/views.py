@@ -15,7 +15,6 @@ from annotations.serializers import (
     SpeciesSerializer,
     TagSerializer,
 )
-from utils.exceptions import EmptyQuerySetError
 
 
 class AnnotationViewSet(ReadOnlyModelViewSet, ListModelMixin):
@@ -38,8 +37,8 @@ class AnnotationViewSet(ReadOnlyModelViewSet, ListModelMixin):
 
     def list(self, request, *args, **kwargs):
         """Retrieve all annotation entries"""
-        queryset = self.queryset
-        serializer = self.serializer_class(queryset, many=True)
+        # queryset = self.queryset
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 

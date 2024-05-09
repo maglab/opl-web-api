@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.html import format_html, format_html_join
 from import_export.admin import ImportExportModelAdmin
+
 from open_problems.models import (
     Contact,
     OpenProblem,
@@ -70,6 +71,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 genes=submitted_problem.genes,
                 species=submitted_problem.species,
                 compounds=submitted_problem.compounds,
+                is_active=True,
             )
             # Save the problem
             open_problem.save()

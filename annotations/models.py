@@ -19,7 +19,7 @@ class Species(models.Model):
     id = models.AutoField(primary_key=True)
     genus = models.CharField(max_length=50, blank=True, null=True)
     species = models.CharField(max_length=50, blank=True, null=True)
-    full_name = models.CharField(max_length=100, blank=True, null=True)
+    full_name = models.CharField(max_length=100, blank=True, null=True, unique=True)
     ncbi_tax_id = models.CharField(max_length=20, blank=True)
     verified = models.BooleanField(default=False)
 
@@ -36,7 +36,7 @@ class Species(models.Model):
 class Gene(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    gene_symbol = models.CharField(max_length=10)
+    gene_symbol = models.CharField(max_length=10, unique=True)
     entrez_id = models.CharField(max_length=20, blank=True)
     species = models.ForeignKey(
         Species, blank=True, null=True, on_delete=models.SET_NULL
@@ -54,7 +54,7 @@ class Gene(models.Model):
 
 class Tag(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True, unique=True)
     description = models.TextField(blank=True, null=True)
     verified = models.BooleanField(default=False)
 

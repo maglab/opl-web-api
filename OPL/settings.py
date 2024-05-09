@@ -34,7 +34,6 @@ match (environ.get("DEBUG_MODE")):
         debug_mode = []
 
 cwd_path = Path.cwd()
-
 SECRET_KEY = environ.get("SECRET_KEY")
 
 DEBUG = debug_mode
@@ -79,6 +78,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 REST_FRAMEWORK = {
+    "EXCEPTION_HANDLER": "core.exception_handler.custom_exception_handler",
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",

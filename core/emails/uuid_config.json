@@ -1,0 +1,10 @@
+{
+    "submit_open_problem": {
+      "uuid": "f284b412-5513-41fd-beb5-5b2da5f86f65",
+      "template_variables": {
+      "contact": "Contact",
+      "organisation": "Rejuvenomics Lab",
+      "year": "This year"
+      }
+    }
+}

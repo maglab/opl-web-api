@@ -1,5 +1,8 @@
+import json
+import os
 from abc import ABC, abstractmethod
 import mailtrap
+from django.conf import settings
 
 
 class ClientConfigurator(ABC):
@@ -9,8 +12,8 @@ class ClientConfigurator(ABC):
 
 
 class MailtrapConfigurator(ClientConfigurator):
-    DEFAULT_HOST = "api.mailtrap.io"
-    DEFAULT_PORT = 2525
+    DEFAULT_HOST = mailtrap.MailtrapClient.DEFAULT_HOST
+    DEFAULT_PORT = mailtrap.MailtrapClient.DEFAULT_PORT
 
     def __init__(
         self, token: str, api_host: str = DEFAULT_HOST, api_port: int = DEFAULT_PORT
@@ -25,15 +28,6 @@ class MailtrapConfigurator(ClientConfigurator):
         )
 
 
-class EmailClientFactory:
-    def __init__(self, client_configurator: ClientConfigurator):
-        self.client_configurator = client_configurator
-
-    def get_configured_client(self) -> ClientConfigurator.configure_client:
-        client = self.client_configurator.configure_client()
-        return client
-
-
 class EmailSender(ABC):
     @abstractmethod
     def send_email(self, to_email, subject, body, name):
@@ -41,18 +35,22 @@ class EmailSender(ABC):
 
 
 class MailtrapTemplateEmailSender(EmailSender):
+    sender = os.environ.get("MAILTRAP_SENDER")
+
     def __init__(self, client: mailtrap.MailtrapClient):
         self.client = client
 
     def send_email(
-        self, to_email: str, template_uuid: str, template_variables: dict, name: str
+        self,
+        to_email: str,
+        template_uuid: str,
+        template_variables: dict,
+        name: str = "Open Longevity Group",
     ):
         mail = mailtrap.MailFromTemplate(
-            sender=mailtrap.Address(
-                email="mailtrap@longevityknowledge.app", name="Mailtrap Test"
-            ),
-            to=[mailtrap.Address(email="openlongevitydevgroup@gmail.com")],
-            template_uuid="f284b412-5513-41fd-beb5-5b2da5f86f65",
+            sender=mailtrap.Address(email=self.sender, name=name),
+            to=[mailtrap.Address(email=to_email)],
+            template_uuid=template_uuid,
             template_variables=template_variables,
         )
         self.client.send(mail)
@@ -60,15 +58,26 @@ class MailtrapTemplateEmailSender(EmailSender):
 
 # Classes for extracting template variables
 class Extractor(ABC):
+    @staticmethod
     @abstractmethod
-    def extract(self, data):
+    def extract(data):
         pass
 
 
 class EmailExtractor(Extractor):
-    def extract(self, data):
+
+    @staticmethod
+    def extract(data):
         email = data.get("email", "")
         if email:
             receiver = email.split("@")[0]
-            return receiver
-        return email
+            return receiver, email
+        return None
+
+
+def get_templates(file_path: str = "core/emails/uuid_config.json") -> dict:
+    base_dir = settings.BASE_DIR
+    full_path = os.path.join(base_dir, file_path)
+    with open(full_path, mode="r") as file:  # This might be incorrect
+        templates = json.load(file)
+    return templates
