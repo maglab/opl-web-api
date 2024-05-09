@@ -20,7 +20,7 @@ class SubmitDataclass:
     organisation: str = ""
     job_field: str = ""
     contact: int = None
-    contact_user: bool = False
+    notify_user: bool = False
     references: List[dict] = field(default_factory=list)
     tags: List[Union[str, dict]] = field(default_factory=list)
     compounds: List[Union[str, dict]] = field(default_factory=list)
@@ -104,7 +104,8 @@ class SubmitOpenProblemService:
         else:
             return data
 
-    def _format_data(self, data: SubmitDataclass):
+    @staticmethod
+    def _format_data(data: SubmitDataclass):
         formatted_references = ReferencesConverter(creator=retrieve_references).convert(
             submit_data=data
         )
@@ -135,7 +136,9 @@ class SubmitOpenProblemService:
         }
 
     def send_email(self): ...
+
     def create(self):
         data = self._set_up_data()
+        print(data)
         formatted_data = self._format_data(data)
         return formatted_data

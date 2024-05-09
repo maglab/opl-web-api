@@ -94,6 +94,7 @@ class SubmitOpenProblemView(CreateAPIView):
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
+        print(request.data)
         try:
             data = SubmitOpenProblemService(request=request.data).create()
             serializer = self.serializer_class(data=data)
