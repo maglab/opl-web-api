@@ -18,7 +18,9 @@ class OpenProblemQueryset(models.QuerySet):
         return (
             self.annotate(
                 has_solution=Exists(
-                    solution.objects.filter(open_problem=OuterRef("pk"))
+                    solution.objects.filter(open_problem=OuterRef("pk")).filter(
+                        is_active=True
+                    )
                 ),
             )
             .filter(has_solution=True)
