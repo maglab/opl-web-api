@@ -8,10 +8,10 @@ class OpenProblemQueryset(models.QuerySet):
         return self.filter(parent=None)
 
     def latest(self):
-        return self.order_by("-problem_id")
+        return self.filter(is_active=True).order_by("-problem_id")
 
     def top(self):
-        return self.order_by("-descendants_count")
+        return self.filter(is_active=True).order_by("-descendants_count")
 
     def answered(self):
         solution = apps.get_model("posts_comments", "Solution")
@@ -24,6 +24,7 @@ class OpenProblemQueryset(models.QuerySet):
                 ),
             )
             .filter(has_solution=True)
+            .filter(is_active=True)
             .order_by("-problem_id")
         )
 
