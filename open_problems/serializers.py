@@ -56,11 +56,11 @@ class OpenProblemsSerializer(ModelSerializer):
 
     @staticmethod
     def get_solution_count(obj):
-        return obj.solution.count()
+        return obj.solution.filter(is_active=True).count()
 
     @staticmethod
     def get_discussion_count(obj):
-        return obj.discussion.count()
+        return obj.discussion.filter(is_active=True).count()
 
 
 # Separate serializers for fetching and posting.

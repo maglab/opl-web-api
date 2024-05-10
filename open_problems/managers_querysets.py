@@ -14,16 +14,18 @@ class OpenProblemQueryset(models.QuerySet):
         return self.order_by("-descendants_count")
 
     def answered(self):
-        Solution = apps.get_model("posts_comments", "Solution")
+        solution = apps.get_model("posts_comments", "Solution")
         return (
-            self.get_queryset()
-            .annotate(
+            self.annotate(
                 has_solution=Exists(
-                    Solution.objects.filter(open_problem=OuterRef("pk"))
+                    solution.objects.filter(open_problem=OuterRef("pk")).filter(
+                        is_active=True
+                    )
                 ),
             )
             .filter(has_solution=True)
-        ).order_by("-problem_id")
+            .order_by("-problem_id")
+        )
 
 
 class OpenProblemManager(models.Manager):
