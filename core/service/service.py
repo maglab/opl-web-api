@@ -10,7 +10,7 @@ def get_or_create_instances(model, item_list: list, clean_function):
             instance, created = model.objects.get_or_create(**clean_data)
         else:
             continue
-        instances.append(instance)
+        instances.append(instance.pk)
     return instances
 
 

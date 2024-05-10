@@ -5,8 +5,8 @@ from django.db.models.signals import post_save
 
 
 class JobInformation(models.Model):
-    info_id = models.AutoField(primary_key=True)
-    info_title = models.CharField(max_length=50, unique=True)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50, unique=True)
 
     class Meta:
         abstract = True
@@ -14,12 +14,12 @@ class JobInformation(models.Model):
 
 class Organisation(JobInformation):
     def __str__(self) -> str:
-        return f"{self.info_title}"
+        return f"{self.title}"
 
 
 class JobField(JobInformation):
     def __str__(self) -> str:
-        return f"{self.info_title}"
+        return f"{self.title}"
 
 
 class Contact(models.Model):  # For non-auth users for now.

@@ -1,12 +1,11 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.exceptions import NotFound
-from django.http import Http404
 from posts_comments.models import CommentSolution, CommentDiscussion
 from posts_comments.serializers import (
     CommentSolutionSerializer,
     CommentDiscussionSerializer,
 )
-from utils.Pagination import Pagination
+from core.utils.Pagination import Pagination
 
 
 class ListCreateComments(ListCreateAPIView):
