@@ -66,13 +66,15 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
                 description=submitted_problem.description,
                 parent_problem=submitted_problem.parent_problem,
                 contact=submitted_problem.contact,
-                references=submitted_problem.references,
-                tags=submitted_problem.tags,
-                genes=submitted_problem.genes,
-                species=submitted_problem.species,
-                compounds=submitted_problem.compounds,
                 is_active=True,
             )
+
+            # Now set the many-to-many fields
+            open_problem.tags.set(submitted_problem.tags.all())
+            open_problem.genes.set(submitted_problem.genes.all())
+            open_problem.species.set(submitted_problem.species.all())
+            open_problem.compounds.set(submitted_problem.compounds.all())
+            open_problem.references.set(submitted_problem.references.all())
             # Save the problem
             open_problem.save()
             message = f"{queryset.count()} submitted problem(s) moved to the official list of open problems"
