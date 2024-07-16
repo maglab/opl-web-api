@@ -6,5 +6,13 @@
       "organisation": "Rejuvenomics Lab",
       "year": "This year"
       }
+    },
+      "published": {
+      "uuid": "a4edf776-4eef-4b95-bd98-f742ed4bdfca",
+      "template_variables": {
+      "contact": "Contact",
+      "organisation": "Rejuvenomics Lab",
+      "year": "This year"
+      }
     }
 }

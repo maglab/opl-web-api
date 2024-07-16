@@ -15,6 +15,7 @@ load_dotenv(env_path)
 
 BUILD_VERSION = environ.get("BUILD_VERSION") or ""
 
+
 match (environ.get("WEB_API_URLS")):
     case str(value):
         web_api_urls = value.split("|")
