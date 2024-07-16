@@ -122,7 +122,7 @@ class SubmittedProblemsAdmin(admin.ModelAdmin):
             # Send the email
             if submitted_problem.notify_user:
                 uuid, user_name, email, template_variables = self.set_email_contents(
-                    request, submitted_problem
+                    request, open_problem
                 )
                 self._send_notification_email(email, uuid, template_variables)
 
