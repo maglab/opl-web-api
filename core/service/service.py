@@ -1,5 +1,6 @@
 from typing import Type, Any
 from django.db import models
+from django.http import HttpRequest
 
 
 def get_or_create_instances(model, item_list: list, clean_function):
@@ -25,3 +26,13 @@ def return_pk(model_instance: Type[models.Model], default: Any):
     except AttributeError:
         return default
     return pk
+
+
+def return_url(request: HttpRequest) -> dict:
+    # Build the full URL
+    scheme = request.scheme
+    host = request.get_host()
+    path = request.get_full_path()
+    full_url = f"{scheme}://{host}{path}"
+
+    return {"scheme": scheme, "host": host, "path": path, "full_url": full_url}
