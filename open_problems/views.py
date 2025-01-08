@@ -31,10 +31,6 @@ MAILTRAP_TOKEN = os.environ.get("MAILTRAP_API_KEY")
 
 
 class ListProblemsView(ListAPIView):
-    """
-    For retrieving all open problems and sort them depending on url and query parameters.
-    """
-
     filter_backends = [DjangoFilterBackend]
     filterset_class = OpenProblemsFilter
     pagination_class = Pagination

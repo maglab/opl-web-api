@@ -5,6 +5,7 @@ from references.models import Reference
 from annotations.models import Tag, Species, Compound, Gene
 from .managers_querysets import OpenProblemManager
 from users.models import Contact
+from categories.models import Category
 
 
 class OpenProblemAbstract(models.Model):
@@ -41,6 +42,7 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
+    categories = models.ManyToManyField(to=Category, blank=True)
 
     @classmethod
     def update_descendants_count(cls):

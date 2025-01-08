@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "core",
     "users",
     "reports",
+    "categories",
 ]
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

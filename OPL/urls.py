@@ -27,6 +27,7 @@ urlpatterns = [
     path("api/annotations/", include("annotations.urls")),
     path("api/references/", include("references.urls")),
     path("api/users/", include("users.urls")),
+    path("api/categories/", include("categories.urls")),
     path("api/static/", include(static_urlpatterns)),
     path(
         "api/swagger/",

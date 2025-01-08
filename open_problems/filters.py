@@ -49,6 +49,9 @@ class OpenProblemsFilter(FilterSet):
     )
     # For now, we will search the contact table as we do not have any auth users.
     authors = FullNameFilter(label="Author", field_name="contact")
+    categories = MultiValueCharFilter(
+        field_name="categories__title", lookup_expr="exact"
+    )
 
     @staticmethod
     def filter_by_species(queryset, name, value):
@@ -69,4 +72,12 @@ class OpenProblemsFilter(FilterSet):
 
     class Meta:
         model = OpenProblem
-        fields = ["title", "tags", "genes", "species", "references", "authors"]
+        fields = [
+            "title",
+            "tags",
+            "genes",
+            "species",
+            "references",
+            "authors",
+            "categories",
+        ]
