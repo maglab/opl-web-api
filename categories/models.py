@@ -13,8 +13,11 @@ class Category(models.Model):
         on_delete=models.SET_NULL,
     )
 
-    def __str__(self):
-        return self.title
-
     class Meta:
         verbose_name_plural = "Categories"
+
+    def get_sorted_open_problems(self):
+        return self.open_problems.all().order_by("title")
+
+    def __str__(self):
+        return self.title

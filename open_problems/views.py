@@ -47,12 +47,10 @@ class ListProblemsView(ListAPIView):
 
         if sorting == "latest":
             queryset = OpenProblem.objects.latest()
-        elif sorting == "root":
-            queryset = OpenProblem.objects.root()
         elif sorting == "answered":
             queryset = OpenProblem.objects.answered()
-        elif sorting == "top":  # Probably unecessary
-            queryset = OpenProblem.objects.top()
+        elif sorting == "alphabetical":
+            queryset = OpenProblem.objects.alphabetical()
 
         return queryset
 

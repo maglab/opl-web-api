@@ -4,14 +4,12 @@ from django.db.models import OuterRef, Exists, Q
 
 
 class OpenProblemQueryset(models.QuerySet):
-    def root(self):
-        return self.filter(parent=None)
+
+    def alphabetical(self):
+        return self.order_by("title")
 
     def latest(self):
         return self.filter(is_active=True).order_by("-problem_id")
-
-    def top(self):
-        return self.filter(is_active=True).order_by("-descendants_count")
 
     def answered(self):
         solution = apps.get_model("posts_comments", "Solution")
@@ -33,14 +31,11 @@ class OpenProblemManager(models.Manager):
     def get_queryset(self):
         return OpenProblemQueryset(self.model, using=self._db)
 
-    def root(self):
-        return self.get_queryset().root()
+    def alphabetical(self):
+        return self.get_queryset().alphabetical()
 
     def latest(self):
         return self.get_queryset().latest()
-
-    def top(self):
-        return self.get_queryset().top()
 
     def answered(self):
         return self.get_queryset().answered()

@@ -1,10 +1,20 @@
 from rest_framework.serializers import ModelSerializer
 
 from .models import Category
-from open_problems.serializers import OpenProblemsSerializer
+from open_problems.models import OpenProblem
+
+
+class CategoryOpenProblemSerializer(ModelSerializer):
+    class Meta:
+        fields = ["problem_id", "title"]
+        model = OpenProblem
 
 
 class CategorySerializer(ModelSerializer):
+    open_problems = CategoryOpenProblemSerializer(
+        many=True, read_only=True, source="get_sorted_open_problems"
+    )
+
     class Meta:
         model = Category
         fields = "__all__"
