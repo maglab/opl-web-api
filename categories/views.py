@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from .models import Category
 from .serializers import CategorySerializer
@@ -8,5 +8,10 @@ from .serializers import CategorySerializer
 
 
 class ListCategoriesView(ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class RetrieveCategoryView(RetrieveAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer

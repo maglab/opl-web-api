@@ -50,7 +50,7 @@ class OpenProblemsFilter(FilterSet):
     # For now, we will search the contact table as we do not have any auth users.
     authors = FullNameFilter(label="Author", field_name="contact")
     categories = MultiValueCharFilter(
-        field_name="categories__title", lookup_expr="exact"
+        field_name="categories__title", lookup_expr="icontains"
     )
 
     @staticmethod

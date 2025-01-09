@@ -13,6 +13,8 @@ class OpenProblemQueryset(models.QuerySet):
 
     def answered(self):
         solution = apps.get_model("posts_comments", "Solution")
+        if not solution.objects.exists():
+            return self.none()  # Return an empty queryset if no solutions exist
         return (
             self.annotate(
                 has_solution=Exists(
