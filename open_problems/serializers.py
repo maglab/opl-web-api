@@ -14,6 +14,7 @@ from annotations.serializers import (
 )
 from users.serializers import ContactSerializer
 from annotations.models import Tag, Gene, Compound, Species
+from categories.serializers import CategorySerializer
 
 
 # Serializer for parent node of open problem
@@ -34,6 +35,7 @@ class OpenProblemsSerializer(ModelSerializer):
     genes = GeneSerializer(many=True, read_only=True)
     compounds = CompoundsSerializer(many=True, read_only=True)
     species = SpeciesSerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = OpenProblem
@@ -52,6 +54,7 @@ class OpenProblemsSerializer(ModelSerializer):
             "genes",
             "compounds",
             "species",
+            "categories",
         ]
 
     @staticmethod

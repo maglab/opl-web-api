@@ -1,13 +1,16 @@
+from dataclasses import field
+
 from import_export import resources, fields
-from import_export.widgets import ManyToManyWidget
+from import_export.widgets import ManyToManyWidget, ForeignKeyWidget
 from import_export.instance_loaders import ModelInstanceLoader
 from .models import OpenProblem, Reference, Tag, Species, Compound, Gene
+from categories.models import Category
 
 
 class OpenProblemResource(resources.ModelResource):
     references = fields.Field(
         attribute="references", widget=ManyToManyWidget(Reference, field="id")
-    )  # Assuming 'id' can uniquely identify a Reference
+    )
     tags = fields.Field(attribute="tags", widget=ManyToManyWidget(Tag, field="id"))
     species = fields.Field(
         attribute="species", widget=ManyToManyWidget(Species, field="id", separator=",")
@@ -18,6 +21,9 @@ class OpenProblemResource(resources.ModelResource):
     )
     genes = fields.Field(
         attribute="genes", widget=ManyToManyWidget(Gene, field="id", separator=",")
+    )
+    categories = fields.Field(
+        attribute="categories", widget=ManyToManyWidget(Category, field="title")
     )
 
     class Meta:

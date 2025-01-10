@@ -31,10 +31,6 @@ MAILTRAP_TOKEN = os.environ.get("MAILTRAP_API_KEY")
 
 
 class ListProblemsView(ListAPIView):
-    """
-    For retrieving all open problems and sort them depending on url and query parameters.
-    """
-
     filter_backends = [DjangoFilterBackend]
     filterset_class = OpenProblemsFilter
     pagination_class = Pagination
@@ -51,12 +47,10 @@ class ListProblemsView(ListAPIView):
 
         if sorting == "latest":
             queryset = OpenProblem.objects.latest()
-        elif sorting == "root":
-            queryset = OpenProblem.objects.root()
         elif sorting == "answered":
             queryset = OpenProblem.objects.answered()
-        elif sorting == "top":  # Probably unecessary
-            queryset = OpenProblem.objects.top()
+        elif sorting == "alphabetical":
+            queryset = OpenProblem.objects.alphabetical()
 
         return queryset
 

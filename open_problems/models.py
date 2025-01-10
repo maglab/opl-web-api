@@ -5,11 +5,12 @@ from references.models import Reference
 from annotations.models import Tag, Species, Compound, Gene
 from .managers_querysets import OpenProblemManager
 from users.models import Contact
+from categories.models import Category
 
 
 class OpenProblemAbstract(models.Model):
     problem_id = models.AutoField(primary_key=True, serialize=True, default=None)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=300)
     description = models.TextField(blank=True, null=True)
     contact = models.ForeignKey(
         Contact, null=True, on_delete=models.SET_NULL, blank=True
@@ -41,6 +42,9 @@ class OpenProblem(OpenProblemAbstract):
     )
     descendants_count = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=False)
+    categories = models.ManyToManyField(
+        to=Category, blank=True, related_name="open_problems"
+    )
 
     @classmethod
     def update_descendants_count(cls):
